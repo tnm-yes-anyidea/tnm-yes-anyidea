@@ -51,7 +51,7 @@ I am a passionate developer who believes that **"Any Idea"** has the potential t
 ### 🌐 Let's Connect
 
 <p align="center">
-  <a href="https://linkedin.com/in/tnm-ghosh-b94185368	">
+  <a href="https://www.linkedin.com/in/tanmoy-ghosh-b94185368/	">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
   <a href="mailto:your-email@example.com">
