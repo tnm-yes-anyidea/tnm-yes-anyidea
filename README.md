@@ -12,10 +12,10 @@
 
 I am a passionate developer who believes that **"Any Idea"** has the potential to change the world if executed with the right code. I focus on building digital products that are not only functional but also visually compelling.
 
-- 🔭 I’m currently working on **Scaling innovative web applications**
-- 🌱 I’m currently exploring **Cloud Native Architectures & Microservices**
-- 💬 Ask me about **Web Development, UI/UX, and Problem Solving**
-- ⚡ Fun fact: **I see the world in <div> tags and logic gates.**
+- 🔭 I’m currently working on **MYSELF**
+- 🌱 I’m currently exploring **Web Development, UI/UX**
+- 💬 Ask me about **Cloud Native Architectures & Microservices, and Problem Solving**
+- ⚡ Fun fact: **I see the world in pointers and logic gates.**
 
 ---
 
