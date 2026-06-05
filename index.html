@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanmoy | @tnmXspark</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #f2ebd9;
+            --bg-surface: #faf6eb;
+            --bg-card: #fdfbf7;
+            --text-main: #2b261f;
+            --text-muted: #6b6051;
+            --border-color: #c5bba8;
+            
+            --yellow: #a87e00;
+            --orange: #b54516;
+            --red: #9e2b2b;
+            --magenta: #8a245c;
+            --violet: #494080;
+            --blue: #1b5987;
+            --cyan: #167069;
+            --green: #496113;
+            --status-idle: #b58900;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 960px;
+            background-color: var(--bg-surface);
+            border: 2px solid var(--text-main);
+            box-shadow: 8px 8px 0px rgba(43, 38, 31, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard-header {
+            background-color: rgba(0, 0, 0, 0.04);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--text-main);
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .win-dot {
+            width: 12px;
+            height: 12px;
+            border: 1px solid var(--text-main);
+        }
+        .win-dot.r { background-color: var(--red); }
+        .win-dot.y { background-color: var(--yellow); }
+        .win-dot.g { background-color: var(--green); }
+
+        .header-title {
+            font-size: 0.8rem;
+            color: var(--text-main);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .environment-badge {
+            font-size: 0.75rem;
+            color: var(--text-main);
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 8px;
+            border: 1px solid var(--text-main);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 320px 1.5fr;
+            min-height: 540px;
+        }
+
+        .side-panel {
+            background-color: rgba(0, 0, 0, 0.02);
+            border-right: 2px solid var(--text-main);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-container {
+            position: relative;
+            margin-bottom: 25px;
+            display: inline-block;
+            width: 135px;
+            height: 135px;
+        }
+
+        .avatar {
+            width: 135px;
+            height: 135px;
+            border: 2px solid var(--text-main);
+            object-fit: cover;
+            background-color: var(--bg-card);
+            display: block;
+        }
+
+        .avatar-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 135px;
+            height: 135px;
+            border: 2px solid var(--text-main);
+            background-color: var(--bg-card);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+
+        .status-dot-discord {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 24px;
+            height: 24px;
+            background-color: var(--bg-surface);
+            border: 2px solid var(--text-main);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .status-dot-discord::after {
+            content: '';
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: transparent;
+            box-shadow: -4px 4px 0 0 var(--status-idle);
+            transform: translate(2px, -2px);
+        }
+
+        .sys-identity {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .sys-name {
+            font-size: 1.25rem;
+            color: var(--blue);
+            font-weight: bold;
+        }
+
+        .sys-handle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .neofetch-list {
+            width: 100%;
+            font-size: 0.8rem;
+            line-height: 1.8;
+            border-top: 2px dashed var(--border-color);
+            padding-top: 20px;
+        }
+
+        .neofetch-line b {
+            color: var(--magenta);
+            font-weight: normal;
+        }
+
+        .main-content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .section-header {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-header::after {
+            content: '';
+            flex-grow: 1;
+            height: 2px;
+            background: var(--text-main);
+            opacity: 0.2;
+        }
+
+        .runtime-stream {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--text-main);
+            text-align: justify;
+        }
+
+        .nodes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+        }
+
+        .node-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--bg-card);
+            border: 2px solid var(--text-main);
+            padding: 14px 18px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .node-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .node-label {
+            font-size: 0.75rem;
+            font-weight: normal;
+            color: var(--text-muted);
+        }
+
+        .node-icon {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            transition: transform 0.2s ease;
+        }
+
+        .node-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px var(--text-main);
+        }
+
+        .nd-github:hover { background-color: rgba(22, 112, 105, 0.05); }
+        .nd-gitlab:hover { background-color: rgba(181, 69, 22, 0.05); }
+        .nd-linkedin:hover { background-color: rgba(27, 89, 135, 0.05); }
+        .nd-discord:hover { background-color: rgba(73, 64, 128, 0.05); }
+        .nd-email:hover { background-color: rgba(73, 97, 19, 0.05); }
+        .nd-leetcode:hover { background-color: rgba(168, 126, 0, 0.05); }
+
+        .node-card:hover .node-icon {
+            transform: translateX(3px);
+        }
+
+        .matrix-box {
+            background-color: var(--bg-card);
+            border: 2px solid var(--text-main);
+            padding: 18px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            box-shadow: 4px 4px 0px rgba(43, 38, 31, 0.1);
+        }
+
+        .matrix-row {
+            margin-bottom: 8px;
+            display: flex;
+        }
+        .matrix-row:last-child { margin-bottom: 0; }
+        .matrix-key { color: var(--blue); min-width: 110px; flex-shrink: 0; }
+        .matrix-val { color: var(--text-main); }
+
+        .lualine-bar {
+            display: flex;
+            background-color: rgba(0, 0, 0, 0.04);
+            border-top: 2px solid var(--text-main);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .lua-seg { padding: 8px 16px; display: flex; align-items: center; }
+        .lua-mode { background-color: var(--text-main); color: var(--bg-surface); }
+        .lua-loc { background-color: rgba(0, 0, 0, 0.05); color: var(--text-main); border-right: 2px solid var(--text-main); }
+        .lua-file { color: var(--text-muted); font-weight: normal; margin-left: 10px; }
+        .lua-clock { background-color: rgba(0, 0, 0, 0.05); color: var(--text-main); margin-left: auto; border-left: 2px solid var(--text-main); }
+
+        .cursor {
+            animation: blink 1.2s step-end infinite;
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background-color: var(--text-main);
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .minimal-footnote {
+            margin-top: 20px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            opacity: 0.7;
+            letter-spacing: 0.5px;
+        }
+        .minimal-footnote a {
+            color: var(--text-main);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--text-muted);
+        }
+        .minimal-footnote a:hover {
+            color: var(--cyan);
+        }
+
+        @media (max-width: 840px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .side-panel { border-right: none; border-bottom: 2px solid var(--text-main); padding: 24px; }
+            .main-content { padding: 24px; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .nodes-grid { grid-template-columns: 1fr; }
+            .lua-file { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div class="window-controls">
+                <div class="win-dot r"></div>
+                <div class="win-dot y"></div>
+                <div class="win-dot g"></div>
+            </div>
+            <div class="header-title">SYSTEM_CORE_MATRIX</div>
+            <div class="environment-badge">v2.4.2-stable</div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="side-panel">
+                <div class="profile-container">
+                    <img id="avatar-img" class="avatar" alt="Profile Avatar">
+                    <div id="avatar-placeholder" class="avatar-fallback">T</div>
+                    <div class="status-dot-discord"></div>
+                </div>
+                
+                <div class="sys-identity">
+                    <div class="sys-name">Tanmoy</div>
+                    <div class="sys-handle">@tnmXspark</div>
+                </div>
+
+                <div class="neofetch-list">
+                    <div class="neofetch-line"><b>Host</b>: tanmoy@local</div>
+                    <div class="neofetch-line"><b>OS</b>: Alpine Linux</div>
+                    <div class="neofetch-line"><b>Kernel</b>: hardened-virt</div>
+                    <div class="neofetch-line"><b>Shell</b>: bash</div>
+                    <div class="neofetch-line"><b>WM/Editor</b>: Neovim</div>
+                    <div class="neofetch-line"><b>Uptime</b>: infinite</div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="content-section">
+                    <div class="section-header">system // telemetry</div>
+                    <div class="matrix-box runtime-stream">
+                        Just an average student with excessive level of addiction to be terminally online. Loves to cook as to code, loves to read but is always intimidated by academics. Master procrastinator and nothing more. 
+                        <h3>Currently less active as i have syllabus to finish</h3>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">Capabilities Matrix</div>
+                    <div class="matrix-box">
+                        <div class="matrix-row">
+                            <div class="matrix-key">Languages:</div>
+                            <div class="matrix-val">Go, Python, TypeScript, C, Julia</div>
+                        </div>
+                        <div class="matrix-row">
+                            <div class="matrix-key">Core Focus:</div>
+                            <div class="matrix-val">Reverse Engineering, OSINT, Backend Eng</div>
+                        </div>
+                        <div class="matrix-row">
+                            <div class="matrix-key">Systems:</div>
+                            <div class="matrix-val">Automation, Data Analysis, Competitive Coding</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">Network Nodes / Index</div>
+                    <div class="nodes-grid">
+                        
+                        <a href="https://github.com/tnm-yes-anyidea" class="node-card nd-github" target="_blank" rel="noopener">
+                            <div class="node-meta">
+                                <span class="node-label">src/codebase</span>
+                                <span>GitHub</span>
+                            </div>
+                            <span class="node-icon">→</span>
+                        </a>
+
+                        <a href="https://gitlab.com/tnm-yes-anyidea" class="node-card nd-gitlab" target="_blank" rel="noopener">
+                            <div class="node-meta">
+                                <span class="node-label">mirror/ci-cd</span>
+                                <span>GitLab</span>
+                            </div>
+                            <span class="node-icon">→</span>
+                        </a>
+
+                        <a href="https://www.linkedin.com/in/tanmoy-ghosh-b94185368/" class="node-card nd-linkedin" target="_blank" rel="noopener">
+                            <div class="node-meta">
+                                <span class="node-label">professional/net</span>
+                                <span>LinkedIn</span>
+                            </div>
+                            <span class="node-icon">→</span>
+                        </a>
+
+                        <a href="https://discord.com/users/YOUR_DISCORD_ID_HERE" class="node-card nd-discord" target="_blank" rel="noopener">
+                            <div class="node-meta">
+                                <span class="node-label">comm/handle</span>
+                                <span>Discord</span>
+                            </div>
+                            <span class="node-icon">→</span>
+                        </a>
+
+                        <a href="https://leetcode.com/u/Octavius_the_greatest/" class="node-card nd-leetcode" target="_blank" rel="noopener">
+                            <div class="node-meta">
+                                <span class="node-label">dsa/runtime</span>
+                                <span>LeetCode</span>
+                            </div>
+                            <span class="node-icon">→</span>
+                        </a>
+
+                        <a href="#" id="secure-email" class="node-card nd-email">
+                            <div class="node-meta">
+                                <span class="node-label">encrypted/routing</span>
+                                <span>Email Node [checks weekends]</span>
+                            </div>
+                            <span class="node-icon">→</span>
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="lualine-bar">
+            <div class="lua-seg lua-mode">WORKSPACE</div>
+            <div class="lua-seg lua-loc"> production</div>
+            <div class="lua-file">./nodes/workspace.matrix <span class="cursor"></span></div>
+            <div class="lua-seg lua-clock" id="clock-display">00:00:00 AM</div>
+        </div>
+    </div>
+
+    <div class="minimal-footnote">
+        rendered with hints of <a href="https://ring.seggs.lol/" target="_blank" rel="noopener">ring.seggs.lol</a> minimalism
+    </div>
+
+    <script>
+        const imgElement = document.getElementById('avatar-img');
+        const fallbackElement = document.getElementById('avatar-placeholder');
+        
+        const avatarSources = [
+            "https://github.com/tnm-yes-anyidea.png",
+            "https://gitlab.com/tnm-yes-anyidea.png",
+            "./profile.png"
+        ];
+        
+        let currentSourceIndex = 0;
+
+        function tryNextAvatarSource() {
+            if (currentSourceIndex < avatarSources.length) {
+                imgElement.src = avatarSources[currentSourceIndex];
+                currentSourceIndex++;
+            } else {
+                imgElement.style.display = 'none';
+                fallbackElement.style.display = 'flex';
+            }
+        }
+
+        imgElement.onerror = tryNextAvatarSource;
+        tryNextAvatarSource();
+
+        function refreshClock() {
+            const formattedTime = new Date().toLocaleTimeString('en-IN', {
+                timeZone: 'Asia/Kolkata',
+                hour12: true,
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('clock-display').innerText = formattedTime;
+        }
+        setInterval(refreshClock, 1000);
+        refreshClock();
+        
+        document.getElementById('secure-email').addEventListener('click', function(e) {
+            e.preventDefault();
+            const prefix = "public_profile.barbell221"; 
+            const domain = "passinbox.com";      
+            window.location.href = "mailto:" + prefix + "@" + domain;
+        });
+    </script>
+</body>
+</html>
