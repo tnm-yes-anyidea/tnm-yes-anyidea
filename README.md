@@ -1,5 +1,5 @@
 <div align="center">
-  <h1><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=35&pause=1000&color=36BCF7&center=true&vCenter=true&width=500&lines=Hi+I'm+tanmoy+👋;Any+Idea+is+a+Great+Idea;life+is+all+for+simplicity" alt="Typing unicode" /></h1>
+  <h1><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=35&pause=1000&color=36BCF7&center=true&vCenter=true&width=550&lines=Hi,+I'm+Tanmoy+👋;Any+Idea+is+a+Great+Idea;Life+is+all+about+simplicity" alt="Typing unicode" /></h1>
 </div>
 
 <p align="center">
@@ -10,19 +10,19 @@
 
 ### 💫 About Me
 
-I am a passionate developer who believes that **"Any Idea"** has the potential to change the world if executed with the right code. I focus on building digital products that are not only functional but also visually compelling.
+I am a passionate developer who believes that **"Any Idea"** has the potential to change the world if executed with the right code. I thrive on building efficient systems, solving complex algorithmic challenges, and exploring the depths of how software interacts with hardware. 
 
-- 🔭 I’m currently working on **MYSELF**
-- 🌱 I’m currently exploring **Web Development, UI/UX**
-- 💬 Ask me about **Cloud Native Architectures & Microservices, and Problem Solving**
-- ⚡ Fun fact: **I see the world in pointers and logic gates.**
+- 🔭 I’m currently focused on **Data Structures & Algorithms (DSA)** and **System Efficiency**.
+- 🌱 I’m currently exploring **Cybersecurity (CTFs, OSINT)** and **Low-Level Linux Environments**.
+- 💬 Ask me about **Python, C/C++, Julia, and advanced Neovim configurations**.
+- ⚡ Fun fact: **I see the world in pointers, logic gates, and cryptographic hashes.**
 
 ---
 
-### 🛠️ Tech Stack
+### 🛠️ Tech Stack & Tools
 
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=py,java,ts,go,postgres&perline=5" alt="My Skills" />
+  <img src="https://skillicons.dev/icons?i=py,c,cpp,julia,ts,go,postgres,linux,debian,neovim&perline=5" alt="My Skills" />
 </div>
 
 ---
@@ -42,6 +42,14 @@ I am a passionate developer who believes that **"Any Idea"** has the potential t
   </table>
 </div>
 
+### 📈 Activity Graph
+
+<p align="center">
+  <a href="https://github.com/ashutosh00710/github-readme-activity-graph">
+    <img src="https://github-readme-activity-graph.vercel.app/graph?username=tnm-yes-anyidea&theme=tokyonight&area=true&hide_border=true" alt="Tanmoy's Activity Graph" width="100%" />
+  </a>
+</p>
+
 <p align="center">
   <img src="https://github-profile-trophy.vercel.app/?username=tnm-yes-anyidea&theme=tokyonight&no-bg=true&margin-w=4" alt="Trophies" />
 </p>
@@ -51,10 +59,9 @@ I am a passionate developer who believes that **"Any Idea"** has the potential t
 ### 🌐 Let's Connect
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/tanmoy-ghosh-b94185368/	">
+  <a href="https://www.linkedin.com/in/tanmoy-ghosh-b94185368/">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
-  
 </p>
 
 <div align="center">
