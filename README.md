@@ -12,10 +12,6 @@
 
 I am a passionate developer who believes that **"Any Idea"** has the potential to change the world if executed with the right code. I thrive on building efficient systems, solving complex algorithmic challenges, and exploring the depths of how software interacts with hardware. 
 
-- 🔭 I’m currently focused on **Data Structures & Algorithms (DSA)** and **System Efficiency**.
-- 🌱 I’m currently exploring **Cybersecurity (CTFs, OSINT)** and **Low-Level Linux Environments**.
-- 💬 Ask me about **Python, C/C++, Julia, and advanced Neovim configurations**.
-- ⚡ Fun fact: **I see the world in pointers, logic gates, and cryptographic hashes.**
 
 ---
 
