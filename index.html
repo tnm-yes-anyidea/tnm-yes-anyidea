@@ -198,6 +198,170 @@
             font-weight: normal;
         }
 
+        /* ----- VINYL PLAYER WIDGET ----- */
+        .vinyl-widget {
+            width: 100%;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .now-playing-text {
+            width: 100%;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+
+        .np-label {
+            color: var(--green);
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .np-track-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .np-track {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.2s;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .np-track:hover {
+            color: var(--blue);
+            text-decoration: underline;
+        }
+
+        .vinyl-visual {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .record {
+            width: 100px;
+            height: 100px;
+            background-color: #242424;
+            border-radius: 50%;
+            border: 2px solid var(--text-main);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s ease;
+        }
+
+        .record.playing {
+            animation: spinRecord 2.5s linear infinite;
+        }
+
+        @keyframes spinRecord {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .record-groove {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+        }
+        
+        .record-groove-2 {
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .record-label {
+            width: 34px;
+            height: 34px;
+            background-color: var(--orange);
+            border-radius: 50%;
+            position: relative;
+            border: 2px solid #1a1a1a;
+        }
+
+        .record-hole {
+            width: 6px;
+            height: 6px;
+            background-color: var(--bg-surface);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .tonearm {
+            position: absolute;
+            top: -2px;
+            right: -8px;
+            width: 20px;
+            height: 75px;
+            transform-origin: 10px 10px;
+            transform: rotate(-15deg);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
+        }
+
+        .tonearm.playing {
+            transform: rotate(24deg);
+        }
+
+        .tonearm-pivot {
+            width: 20px;
+            height: 20px;
+            background-color: var(--text-main);
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-shadow: inset -2px -2px 0 rgba(0,0,0,0.2);
+        }
+
+        .tonearm-wand {
+            width: 4px;
+            height: 60px;
+            background-color: var(--text-main);
+            position: absolute;
+            top: 10px;
+            left: 8px;
+        }
+
+        .tonearm-head {
+            width: 14px;
+            height: 20px;
+            background-color: var(--text-muted);
+            border: 1px solid var(--text-main);
+            position: absolute;
+            bottom: 0;
+            left: 3px;
+            border-radius: 2px;
+            transform: rotate(15deg);
+        }
+        /* ------------------------------- */
+
         .main-content {
             padding: 30px;
             display: flex;
@@ -397,7 +561,31 @@
                     <div class="neofetch-line"><b>WM/Editor</b>: Neovim</div>
                     <div class="neofetch-line"><b>Uptime</b>: infinite</div>
                 </div>
-            </div>
+
+                <div class="vinyl-widget">
+                    <div class="now-playing-text">
+                        <span class="np-label">Listening to:</span>
+                        <div class="np-track-container">
+                            <a id="np-link" href="#" target="_blank" class="np-track">Loading tracks...</a>
+                        </div>
+                    </div>
+                    
+                    <div class="vinyl-visual">
+                        <div class="record" id="vinyl-record">
+                            <div class="record-groove"></div>
+                            <div class="record-groove-2"></div>
+                            <div class="record-label">
+                                <div class="record-hole"></div>
+                            </div>
+                        </div>
+                        <div class="tonearm" id="vinyl-tonearm">
+                            <div class="tonearm-pivot"></div>
+                            <div class="tonearm-wand"></div>
+                            <div class="tonearm-head"></div>
+                        </div>
+                    </div>
+                </div>
+                </div>
 
             <div class="main-content">
                 <div class="content-section">
@@ -497,6 +685,7 @@
     </div>
 
     <script>
+        // Avatar Fallback Logic
         const imgElement = document.getElementById('avatar-img');
         const fallbackElement = document.getElementById('avatar-placeholder');
         
@@ -521,6 +710,7 @@
         imgElement.onerror = tryNextAvatarSource;
         tryNextAvatarSource();
 
+        // Clock Logic
         function refreshClock() {
             const formattedTime = new Date().toLocaleTimeString('en-IN', {
                 timeZone: 'Asia/Kolkata',
@@ -534,12 +724,124 @@
         setInterval(refreshClock, 1000);
         refreshClock();
         
+        // Email protection
         document.getElementById('secure-email').addEventListener('click', function(e) {
             e.preventDefault();
             const prefix = "public_profile.barbell221"; 
             const domain = "passinbox.com";      
             window.location.href = "mailto:" + prefix + "@" + domain;
         });
+
+        // ------------------------------------------------------------------
+        // VINYL PLAYER & CSV LOGIC
+        // ------------------------------------------------------------------
+        const vinylRecord = document.getElementById('vinyl-record');
+        const vinylTonearm = document.getElementById('vinyl-tonearm');
+        const npLink = document.getElementById('np-link');
+        let currentSongTimer = null;
+
+        // Custom parser to safely handle commas inside double-quoted CSV cells
+        function parseCSV(text) {
+            const rows = [];
+            let curRow = [], curCell = '', inQuotes = false;
+            
+            for (let i = 0; i < text.length; i++) {
+                const c = text[i];
+                if (c === '"') {
+                    if (inQuotes && text[i+1] === '"') { 
+                        curCell += '"'; i++; 
+                    } else { 
+                        inQuotes = !inQuotes; 
+                    }
+                } else if (c === ',' && !inQuotes) {
+                    curRow.push(curCell.trim()); curCell = '';
+                } else if (c === '\n' && !inQuotes) {
+                    curRow.push(curCell.trim()); rows.push(curRow); curRow = []; curCell = '';
+                } else if (c !== '\r') {
+                    curCell += c;
+                }
+            }
+            if (curCell !== '' || curRow.length > 0) { 
+                curRow.push(curCell.trim()); rows.push(curRow); 
+            }
+            return rows.filter(row => row.length > 1); // remove empty/invalid lines
+        }
+
+        // Logic to play a song and wait for its completion
+        function playRandomSong(songs) {
+            if (!songs || songs.length === 0) return;
+
+            // Pick a random track
+            const randIndex = Math.floor(Math.random() * songs.length);
+            const selectedSong = songs[randIndex];
+
+            // Map standard layout (Song Name, Musicians, Duration, Link)
+            const title = selectedSong[0] ? selectedSong[0].replace(/^"|"$/g, '') : "Unknown"; // remove outer quotes if any
+            const artist = selectedSong[1] ? selectedSong[1].replace(/^"|"$/g, '') : "Unknown";
+            const durationStr = selectedSong[2] || "3:00"; 
+            const link = selectedSong[3] || "#";
+
+            // Update UI
+            npLink.textContent = `${title} — ${artist}`;
+            npLink.href = link;
+            npLink.title = `${title} by ${artist} [${durationStr}]`;
+
+            // Start Animation
+            vinylRecord.classList.add('playing');
+            vinylTonearm.classList.add('playing');
+
+            // Calculate duration (mm:ss to milliseconds)
+            let durationMs = 180000; // default 3 mins
+            const timeParts = durationStr.split(':');
+            if (timeParts.length === 2) {
+                const mins = parseInt(timeParts[0], 10) || 0;
+                const secs = parseInt(timeParts[1], 10) || 0;
+                durationMs = (mins * 60 + secs) * 1000;
+            }
+
+            // Clear previous timeout if it exists
+            if (currentSongTimer) clearTimeout(currentSongTimer);
+
+            // Wait for duration to finish, then cycle to the next song
+            currentSongTimer = setTimeout(() => {
+                // Pause animation to simulate needle lifting up
+                vinylRecord.classList.remove('playing');
+                vinylTonearm.classList.remove('playing');
+                
+                // Add a small 1.5s gap between songs
+                setTimeout(() => {
+                    playRandomSong(songs);
+                }, 1500);
+                
+            }, durationMs);
+        }
+
+        // Fetch the local 'songs.csv' (Requires site to run on HTTP/HTTPS, e.g. Cloudflare)
+        fetch('songs.csv')
+            .then(response => {
+                if (!response.ok) throw new Error("Could not find songs.csv");
+                return response.text();
+            })
+            .then(csvText => {
+                const parsedData = parseCSV(csvText);
+                // Assume first row is header, so slice from 1
+                const songList = parsedData.slice(1);
+                
+                if (songList.length > 0) {
+                    playRandomSong(songList);
+                } else {
+                    throw new Error("CSV is empty");
+                }
+            })
+            .catch(error => {
+                console.error("Vinyl error:", error);
+                // Fallback display if fetching fails (e.g. testing locally via file://)
+                npLink.textContent = "Lo-Fi Beats — System Default";
+                npLink.removeAttribute("href");
+                
+                vinylRecord.classList.add('playing');
+                vinylTonearm.classList.add('playing');
+            });
     </script>
 </body>
 </html>
