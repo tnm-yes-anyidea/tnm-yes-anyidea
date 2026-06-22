@@ -245,6 +245,43 @@
             text-decoration: underline;
         }
 
+        /* ----- VINYL CONTROLS ----- */
+        .vinyl-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .song-timer {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .v-btn {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--text-main);
+            padding: 4px 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .v-btn:hover {
+            background-color: var(--text-main);
+            color: var(--bg-surface);
+        }
+
         .vinyl-visual {
             position: relative;
             width: 110px;
@@ -570,6 +607,14 @@
                         </div>
                     </div>
                     
+                    <div class="vinyl-controls">
+                        <span id="song-timer" class="song-timer">00:00 / 00:00</span>
+                        <div class="control-buttons">
+                            <button id="btn-play-pause" class="v-btn">⏸ Pause</button>
+                            <button id="btn-skip" class="v-btn">⏭ Skip</button>
+                        </div>
+                    </div>
+                    
                     <div class="vinyl-visual">
                         <div class="record" id="vinyl-record">
                             <div class="record-groove"></div>
@@ -585,7 +630,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
 
             <div class="main-content">
                 <div class="content-section">
@@ -738,7 +783,15 @@
         const vinylRecord = document.getElementById('vinyl-record');
         const vinylTonearm = document.getElementById('vinyl-tonearm');
         const npLink = document.getElementById('np-link');
-        let currentSongTimer = null;
+        const songTimerEl = document.getElementById('song-timer');
+        const btnPlayPause = document.getElementById('btn-play-pause');
+        const btnSkip = document.getElementById('btn-skip');
+
+        let currentSongList = [];
+        let isPlaying = false;
+        let currentDurationSecs = 0;
+        let elapsedSecs = 0;
+        let timerInterval = null;
 
         // Custom parser to safely handle commas inside double-quoted CSV cells
         function parseCSV(text) {
@@ -764,19 +817,70 @@
             if (curCell !== '' || curRow.length > 0) { 
                 curRow.push(curCell.trim()); rows.push(curRow); 
             }
-            return rows.filter(row => row.length > 1); // remove empty/invalid lines
+            return rows.filter(row => row.length > 1);
         }
 
-        // Logic to play a song and wait for its completion
-        function playRandomSong(songs) {
-            if (!songs || songs.length === 0) return;
+        // Utility: Format seconds to MM:SS
+        function formatTime(totalSeconds) {
+            const m = Math.floor(totalSeconds / 60);
+            const s = Math.floor(totalSeconds % 60);
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        // Update the timer display
+        function updateTimerDisplay() {
+            songTimerEl.textContent = `${formatTime(elapsedSecs)} / ${formatTime(currentDurationSecs)}`;
+        }
+
+        // Playback State Management
+        function startPlayback() {
+            if (elapsedSecs >= currentDurationSecs) {
+                loadRandomSong();
+                return;
+            }
+            
+            isPlaying = true;
+            vinylRecord.classList.add('playing');
+            vinylTonearm.classList.add('playing');
+            btnPlayPause.textContent = "⏸ Pause";
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                elapsedSecs++;
+                updateTimerDisplay();
+
+                if (elapsedSecs >= currentDurationSecs) {
+                    pausePlayback();
+                    setTimeout(loadRandomSong, 1500); // Small gap before auto-playing next track
+                }
+            }, 1000);
+        }
+
+        function pausePlayback() {
+            isPlaying = false;
+            vinylRecord.classList.remove('playing');
+            vinylTonearm.classList.remove('playing');
+            btnPlayPause.textContent = "▶ Play";
+            clearInterval(timerInterval);
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                pausePlayback();
+            } else {
+                startPlayback();
+            }
+        }
+
+        // Load a random song from the loaded CSV list
+        function loadRandomSong() {
+            if (!currentSongList || currentSongList.length === 0) return;
 
             // Pick a random track
-            const randIndex = Math.floor(Math.random() * songs.length);
-            const selectedSong = songs[randIndex];
+            const randIndex = Math.floor(Math.random() * currentSongList.length);
+            const selectedSong = currentSongList[randIndex];
 
-            // Map standard layout (Song Name, Musicians, Duration, Link)
-            const title = selectedSong[0] ? selectedSong[0].replace(/^"|"$/g, '') : "Unknown"; // remove outer quotes if any
+            const title = selectedSong[0] ? selectedSong[0].replace(/^"|"$/g, '') : "Unknown";
             const artist = selectedSong[1] ? selectedSong[1].replace(/^"|"$/g, '') : "Unknown";
             const durationStr = selectedSong[2] || "3:00"; 
             const link = selectedSong[3] || "#";
@@ -786,37 +890,32 @@
             npLink.href = link;
             npLink.title = `${title} by ${artist} [${durationStr}]`;
 
-            // Start Animation
-            vinylRecord.classList.add('playing');
-            vinylTonearm.classList.add('playing');
-
-            // Calculate duration (mm:ss to milliseconds)
-            let durationMs = 180000; // default 3 mins
+            // Calculate duration in seconds
+            let durationSecs = 180; // default 3 mins
             const timeParts = durationStr.split(':');
             if (timeParts.length === 2) {
                 const mins = parseInt(timeParts[0], 10) || 0;
                 const secs = parseInt(timeParts[1], 10) || 0;
-                durationMs = (mins * 60 + secs) * 1000;
+                durationSecs = (mins * 60) + secs;
             }
 
-            // Clear previous timeout if it exists
-            if (currentSongTimer) clearTimeout(currentSongTimer);
-
-            // Wait for duration to finish, then cycle to the next song
-            currentSongTimer = setTimeout(() => {
-                // Pause animation to simulate needle lifting up
-                vinylRecord.classList.remove('playing');
-                vinylTonearm.classList.remove('playing');
-                
-                // Add a small 1.5s gap between songs
-                setTimeout(() => {
-                    playRandomSong(songs);
-                }, 1500);
-                
-            }, durationMs);
+            // Reset Track State
+            currentDurationSecs = durationSecs;
+            elapsedSecs = 0;
+            updateTimerDisplay();
+            
+            // Auto-start
+            startPlayback();
         }
 
-        // Fetch the local 'songs.csv' (Requires site to run on HTTP/HTTPS, e.g. Cloudflare)
+        // Event Listeners for Controls
+        btnPlayPause.addEventListener('click', togglePlayPause);
+        btnSkip.addEventListener('click', () => {
+            pausePlayback();
+            loadRandomSong();
+        });
+
+        // Fetch Data
         fetch('songs.csv')
             .then(response => {
                 if (!response.ok) throw new Error("Could not find songs.csv");
@@ -824,23 +923,23 @@
             })
             .then(csvText => {
                 const parsedData = parseCSV(csvText);
-                // Assume first row is header, so slice from 1
-                const songList = parsedData.slice(1);
+                currentSongList = parsedData.slice(1); // Assume first row is header
                 
-                if (songList.length > 0) {
-                    playRandomSong(songList);
+                if (currentSongList.length > 0) {
+                    loadRandomSong();
                 } else {
                     throw new Error("CSV is empty");
                 }
             })
             .catch(error => {
                 console.error("Vinyl error:", error);
-                // Fallback display if fetching fails (e.g. testing locally via file://)
                 npLink.textContent = "Lo-Fi Beats — System Default";
                 npLink.removeAttribute("href");
                 
-                vinylRecord.classList.add('playing');
-                vinylTonearm.classList.add('playing');
+                // Fallback fake track duration
+                currentDurationSecs = 180; 
+                updateTimerDisplay();
+                startPlayback();
             });
     </script>
 </body>
