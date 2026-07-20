@@ -502,6 +502,30 @@
             box-shadow: 4px 4px 0px rgba(43, 38, 31, 0.1);
         }
 
+        /* ----- GRAPH BOX ----- */
+        .graph-box {
+            padding: 12px;
+            display: block;
+            background-color: var(--bg-card);
+            border: 2px solid var(--text-main);
+            box-shadow: 4px 4px 0px rgba(43, 38, 31, 0.08);
+            overflow: hidden;
+        }
+
+        #gh-graph {
+            width: 100%;
+            height: auto; /* let the graph define its own height */
+            min-height: 160px;
+            max-height: 720px;
+            display: block;
+            overflow: visible; /* avoid clipping internal content */
+            background: transparent;
+        }
+
+        /* Ensure embedded elements don't force extra whitespace */
+        .graph-box { padding-bottom: 0; }
+        #gh-graph > * { height: auto !important; max-height: none !important; }
+
         .matrix-row {
             margin-bottom: 8px;
             display: flex;
@@ -713,6 +737,13 @@
 
                     </div>
                 </div>
+                
+                <div class="content-section">
+                    <div class="section-header">Repository Graph</div>
+                    <div class="matrix-box graph-box">
+                        <div id="gh-graph" aria-label="GitHub repository graph"></div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -720,7 +751,7 @@
         <div class="lualine-bar">
             <div class="lua-seg lua-mode">WORKSPACE</div>
             <div class="lua-seg lua-loc"> production</div>
-            <div class="lua-file">SOME MORE NERDS OF THIS GENERATION<a href="ring.seggs.lol">threadlocked</a> <span class="cursor"></span></div>
+            <div class="lua-file">SOME MORE NERDS OF THIS GENERATION<a href="https://ring.seggs.lol">threadlocked</a> <span class="cursor"></span></div>
             <div class="lua-seg lua-clock" id="clock-display">00:00:00 AM</div>
         </div>
     </div>
@@ -939,7 +970,6 @@
                 startPlayback();
             });
     </script>
-    <div id="gh-graph"></div>
     <script src="gh-graph.js" data-username="tnm-yes-anyidea"></script>
 </body>
 </html>
