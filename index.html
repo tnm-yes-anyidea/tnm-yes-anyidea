@@ -15,11 +15,14 @@
             --text-muted: #8b98ad;
             --border-color: rgba(148, 163, 184, 0.20);
             --yellow: #f5c451;
+            --orange: #ff7a45;
             --red: #ff5d73;
-            --green: #8be28b;
-            --cyan: #55e6d0;
-            --blue: #67b7ff;
             --magenta: #e879f9;
+            --violet: #9b8cff;
+            --blue: #67b7ff;
+            --cyan: #55e6d0;
+            --green: #8be28b;
+            --status-idle: #f5c451;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -61,18 +64,13 @@
             transition: background 0.2s, border 0.2s;
             border: 1px solid transparent;
         }
-        .desktop-icon:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
+        .desktop-icon:hover { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); }
         .icon-graphic { font-size: 2.8rem; margin-bottom: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .icon-name { font-size: 0.75rem; color: white; text-shadow: 1px 1px 2px black; word-wrap: break-word; }
 
         /* ===== WINDOW MANAGER ===== */
         .window {
             position: absolute;
-            top: 15%;
-            left: 15%;
             border: 1px solid rgba(148, 163, 184, 0.24);
             border-radius: 12px;
             background: rgba(7, 11, 21, 0.85);
@@ -85,12 +83,7 @@
             transition: transform 0.2s ease, opacity 0.2s ease;
         }
         
-        .window.maximized {
-            top: 0 !important; left: 0 !important;
-            width: 100vw !important; height: calc(100vh - 45px) !important;
-            border-radius: 0; transform: none;
-        }
-
+        .window.maximized { top: 0 !important; left: 0 !important; width: 100vw !important; height: calc(100vh - 45px) !important; border-radius: 0; transform: none; }
         .window.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
 
         .dashboard-header {
@@ -102,66 +95,122 @@
             justify-content: space-between;
             cursor: grab;
             user-select: none;
+            flex-shrink: 0;
         }
         .dashboard-header:active { cursor: grabbing; }
 
         .window-controls { display: flex; gap: 8px; }
-        .win-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: filter 0.2s; }
+        .win-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: filter 0.2s; border: 0;}
         .win-dot:hover { filter: brightness(1.2); }
-        .win-dot.r { background: var(--red); }
-        .win-dot.y { background: var(--yellow); }
-        .win-dot.g { background: var(--green); }
+        .win-dot.r { background: var(--red); box-shadow: 0 0 12px var(--red); }
+        .win-dot.y { background: var(--yellow); box-shadow: 0 0 12px var(--yellow); }
+        .win-dot.g { background: var(--green); box-shadow: 0 0 12px var(--green); }
 
         .header-title { color: #cbd5e1; letter-spacing: 2px; font-size: 0.8rem; font-weight: bold; pointer-events: none; }
         .environment-badge { font-size: 0.75rem; color: var(--cyan); background: rgba(85,230,208,.06); border: 1px solid rgba(85,230,208,.22); border-radius: 999px; padding: 2px 8px; }
 
-        /* Window Contents */
-        .dashboard-container { width: 960px; height: 600px; }
-        .file-viewer-window { width: 600px; height: 450px; }
-        .viewer-content { padding: 20px; flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.4); color: #e7edf7; font-size: 0.85rem; white-space: pre-wrap; line-height: 1.5; }
+        /* Window Sizes */
+        .dashboard-container { width: 1000px; max-width: 95vw; height: 75vh; top: 5%; left: 5%; }
+        .file-viewer-window { width: 600px; height: 450px; top: 15%; left: 30%; }
+        .elisa-container { width: 750px; height: 480px; top: 10%; left: 20%; background: rgba(18, 20, 31, 0.95); }
+        .netmap-container { width: 650px; height: 400px; top: 25%; left: 35%; }
+
+        /* ===== TERMINAL STYLES ===== */
+        .dashboard-grid { display: grid; grid-template-columns: 280px 1fr; flex-grow: 1; overflow: hidden; }
+        .side-panel { background: rgba(255,255,255,.018); border-right: 1px solid rgba(148,163,184,.18); padding: 30px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
+        .profile-container { position: relative; margin-bottom: 25px; width: 135px; height: 135px; }
+        .avatar { width: 135px; height: 135px; object-fit: cover; border: 1px solid rgba(103,183,255,.45); border-radius: 16px; box-shadow: 0 0 0 5px rgba(103,183,255,.04), 0 15px 35px rgba(0,0,0,.3); background-color: var(--bg-card); display: block; }
+        .status-dot-discord { position: absolute; bottom: -2px; right: -2px; width: 24px; height: 24px; background-color: var(--bg-surface); border: 2px solid #0a0f1b; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(245,196,81,.35); }
+        .status-dot-discord::after { content: ''; width: 14px; height: 14px; border-radius: 50%; box-shadow: -4px 4px 0 0 var(--status-idle); transform: translate(2px, -2px); }
+        .sys-identity { text-align: center; width: 100%; margin-bottom: 25px; }
+        .sys-name { font-size: 1.25rem; font-weight: bold; color: var(--blue); text-shadow: 0 0 20px rgba(103,183,255,.2); }
+        .sys-handle { font-size: 0.85rem; color: #7f8da3; margin-top: 2px; }
+        .neofetch-list { width: 100%; font-size: 0.8rem; line-height: 1.8; border-top: 1px solid rgba(148,163,184,.16); padding-top: 20px; }
+        .neofetch-line b { color: var(--magenta); font-weight: normal; }
         
-        .terminal-content { padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; height: 100%; }
-        .prompt::before { content: 'tanmoy@debian:~$ '; color: var(--green); }
-        .output { color: var(--text-muted); margin-bottom: 15px; }
+        .main-content { padding: 30px; display: flex; flex-direction: column; gap: 28px; overflow-y: auto; }
+        .content-section { display: flex; flex-direction: column; gap: 12px; }
+        .section-header { font-size: 0.8rem; font-weight: bold; color: #b9c5d8; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
+        .section-header::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, rgba(148,163,184,.35), transparent); }
+        .matrix-box { background: rgba(15, 22, 38, .68); border: 1px solid rgba(148,163,184,.18); border-radius: 12px; padding: 20px; font-size: 0.85rem; line-height: 1.6; }
+        .runtime-stream { color: #cbd5e1; border-left: 2px solid rgba(103,183,255,.55); }
+        .matrix-row { display: flex; margin-bottom: 8px; }
+        .matrix-key { color: var(--blue); min-width: 110px; flex-shrink: 0; }
+        .matrix-val { color: var(--text-main); }
+        .graph-box { padding: 12px; }
+        #gh-graph { width: 100%; height: auto; min-height: 160px; max-height: 720px; display: block; overflow: visible; }
+        .lualine-bar { display: flex; background: rgba(3,7,15,.72); border-top: 1px solid rgba(148,163,184,.14); font-size: 0.8rem; font-weight: bold; flex-shrink: 0; }
+        .lua-seg { padding: 8px 16px; display: flex; align-items: center; }
+        .lua-mode { background: #161d2e; color: var(--cyan); }
+        .lua-loc, .lua-clock { background: rgba(255,255,255,.025); border-color: rgba(148,163,184,.14); color: #aab6c8; }
+        .lua-file { color: var(--text-muted); font-weight: normal; margin-left: 10px; align-self: center; }
+
+        /* ===== ELISA MUSIC PLAYER ===== */
+        .elisa-body { display: flex; flex-grow: 1; overflow: hidden; }
+        .elisa-sidebar { width: 180px; background: rgba(0,0,0,0.3); border-right: 1px solid var(--border-color); padding: 15px 10px; display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; }
+        .elisa-nav-item { padding: 10px 15px; border-radius: 6px; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; gap: 10px; transition: all 0.2s; }
+        .elisa-nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
+        .elisa-nav-item.active { background: var(--blue); color: #000; font-weight: bold; }
+        .elisa-main { flex-grow: 1; display: flex; flex-direction: column; position: relative; }
+        .elisa-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(103,183,255,0.05) 0%, transparent 60%); }
+        .elisa-bottom-bar { height: 80px; background: rgba(0,0,0,0.4); border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
         
+        .elisa-track-info { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .np-title { font-weight: bold; font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px; text-decoration: none; display: block; }
+        .np-title:hover { color: var(--blue); text-decoration: underline; }
+        .np-artist { font-size: 0.75rem; color: var(--text-muted); }
+
+        .elisa-controls { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .control-btns { display: flex; gap: 15px; align-items: center; }
+        .elisa-btn { background: none; border: none; color: var(--text-main); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
+        .elisa-btn:hover { color: var(--blue); }
+        .elisa-btn.play { font-size: 1.8rem; color: var(--blue); }
+        .elisa-btn.play:hover { color: var(--cyan); }
+        
+        .progress-container { width: 100%; display: flex; align-items: center; gap: 10px; font-size: 0.7rem; color: var(--text-muted); }
+        .progress-bar { flex-grow: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative; overflow: hidden; }
+        .progress-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--blue); width: 0%; transition: width 1s linear; }
+
+        .elisa-extra { flex: 1; display: flex; justify-content: flex-end; }
+
+        /* Vinyl Visual in Elisa */
+        .vinyl-visual { position: relative; width: 220px; height: 220px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
+        .record { width: 200px; height: 200px; background-color: #121212; border-radius: 50%; border: 4px solid #2a2a2a; position: relative; display: flex; justify-content: center; align-items: center; box-shadow: 0 15px 35px rgba(0,0,0,.5); transition: transform 0.5s ease; }
+        .record.playing { animation: spinRecord 2.5s linear infinite; }
+        @keyframes spinRecord { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .record-groove { position: absolute; width: 85%; height: 85%; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50%; }
+        .record-groove-2 { position: absolute; width: 65%; height: 65%; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 50%; }
+        .record-label { width: 66px; height: 66px; background: linear-gradient(135deg, var(--orange), var(--red)); border-radius: 50%; position: relative; border: 2px solid #1a1a1a; }
+        .record-hole { width: 12px; height: 12px; background-color: var(--bg-surface); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid #000; }
+        .tonearm { position: absolute; top: -10px; right: -15px; width: 30px; height: 140px; transform-origin: 15px 15px; transform: rotate(-15deg); transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 5; }
+        .tonearm.playing { transform: rotate(26deg); }
+        .tonearm-pivot { width: 30px; height: 30px; background: linear-gradient(135deg, #444, #111); border-radius: 50%; position: absolute; top: 0; left: 0; border: 2px solid #222; }
+        .tonearm-wand { width: 6px; height: 110px; background: linear-gradient(90deg, #888, #bbb, #888); position: absolute; top: 15px; left: 12px; border-radius: 3px; }
+        .tonearm-head { width: 18px; height: 30px; background-color: #222; border: 1px solid #555; position: absolute; bottom: 0; left: 6px; border-radius: 2px; transform: rotate(15deg); }
+
+        /* ===== NETMAP VISUALIZER ===== */
+        .netmap-body { padding: 25px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 20px; }
+        .netmap-header-bar { font-size: 0.9rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+        .node-card { position: relative; overflow: hidden; padding: 18px 20px; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 0.95rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(148,163,184,.18); border-radius: 12px; transition: transform .2s ease, border-color .2s ease, background .2s ease; display: flex; align-items: center; justify-content: space-between; }
+        .node-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.06); border-color: rgba(103,183,255,.45); box-shadow: 0 10px 25px rgba(0,0,0,.3); }
+        .node-meta { display: flex; flex-direction: column; gap: 4px; }
+        .node-label { color: #718096; font-size: 0.75rem; font-family: sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+        .node-icon { color: var(--cyan); transition: transform 0.2s ease; }
+        .node-card:hover .node-icon { transform: translateX(4px); }
+
+        /* File Viewer */
+        .viewer-content { padding: 20px; flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.4); font-size: 0.85rem; white-space: pre-wrap; line-height: 1.5; }
+
         /* ===== TASKBAR ===== */
-        .taskbar {
-            height: 45px;
-            background: rgba(10, 15, 27, 0.95);
-            border-top: 1px solid rgba(148, 163, 184, 0.20);
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-            z-index: 9999;
-            backdrop-filter: blur(10px);
-        }
-
-        .start-btn {
-            background: var(--blue);
-            color: #000;
-            font-weight: bold;
-            padding: 6px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-right: 15px;
-            transition: background 0.2s;
-        }
+        .taskbar { height: 45px; background: rgba(10, 15, 27, 0.95); border-top: 1px solid rgba(148, 163, 184, 0.20); display: flex; align-items: center; padding: 0 15px; z-index: 9999; flex-shrink: 0; }
+        .start-btn { background: var(--blue); color: #000; font-weight: bold; padding: 6px 16px; border-radius: 6px; cursor: pointer; margin-right: 15px; transition: background 0.2s; }
         .start-btn:hover { background: var(--cyan); }
-
         .taskbar-apps { flex-grow: 1; display: flex; gap: 10px; }
-        .taskbar-app {
-            padding: 6px 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid transparent;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .taskbar-app { padding: 6px 15px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
         .taskbar-app.active { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-bottom: 2px solid var(--blue); }
         .taskbar-app:hover { background: rgba(255,255,255,0.1); }
-
-        .taskbar-clock { font-size: 0.85rem; color: var(--text-main); }
+        .taskbar-clock { font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -170,15 +219,19 @@
     <div class="desktop-area" id="desktop">
         <div class="desktop-icon" onclick="openWindow('terminal-window')">
             <div class="icon-graphic">💻</div>
-            <div class="icon-name">Terminal</div>
+            <div class="icon-name">System_Core</div>
         </div>
-        <div class="desktop-icon" onclick="openFile('bandit_ctf_notes.txt', 'txt')">
-            <div class="icon-graphic">🚩</div>
-            <div class="icon-name">Bandit_CTF.txt</div>
+        <div class="desktop-icon" onclick="openWindow('elisa-window')">
+            <div class="icon-graphic">🎵</div>
+            <div class="icon-name">Elisa</div>
         </div>
-        <div class="desktop-icon" onclick="openFile('uncommon-tinkering.csv', 'csv')">
+        <div class="desktop-icon" onclick="openWindow('netmap-window')">
+            <div class="icon-graphic">🌐</div>
+            <div class="icon-name">NetMap</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('songs.csv', 'csv')">
             <div class="icon-graphic">📊</div>
-            <div class="icon-name">ProjectData.csv</div>
+            <div class="icon-name">songs.csv</div>
         </div>
         <div class="desktop-icon" onclick="openFile('meddling.png', 'png')">
             <div class="icon-graphic">🖼️</div>
@@ -195,34 +248,162 @@
                 <div class="win-dot g" onclick="maximizeWindow('terminal-window')"></div>
             </div>
             <div class="header-title">SYSTEM_CORE_MATRIX</div>
-            <div class="environment-badge">v4.0.1-stable</div>
+            <div class="environment-badge">v4.0.2-stable</div>
         </div>
-        <div class="terminal-content">
-            <div>
-                <span class="prompt">neofetch</span>
-                <div class="output" style="margin-top: 10px;">
-                    <span style="color: var(--blue); font-weight: bold;">Tanmoy</span>@<span style="color: var(--blue); font-weight: bold;">tnmXspark</span><br>
-                    -------------------<br>
-                    <b>OS</b>: Debian GNU/Linux<br>
-                    <b>Shell</b>: zsh<br>
-                    <b>Editor</b>: Neovim (Custom Lua setup)<br>
-                    <b>Interests</b>: Backend Eng, Reverse Engineering, CTFs<br>
-                    <b>Status</b>: Currently less active due to syllabus constraints.
+        <div class="dashboard-grid">
+            <div class="side-panel">
+                <div class="profile-container">
+                    <img id="avatar-img" class="avatar" src="https://github.com/tnm-yes-anyidea.png" alt="Profile Avatar" onerror="this.src='./profile.png'">
+                    <div class="status-dot-discord"></div>
+                </div>
+                <div class="sys-identity">
+                    <div class="sys-name">Tanmoy</div>
+                    <div class="sys-handle">@tnmXspark</div>
+                </div>
+                <div class="neofetch-list">
+                    <div class="neofetch-line"><b>Host</b>: tanmoy@local</div>
+                    <div class="neofetch-line"><b>OS</b>: Alpine Linux</div>
+                    <div class="neofetch-line"><b>Kernel</b>: hardened-virt</div>
+                    <div class="neofetch-line"><b>Shell</b>: bash</div>
+                    <div class="neofetch-line"><b>WM/Editor</b>: Neovim</div>
+                    <div class="neofetch-line"><b>Uptime</b>: infinite</div>
                 </div>
             </div>
-            <div>
-                <span class="prompt">cat ./capabilities.txt</span>
-                <div class="output">
-                    [Go, Python, TypeScript, C, Julia]<br>
-                    Optimized for low-memory environments.
+            <div class="main-content">
+                <div class="content-section">
+                    <div class="section-header">system // telemetry</div>
+                    <div class="matrix-box runtime-stream">
+                        Just an average student with excessive level of addiction to be terminally online. Loves to cook as to code, loves to read but is always intimidated by academics. Master procrastinator and nothing more. 
+                        <br><br><h3>Currently less active as I have syllabus to finish</h3>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">Capabilities Matrix</div>
+                    <div class="matrix-box">
+                        <div class="matrix-row"><div class="matrix-key">Languages:</div><div class="matrix-val">Go, Python, TypeScript, C, Julia</div></div>
+                        <div class="matrix-row"><div class="matrix-key">Core Focus:</div><div class="matrix-val">Reverse Engineering, OSINT, Backend Eng</div></div>
+                        <div class="matrix-row"><div class="matrix-key">Systems:</div><div class="matrix-val">Automation, Data Analysis, Competitive Coding</div></div>
+                    </div>
+                </div>
+                <div class="content-section">
+                    <div class="section-header">Repository Graph</div>
+                    <div class="matrix-box graph-box">
+                        <div id="gh-graph"></div>
+                    </div>
                 </div>
             </div>
-            <div><span class="prompt"></span><span style="animation: blink 1.2s step-end infinite;">_</span></div>
+        </div>
+        <div class="lualine-bar">
+            <div class="lua-seg lua-mode">WORKSPACE</div>
+            <div class="lua-seg lua-loc"> production</div>
+            <div class="lua-file">SYSTEM TELEMETRY <span class="cursor" style="animation: blink 1.2s step-end infinite; display: inline-block; width: 8px; height: 14px; background-color: var(--text-main); margin-left: 4px;"></span></div>
+        </div>
+    </div>
+
+    <!-- ELISA MUSIC PLAYER WINDOW -->
+    <div id="elisa-window" class="window elisa-container hidden" style="z-index: 11;">
+        <div class="dashboard-header" id="elisa-header">
+            <div class="window-controls">
+                <div class="win-dot r" onclick="closeWindow('elisa-window')"></div>
+                <div class="win-dot y" onclick="minimizeWindow('elisa-window')"></div>
+                <div class="win-dot g" onclick="maximizeWindow('elisa-window')"></div>
+            </div>
+            <div class="header-title">Elisa</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">Music Player</div>
+        </div>
+        <div class="elisa-body">
+            <div class="elisa-sidebar">
+                <div class="elisa-nav-item active">🎵 Now Playing</div>
+                <div class="elisa-nav-item">📁 Tracks</div>
+                <div class="elisa-nav-item">💿 Albums</div>
+                <div class="elisa-nav-item">📻 Radios</div>
+                <div style="flex-grow:1;"></div>
+                <div class="elisa-nav-item">⚙️ Settings</div>
+            </div>
+            <div class="elisa-main">
+                <div class="elisa-view">
+                    <div class="vinyl-visual">
+                        <div class="record" id="vinyl-record">
+                            <div class="record-groove"></div>
+                            <div class="record-groove-2"></div>
+                            <div class="record-label"><div class="record-hole"></div></div>
+                        </div>
+                        <div class="tonearm" id="vinyl-tonearm">
+                            <div class="tonearm-pivot"></div>
+                            <div class="tonearm-wand"></div>
+                            <div class="tonearm-head"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="elisa-bottom-bar">
+                    <div class="elisa-track-info">
+                        <a id="np-link" href="#" target="_blank" class="np-title">Loading tracks...</a>
+                        <div id="np-artist" class="np-artist">System Default</div>
+                    </div>
+                    <div class="elisa-controls">
+                        <div class="control-btns">
+                            <button class="elisa-btn">⏮</button>
+                            <button id="btn-play-pause" class="elisa-btn play">▶</button>
+                            <button id="btn-skip" class="elisa-btn">⏭</button>
+                        </div>
+                        <div class="progress-container">
+                            <span id="elisa-time-current">0:00</span>
+                            <div class="progress-bar"><div id="elisa-progress" class="progress-fill"></div></div>
+                            <span id="elisa-time-total">3:00</span>
+                        </div>
+                    </div>
+                    <div class="elisa-extra">
+                        <button class="elisa-btn">🔊</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NETMAP VISUALIZER WINDOW -->
+    <div id="netmap-window" class="window netmap-container hidden" style="z-index: 12;">
+        <div class="dashboard-header" id="netmap-header">
+            <div class="window-controls">
+                <div class="win-dot r" onclick="closeWindow('netmap-window')"></div>
+                <div class="win-dot y" onclick="minimizeWindow('netmap-window')"></div>
+                <div class="win-dot g" onclick="maximizeWindow('netmap-window')"></div>
+            </div>
+            <div class="header-title">NetMap Visualizer v1.2</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">node_status: active</div>
+        </div>
+        <div class="netmap-body">
+            <div class="netmap-header-bar">Found 6 active connection nodes in current workspace...</div>
+            <div class="nodes-grid">
+                <a href="https://github.com/tnm-yes-anyidea" class="node-card" target="_blank">
+                    <div class="node-meta"><span class="node-label">src/codebase</span><span>GitHub</span></div>
+                    <span class="node-icon">→</span>
+                </a>
+                <a href="https://gitlab.com/tnm-yes-anyidea" class="node-card" target="_blank">
+                    <div class="node-meta"><span class="node-label">mirror/ci-cd</span><span>GitLab</span></div>
+                    <span class="node-icon">→</span>
+                </a>
+                <a href="https://www.linkedin.com/in/tanmoy-ghosh-b94185368/" class="node-card" target="_blank">
+                    <div class="node-meta"><span class="node-label">professional/net</span><span>LinkedIn</span></div>
+                    <span class="node-icon">→</span>
+                </a>
+                <a href="https://discord.com/users/918732210868207696" class="node-card" target="_blank">
+                    <div class="node-meta"><span class="node-label">comm/handle</span><span>Discord</span></div>
+                    <span class="node-icon">→</span>
+                </a>
+                <a href="https://leetcode.com/u/Octavius_the_greatest/" class="node-card" target="_blank">
+                    <div class="node-meta"><span class="node-label">dsa/runtime</span><span>LeetCode</span></div>
+                    <span class="node-icon">→</span>
+                </a>
+                <a href="#" id="secure-email" class="node-card">
+                    <div class="node-meta"><span class="node-label">encrypted/routing</span><span>Email Node [Offline]</span></div>
+                    <span class="node-icon">→</span>
+                </a>
+            </div>
         </div>
     </div>
 
     <!-- FILE VIEWER WINDOW -->
-    <div id="file-viewer" class="window file-viewer-window hidden" style="z-index: 11;">
+    <div id="file-viewer" class="window file-viewer-window hidden" style="z-index: 13;">
         <div class="dashboard-header" id="file-viewer-header">
             <div class="window-controls">
                 <div class="win-dot r" onclick="closeWindow('file-viewer')"></div>
@@ -238,36 +419,43 @@
     <div class="taskbar">
         <div class="start-btn" onclick="alert('Start Menu implementation loading...')">❖ Start</div>
         <div class="taskbar-apps" id="taskbar-apps">
-            <div class="taskbar-app active" id="task-terminal-window" onclick="toggleWindow('terminal-window')">Terminal</div>
+            <!-- Populated by JS -->
         </div>
         <div class="taskbar-clock" id="clock">00:00 AM</div>
     </div>
 
     <script>
-        // --- Z-INDEX & STATE MANAGEMENT ---
-        let highestZ = 20;
-        const windows = document.querySelectorAll('.window');
-        
-        windows.forEach(win => {
-            win.addEventListener('mousedown', () => { bringToFront(win.id); });
+        // Email Node
+        document.getElementById('secure-email').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = "mailto:public_profile.barbell221@passinbox.com";
         });
 
-        function bringToFront(id) {
-            highestZ++;
-            document.getElementById(id).style.zIndex = highestZ;
-            updateTaskbarActive(id);
+        // Window Management
+        let highestZ = 20;
+        const windows = document.querySelectorAll('.window');
+        windows.forEach(win => { win.addEventListener('mousedown', () => { bringToFront(win.id); }); });
+        
+        function bringToFront(id) { 
+            highestZ++; 
+            document.getElementById(id).style.zIndex = highestZ; 
+            updateTaskbarActive(id); 
         }
 
-        // --- WINDOW CONTROLS ---
-        function openWindow(id, title = "App") {
+        function getAppTitle(id) {
+            if(id === 'terminal-window') return 'System_Core';
+            if(id === 'elisa-window') return 'Elisa';
+            if(id === 'netmap-window') return 'NetMap';
+            return 'File Viewer';
+        }
+
+        function openWindow(id) {
             const win = document.getElementById(id);
             win.classList.remove('hidden');
             bringToFront(id);
-            
-            // Add to taskbar if not present
             if(!document.getElementById('task-' + id)) {
-                const tbApps = document.getElementById('taskbar-apps');
-                tbApps.innerHTML += `<div class="taskbar-app" id="task-${id}" onclick="toggleWindow('${id}')">${title}</div>`;
+                const title = getAppTitle(id);
+                document.getElementById('taskbar-apps').innerHTML += `<div class="taskbar-app" id="task-${id}" onclick="toggleWindow('${id}')">${title}</div>`;
             }
             updateTaskbarActive(id);
         }
@@ -280,7 +468,8 @@
 
         function minimizeWindow(id) {
             document.getElementById(id).classList.add('hidden');
-            document.getElementById('task-' + id).classList.remove('active');
+            const tbApp = document.getElementById('task-' + id);
+            if(tbApp) tbApp.classList.remove('active');
         }
 
         function maximizeWindow(id) {
@@ -305,68 +494,115 @@
             if(tbActive) tbActive.classList.add('active');
         }
 
-        // --- DRAG MECHANICS ---
+        // Draggable
         function makeDraggable(winId, headerId) {
             const win = document.getElementById(winId);
             const header = document.getElementById(headerId);
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
-            header.onmousedown = dragMouseDown;
-
-            function dragMouseDown(e) {
+            header.onmousedown = function(e) {
                 if(win.classList.contains('maximized')) return;
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            }
-
-            function elementDrag(e) {
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                win.style.top = (win.offsetTop - pos2) + "px";
-                win.style.left = (win.offsetLeft - pos1) + "px";
-            }
-
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
+                e.preventDefault(); pos3 = e.clientX; pos4 = e.clientY;
+                document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+                document.onmousemove = (e) => {
+                    e.preventDefault(); pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY; pos3 = e.clientX; pos4 = e.clientY;
+                    win.style.top = (win.offsetTop - pos2) + "px"; win.style.left = (win.offsetLeft - pos1) + "px";
+                };
+            };
         }
-
         makeDraggable('terminal-window', 'terminal-window-header');
+        makeDraggable('elisa-window', 'elisa-header');
+        makeDraggable('netmap-window', 'netmap-header');
         makeDraggable('file-viewer', 'file-viewer-header');
 
-        // --- FILE VIEWER LOGIC ---
+        // File Viewer
         function openFile(filename, ext) {
-            openWindow('file-viewer', filename);
-            const title = document.getElementById('viewer-title');
+            openWindow('file-viewer');
+            document.getElementById('viewer-title').innerText = filename;
             const content = document.getElementById('viewer-content');
-            
-            title.innerText = filename + " (Read Only)";
-            content.innerHTML = "Fetching local filesystem data...";
+            content.innerHTML = "Loading...";
 
-            if (ext === 'png' || ext === 'jpg') {
+            if (ext === 'png') {
                 content.innerHTML = `<img src="${filename}" style="max-width:100%; border-radius:4px;">`;
                 return;
             }
-
             fetch(filename)
-                .then(response => { if (!response.ok) throw new Error("CORS or Missing File"); return response.text(); })
-                .then(data => { content.innerText = data; })
-                .catch(err => { 
-                    content.innerHTML = `<span style="color:var(--red);">Error: Unable to read '${filename}'.<br><br>[Requires local HTTP server to bypass browser restrictions on file:// URIs]</span>`; 
-                });
+                .then(r => r.ok ? r.text() : Promise.reject())
+                .then(d => content.innerHTML = ext === 'csv' ? parseCSVToHTML(d) : d)
+                .catch(() => content.innerHTML = `<span style="color:var(--red);">Error: Requires Live Server to read local files.</span>`);
         }
 
-        // --- CLOCK ---
+        function parseCSVToHTML(text) {
+            let html = '<table style="width:100%; border-collapse:collapse;">';
+            text.split('\n').forEach((row, i) => {
+                if(!row.trim()) return;
+                html += '<tr>';
+                row.split(',').forEach(col => {
+                    let c = col.replace(/"/g, '').trim();
+                    html += i === 0 
+                        ? `<th style="border:1px solid var(--border-color); padding:6px; background:rgba(255,255,255,0.05);">${c}</th>` 
+                        : `<td style="border:1px solid var(--border-color); padding:6px;">${c}</td>`;
+                });
+                html += '</tr>';
+            });
+            return html + '</table>';
+        }
+
+        // Clock
         setInterval(() => {
             document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-IN', { hour12: true, hour: 'numeric', minute: '2-digit' });
         }, 1000);
+
+        // Elisa Music Logic
+        const record = document.getElementById('vinyl-record'), arm = document.getElementById('vinyl-tonearm');
+        const npLink = document.getElementById('np-link'), npArtist = document.getElementById('np-artist');
+        const timeCur = document.getElementById('elisa-time-current'), timeTot = document.getElementById('elisa-time-total');
+        const progFill = document.getElementById('elisa-progress'), btnPlay = document.getElementById('btn-play-pause');
+        
+        let songs = [], isPlaying = false, durSec = 180, elapSec = 0, timer = null;
+
+        function fmtTime(s) { return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`; }
+        function updateUI() {
+            timeCur.textContent = fmtTime(elapSec); timeTot.textContent = fmtTime(durSec);
+            progFill.style.width = `${(elapSec/durSec)*100}%`;
+        }
+
+        function play() {
+            if(elapSec >= durSec) return loadSong();
+            isPlaying = true; record.classList.add('playing'); arm.classList.add('playing');
+            btnPlay.textContent = "⏸";
+            timer = setInterval(() => {
+                elapSec++; updateUI();
+                if(elapSec >= durSec) { pause(); setTimeout(loadSong, 1000); }
+            }, 1000);
+        }
+        function pause() {
+            isPlaying = false; record.classList.remove('playing'); arm.classList.remove('playing');
+            btnPlay.textContent = "▶"; clearInterval(timer);
+        }
+
+        function loadSong() {
+            if(!songs.length) return;
+            const s = songs[Math.floor(Math.random() * songs.length)];
+            npLink.textContent = s[0].replace(/"/g, ''); 
+            npArtist.textContent = s[1].replace(/"/g, '');
+            npLink.href = s[3] || '#';
+            let t = (s[2]||"3:00").split(':'); durSec = parseInt(t[0])*60 + parseInt(t[1]||0);
+            elapSec = 0; updateUI(); play();
+        }
+
+        btnPlay.onclick = () => isPlaying ? pause() : play();
+        document.getElementById('btn-skip').onclick = () => { pause(); loadSong(); };
+
+        fetch('songs.csv').then(r => r.text()).then(t => {
+            songs = t.split('\n').map(l=>l.split(',')).filter(r=>r.length>1).slice(1);
+            if(songs.length) loadSong();
+        }).catch(() => {
+            npLink.textContent = "Lo-Fi Beats"; npArtist.textContent = "System Default"; updateUI(); play();
+        });
+
+        // Initialize Default Windows
+        openWindow('terminal-window');
     </script>
+    <script src="gh-graph.js" data-username="tnm-yes-anyidea"></script>
 </body>
 </html>
