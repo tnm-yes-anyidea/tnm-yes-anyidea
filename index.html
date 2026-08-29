@@ -586,9 +586,241 @@
             .nodes-grid { grid-template-columns: 1fr; }
             .lua-file { display: none; }
         }
+    
+        /* ===== MODERN VISUAL OVERHAUL ===== */
+        :root {
+            --bg-base: #050812;
+            --bg-surface: rgba(10, 15, 27, 0.84);
+            --bg-card: rgba(16, 23, 39, 0.72);
+            --text-main: #e7edf7;
+            --text-muted: #8b98ad;
+            --border-color: rgba(148, 163, 184, 0.20);
+            --yellow: #f5c451;
+            --orange: #ff7a45;
+            --red: #ff5d73;
+            --magenta: #e879f9;
+            --violet: #9b8cff;
+            --blue: #67b7ff;
+            --cyan: #55e6d0;
+            --green: #8be28b;
+            --status-idle: #f5c451;
+        }
+
+        body {
+            position: relative;
+            overflow-x: hidden;
+            padding: 28px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            background:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 32px 32px;
+            mask-image: linear-gradient(to bottom, black, transparent 90%);
+        }
+
+        .dashboard-container {
+            max-width: 1180px;
+            border: 1px solid rgba(148, 163, 184, 0.24);
+            border-radius: 18px;
+            background: rgba(7, 11, 21, 0.72);
+            box-shadow:
+                0 30px 90px rgba(0,0,0,.45),
+                0 0 0 1px rgba(255,255,255,.025) inset,
+                0 0 60px rgba(99,102,241,.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .dashboard-header {
+            padding: 13px 18px;
+            background: rgba(255,255,255,.035);
+            border-bottom: 1px solid rgba(148,163,184,.18);
+        }
+
+        .win-dot {
+            border: 0;
+            border-radius: 50%;
+            box-shadow: 0 0 12px currentColor;
+        }
+        .win-dot.r { background: var(--red); color: var(--red); }
+        .win-dot.y { background: var(--yellow); color: var(--yellow); }
+        .win-dot.g { background: var(--green); color: var(--green); }
+
+        .header-title {
+            color: #cbd5e1;
+            letter-spacing: 2px;
+        }
+
+        .environment-badge {
+            color: var(--cyan);
+            background: rgba(85,230,208,.06);
+            border: 1px solid rgba(85,230,208,.22);
+            border-radius: 999px;
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 300px 1fr;
+        }
+
+        .side-panel {
+            background: rgba(255,255,255,.018);
+            border-right: 1px solid rgba(148,163,184,.18);
+        }
+
+        .avatar {
+            border: 1px solid rgba(103,183,255,.45);
+            border-radius: 16px;
+            box-shadow: 0 0 0 5px rgba(103,183,255,.04), 0 15px 35px rgba(0,0,0,.3);
+        }
+
+        .status-dot-discord {
+            border: 2px solid #0a0f1b;
+            box-shadow: 0 0 15px rgba(245,196,81,.35);
+        }
+
+        .sys-name { color: var(--blue); text-shadow: 0 0 20px rgba(103,183,255,.2); }
+        .sys-handle { color: #7f8da3; }
+
+        .neofetch-list,
+        .vinyl-widget {
+            border-top: 1px solid rgba(148,163,184,.16);
+        }
+
+        .neofetch-line b { color: var(--magenta); }
+
+        .main-content {
+            padding: 30px;
+            gap: 28px;
+        }
+
+        .section-header {
+            color: #b9c5d8;
+            letter-spacing: 2px;
+        }
+
+        .section-header::after {
+            height: 1px;
+            background: linear-gradient(90deg, rgba(148,163,184,.35), transparent);
+        }
+
+        .matrix-box,
+        .graph-box,
+        .node-card {
+            background: rgba(15, 22, 38, .68);
+            border: 1px solid rgba(148,163,184,.18);
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.025);
+        }
+
+        .matrix-box {
+            padding: 20px;
+        }
+
+        .runtime-stream {
+            color: #cbd5e1;
+            border-left: 2px solid rgba(103,183,255,.55);
+        }
+
+        .nodes-grid {
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 14px;
+        }
+
+        .node-card {
+            position: relative;
+            overflow: hidden;
+            padding: 16px 18px;
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
+        }
+
+        .node-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, transparent, rgba(255,255,255,.045), transparent);
+            transform: translateX(-110%);
+            transition: transform .5s ease;
+        }
+
+        .node-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(103,183,255,.45);
+            box-shadow: 0 14px 35px rgba(0,0,0,.28), 0 0 25px rgba(103,183,255,.06);
+        }
+
+        .node-card:hover::before { transform: translateX(110%); }
+
+        .node-label { color: #718096; }
+        .node-icon { color: var(--cyan); }
+
+        .v-btn {
+            color: #dce6f4;
+            background: rgba(255,255,255,.045);
+            border: 1px solid rgba(148,163,184,.25);
+            border-radius: 8px;
+            padding: 6px 12px;
+        }
+
+        .v-btn:hover {
+            color: #061018;
+            background: var(--cyan);
+            border-color: var(--cyan);
+            box-shadow: 0 0 18px rgba(85,230,208,.18);
+        }
+
+        .record {
+            box-shadow: 0 0 35px rgba(0,0,0,.35);
+        }
+
+        .lualine-bar {
+            background: rgba(3,7,15,.72);
+            border-top: 1px solid rgba(148,163,184,.14);
+        }
+
+        .lua-mode {
+            background: #161d2e;
+            color: var(--cyan);
+        }
+
+        .lua-loc,
+        .lua-clock {
+            background: rgba(255,255,255,.025);
+            border-color: rgba(148,163,184,.14);
+            color: #aab6c8;
+        }
+
+        .minimal-footnote { color: #66748a; }
+
+        @media (max-width: 840px) {
+            body { padding: 14px; }
+            .dashboard-container { border-radius: 14px; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .side-panel {
+                border-right: none;
+                border-bottom: 1px solid rgba(148,163,184,.18);
+            }
+            .main-content { padding: 22px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+
     </style>
 </head>
 <body>
+    <!-- Place meddling.png beside this HTML file. It is used as the full-page background. -->
 
     <div class="dashboard-container">
         <div class="dashboard-header">
@@ -752,13 +984,13 @@
             <div class="lua-seg lua-mode">WORKSPACE</div>
             <div class="lua-seg lua-loc"> production</div>
             <div class="lua-file">SOME MORE NERDS OF THIS GENERATION<a href="https://ring.seggs.lol">threadlocked</a> <span class="cursor"></span></div>
-            <div class="lua-seg lua-clock" id="clock-display">00:00:00 AM</div>
+            <div class="lua-seg lua-clock" class="clock-display">00:00:00 AM</div>
         </div>
         <div class="lualine-bar">
                     <div class="lua-seg lua-mode">DESK-drawers</div>
                     <div class="lua-seg lua-loc"> recess corner</div>
                     <div class="lua-file">something <a href="https://archive.org/details/emiliosunforgottenmusic">Archives</a> <span class="cursor"></span></div>
-                    <div class="lua-seg lua-clock" id="clock-display">00:00:00 AM</div>
+                    <div class="lua-seg lua-clock" class="clock-display">00:00:00 AM</div>
         </div>
 
     </div>
@@ -799,7 +1031,7 @@
                 minute: '2-digit',
                 second: '2-digit'
             });
-            document.getElementById('clock-display').innerText = formattedTime;
+            document.querySelectorAll('.clock-display').forEach(el => el.innerText = formattedTime);
         }
         setInterval(refreshClock, 1000);
         refreshClock();
