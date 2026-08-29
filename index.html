@@ -3,591 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanmoy | @tnmXspark</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Tanmoy | @tnmXspark Workspace</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-base: #f2ebd9;
-            --bg-surface: #faf6eb;
-            --bg-card: #fdfbf7;
-            --text-main: #2b261f;
-            --text-muted: #6b6051;
-            --border-color: #c5bba8;
-            
-            --yellow: #a87e00;
-            --orange: #b54516;
-            --red: #9e2b2b;
-            --magenta: #8a245c;
-            --violet: #494080;
-            --blue: #1b5987;
-            --cyan: #167069;
-            --green: #496113;
-            --status-idle: #b58900;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'JetBrains Mono', monospace;
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-        }
-
-        .dashboard-container {
-            width: 100%;
-            max-width: 960px;
-            background-color: var(--bg-surface);
-            border: 2px solid var(--text-main);
-            box-shadow: 8px 8px 0px rgba(43, 38, 31, 0.15);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .dashboard-header {
-            background-color: rgba(0, 0, 0, 0.04);
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid var(--text-main);
-        }
-
-        .window-controls {
-            display: flex;
-            gap: 8px;
-        }
-
-        .win-dot {
-            width: 12px;
-            height: 12px;
-            border: 1px solid var(--text-main);
-        }
-        .win-dot.r { background-color: var(--red); }
-        .win-dot.y { background-color: var(--yellow); }
-        .win-dot.g { background-color: var(--green); }
-
-        .header-title {
-            font-size: 0.8rem;
-            color: var(--text-main);
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .environment-badge {
-            font-size: 0.75rem;
-            color: var(--text-main);
-            background: rgba(0, 0, 0, 0.05);
-            padding: 2px 8px;
-            border: 1px solid var(--text-main);
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 320px 1.5fr;
-            min-height: 540px;
-        }
-
-        .side-panel {
-            background-color: rgba(0, 0, 0, 0.02);
-            border-right: 2px solid var(--text-main);
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .profile-container {
-            position: relative;
-            margin-bottom: 25px;
-            display: inline-block;
-            width: 135px;
-            height: 135px;
-        }
-
-        .avatar {
-            width: 135px;
-            height: 135px;
-            border: 2px solid var(--text-main);
-            object-fit: cover;
-            background-color: var(--bg-card);
-            display: block;
-        }
-
-        .avatar-fallback {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 135px;
-            height: 135px;
-            border: 2px solid var(--text-main);
-            background-color: var(--bg-card);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--text-muted);
-        }
-
-        .status-dot-discord {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 24px;
-            height: 24px;
-            background-color: var(--bg-surface);
-            border: 2px solid var(--text-main);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .status-dot-discord::after {
-            content: '';
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: transparent;
-            box-shadow: -4px 4px 0 0 var(--status-idle);
-            transform: translate(2px, -2px);
-        }
-
-        .sys-identity {
-            text-align: center;
-            width: 100%;
-            margin-bottom: 25px;
-        }
-
-        .sys-name {
-            font-size: 1.25rem;
-            color: var(--blue);
-            font-weight: bold;
-        }
-
-        .sys-handle {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .neofetch-list {
-            width: 100%;
-            font-size: 0.8rem;
-            line-height: 1.8;
-            border-top: 2px dashed var(--border-color);
-            padding-top: 20px;
-        }
-
-        .neofetch-line b {
-            color: var(--magenta);
-            font-weight: normal;
-        }
-
-        /* ----- VINYL PLAYER WIDGET ----- */
-        .vinyl-widget {
-            width: 100%;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 2px dashed var(--border-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .now-playing-text {
-            width: 100%;
-            text-align: center;
-            font-size: 0.75rem;
-        }
-
-        .np-label {
-            color: var(--green);
-            display: block;
-            margin-bottom: 4px;
-            font-weight: bold;
-        }
-
-        .np-track-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .np-track {
-            color: var(--text-main);
-            text-decoration: none;
-            transition: color 0.2s;
-            max-width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .np-track:hover {
-            color: var(--blue);
-            text-decoration: underline;
-        }
-
-        /* ----- VINYL CONTROLS ----- */
-        .vinyl-controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .song-timer {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .control-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .v-btn {
-            background-color: var(--bg-card);
-            color: var(--text-main);
-            border: 1px solid var(--text-main);
-            padding: 4px 10px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.15s ease, color 0.15s ease;
-        }
-
-        .v-btn:hover {
-            background-color: var(--text-main);
-            color: var(--bg-surface);
-        }
-
-        .vinyl-visual {
-            position: relative;
-            width: 110px;
-            height: 110px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .record {
-            width: 100px;
-            height: 100px;
-            background-color: #242424;
-            border-radius: 50%;
-            border: 2px solid var(--text-main);
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
-            transition: transform 0.5s ease;
-        }
-
-        .record.playing {
-            animation: spinRecord 2.5s linear infinite;
-        }
-
-        @keyframes spinRecord {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .record-groove {
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            border: 1px dashed rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-        }
-        
-        .record-groove-2 {
-            position: absolute;
-            width: 60%;
-            height: 60%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-
-        .record-label {
-            width: 34px;
-            height: 34px;
-            background-color: var(--orange);
-            border-radius: 50%;
-            position: relative;
-            border: 2px solid #1a1a1a;
-        }
-
-        .record-hole {
-            width: 6px;
-            height: 6px;
-            background-color: var(--bg-surface);
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .tonearm {
-            position: absolute;
-            top: -2px;
-            right: -8px;
-            width: 20px;
-            height: 75px;
-            transform-origin: 10px 10px;
-            transform: rotate(-15deg);
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 5;
-        }
-
-        .tonearm.playing {
-            transform: rotate(24deg);
-        }
-
-        .tonearm-pivot {
-            width: 20px;
-            height: 20px;
-            background-color: var(--text-main);
-            border-radius: 50%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            box-shadow: inset -2px -2px 0 rgba(0,0,0,0.2);
-        }
-
-        .tonearm-wand {
-            width: 4px;
-            height: 60px;
-            background-color: var(--text-main);
-            position: absolute;
-            top: 10px;
-            left: 8px;
-        }
-
-        .tonearm-head {
-            width: 14px;
-            height: 20px;
-            background-color: var(--text-muted);
-            border: 1px solid var(--text-main);
-            position: absolute;
-            bottom: 0;
-            left: 3px;
-            border-radius: 2px;
-            transform: rotate(15deg);
-        }
-        /* ------------------------------- */
-
-        .main-content {
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            overflow-y: auto;
-        }
-
-        .content-section {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .section-header {
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: var(--text-main);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .section-header::after {
-            content: '';
-            flex-grow: 1;
-            height: 2px;
-            background: var(--text-main);
-            opacity: 0.2;
-        }
-
-        .runtime-stream {
-            font-size: 0.88rem;
-            line-height: 1.6;
-            color: var(--text-main);
-            text-align: justify;
-        }
-
-        .nodes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 12px;
-        }
-
-        .node-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: var(--bg-card);
-            border: 2px solid var(--text-main);
-            padding: 14px 18px;
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: bold;
-            font-size: 0.9rem;
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
-        }
-
-        .node-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .node-label {
-            font-size: 0.75rem;
-            font-weight: normal;
-            color: var(--text-muted);
-        }
-
-        .node-icon {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            transition: transform 0.2s ease;
-        }
-
-        .node-card:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 4px 4px 0px var(--text-main);
-        }
-
-        .nd-github:hover { background-color: rgba(22, 112, 105, 0.05); }
-        .nd-gitlab:hover { background-color: rgba(181, 69, 22, 0.05); }
-        .nd-linkedin:hover { background-color: rgba(27, 89, 135, 0.05); }
-        .nd-discord:hover { background-color: rgba(73, 64, 128, 0.05); }
-        .nd-email:hover { background-color: rgba(73, 97, 19, 0.05); }
-        .nd-leetcode:hover { background-color: rgba(168, 126, 0, 0.05); }
-
-        .node-card:hover .node-icon {
-            transform: translateX(3px);
-        }
-
-        .matrix-box {
-            background-color: var(--bg-card);
-            border: 2px solid var(--text-main);
-            padding: 18px;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            box-shadow: 4px 4px 0px rgba(43, 38, 31, 0.1);
-        }
-
-        /* ----- GRAPH BOX ----- */
-        .graph-box {
-            padding: 12px;
-            display: block;
-            background-color: var(--bg-card);
-            border: 2px solid var(--text-main);
-            box-shadow: 4px 4px 0px rgba(43, 38, 31, 0.08);
-            overflow: hidden;
-        }
-
-        #gh-graph {
-            width: 100%;
-            height: auto; /* let the graph define its own height */
-            min-height: 160px;
-            max-height: 720px;
-            display: block;
-            overflow: visible; /* avoid clipping internal content */
-            background: transparent;
-        }
-
-        /* Ensure embedded elements don't force extra whitespace */
-        .graph-box { padding-bottom: 0; }
-        #gh-graph > * { height: auto !important; max-height: none !important; }
-
-        .matrix-row {
-            margin-bottom: 8px;
-            display: flex;
-        }
-        .matrix-row:last-child { margin-bottom: 0; }
-        .matrix-key { color: var(--blue); min-width: 110px; flex-shrink: 0; }
-        .matrix-val { color: var(--text-main); }
-
-        .lualine-bar {
-            display: flex;
-            background-color: rgba(0, 0, 0, 0.04);
-            border-top: 2px solid var(--text-main);
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .lua-seg { padding: 8px 16px; display: flex; align-items: center; }
-        .lua-mode { background-color: var(--text-main); color: var(--bg-surface); }
-        .lua-loc { background-color: rgba(0, 0, 0, 0.05); color: var(--text-main); border-right: 2px solid var(--text-main); }
-        .lua-file { color: var(--text-muted); font-weight: normal; margin-left: 10px; }
-        .lua-clock { background-color: rgba(0, 0, 0, 0.05); color: var(--text-main); margin-left: auto; border-left: 2px solid var(--text-main); }
-
-        .cursor {
-            animation: blink 1.2s step-end infinite;
-            display: inline-block;
-            width: 8px;
-            height: 14px;
-            background-color: var(--text-main);
-            vertical-align: middle;
-            margin-left: 4px;
-        }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-        .minimal-footnote {
-            margin-top: 20px;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            opacity: 0.7;
-            letter-spacing: 0.5px;
-        }
-        .minimal-footnote a {
-            color: var(--text-main);
-            text-decoration: none;
-            border-bottom: 1px dotted var(--text-muted);
-        }
-        .minimal-footnote a:hover {
-            color: var(--cyan);
-        }
-
-        @media (max-width: 840px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .side-panel { border-right: none; border-bottom: 2px solid var(--text-main); padding: 24px; }
-            .main-content { padding: 24px; }
-        }
-
-        @media (max-width: 480px) {
-            body { padding: 12px; }
-            .nodes-grid { grid-template-columns: 1fr; }
-            .lua-file { display: none; }
-        }
-    
-        /* ===== MODERN VISUAL OVERHAUL ===== */
         :root {
             --bg-base: #050812;
             --bg-surface: rgba(10, 15, 27, 0.84);
@@ -596,619 +15,358 @@
             --text-muted: #8b98ad;
             --border-color: rgba(148, 163, 184, 0.20);
             --yellow: #f5c451;
-            --orange: #ff7a45;
             --red: #ff5d73;
-            --magenta: #e879f9;
-            --violet: #9b8cff;
-            --blue: #67b7ff;
-            --cyan: #55e6d0;
             --green: #8be28b;
-            --status-idle: #f5c451;
+            --cyan: #55e6d0;
+            --blue: #67b7ff;
+            --magenta: #e879f9;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-main);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: url('meddling.png') no-repeat center center fixed, var(--bg-base);
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== DESKTOP ICONS ===== */
+        .desktop-area {
+            flex-grow: 1;
             position: relative;
-            overflow-x: hidden;
-            padding: 28px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            z-index: 1;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -1;
-            background:
-                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-            background-size: 32px 32px;
-            mask-image: linear-gradient(to bottom, black, transparent 90%);
+        .desktop-icon {
+            width: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s, border 0.2s;
+            border: 1px solid transparent;
         }
+        .desktop-icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .icon-graphic { font-size: 2.8rem; margin-bottom: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .icon-name { font-size: 0.75rem; color: white; text-shadow: 1px 1px 2px black; word-wrap: break-word; }
 
-        .dashboard-container {
-            max-width: 1180px;
+        /* ===== WINDOW MANAGER ===== */
+        .window {
+            position: absolute;
+            top: 15%;
+            left: 15%;
             border: 1px solid rgba(148, 163, 184, 0.24);
-            border-radius: 18px;
-            background: rgba(7, 11, 21, 0.72);
-            box-shadow:
-                0 30px 90px rgba(0,0,0,.45),
-                0 0 0 1px rgba(255,255,255,.025) inset,
-                0 0 60px rgba(99,102,241,.08);
+            border-radius: 12px;
+            background: rgba(7, 11, 21, 0.85);
+            box-shadow: 0 30px 90px rgba(0,0,0,.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.2s ease, opacity 0.2s ease;
         }
+        
+        .window.maximized {
+            top: 0 !important; left: 0 !important;
+            width: 100vw !important; height: calc(100vh - 45px) !important;
+            border-radius: 0; transform: none;
+        }
+
+        .window.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
 
         .dashboard-header {
             padding: 13px 18px;
-            background: rgba(255,255,255,.035);
+            background: rgba(255,255,255,.05);
             border-bottom: 1px solid rgba(148,163,184,.18);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: grab;
+            user-select: none;
+        }
+        .dashboard-header:active { cursor: grabbing; }
+
+        .window-controls { display: flex; gap: 8px; }
+        .win-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: filter 0.2s; }
+        .win-dot:hover { filter: brightness(1.2); }
+        .win-dot.r { background: var(--red); }
+        .win-dot.y { background: var(--yellow); }
+        .win-dot.g { background: var(--green); }
+
+        .header-title { color: #cbd5e1; letter-spacing: 2px; font-size: 0.8rem; font-weight: bold; pointer-events: none; }
+        .environment-badge { font-size: 0.75rem; color: var(--cyan); background: rgba(85,230,208,.06); border: 1px solid rgba(85,230,208,.22); border-radius: 999px; padding: 2px 8px; }
+
+        /* Window Contents */
+        .dashboard-container { width: 960px; height: 600px; }
+        .file-viewer-window { width: 600px; height: 450px; }
+        .viewer-content { padding: 20px; flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.4); color: #e7edf7; font-size: 0.85rem; white-space: pre-wrap; line-height: 1.5; }
+        
+        .terminal-content { padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; height: 100%; }
+        .prompt::before { content: 'tanmoy@debian:~$ '; color: var(--green); }
+        .output { color: var(--text-muted); margin-bottom: 15px; }
+        
+        /* ===== TASKBAR ===== */
+        .taskbar {
+            height: 45px;
+            background: rgba(10, 15, 27, 0.95);
+            border-top: 1px solid rgba(148, 163, 184, 0.20);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
         }
 
-        .win-dot {
-            border: 0;
-            border-radius: 50%;
-            box-shadow: 0 0 12px currentColor;
+        .start-btn {
+            background: var(--blue);
+            color: #000;
+            font-weight: bold;
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: background 0.2s;
         }
-        .win-dot.r { background: var(--red); color: var(--red); }
-        .win-dot.y { background: var(--yellow); color: var(--yellow); }
-        .win-dot.g { background: var(--green); color: var(--green); }
+        .start-btn:hover { background: var(--cyan); }
 
-        .header-title {
-            color: #cbd5e1;
-            letter-spacing: 2px;
+        .taskbar-apps { flex-grow: 1; display: flex; gap: 10px; }
+        .taskbar-app {
+            padding: 6px 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid transparent;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
         }
+        .taskbar-app.active { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-bottom: 2px solid var(--blue); }
+        .taskbar-app:hover { background: rgba(255,255,255,0.1); }
 
-        .environment-badge {
-            color: var(--cyan);
-            background: rgba(85,230,208,.06);
-            border: 1px solid rgba(85,230,208,.22);
-            border-radius: 999px;
-        }
-
-        .dashboard-grid {
-            grid-template-columns: 300px 1fr;
-        }
-
-        .side-panel {
-            background: rgba(255,255,255,.018);
-            border-right: 1px solid rgba(148,163,184,.18);
-        }
-
-        .avatar {
-            border: 1px solid rgba(103,183,255,.45);
-            border-radius: 16px;
-            box-shadow: 0 0 0 5px rgba(103,183,255,.04), 0 15px 35px rgba(0,0,0,.3);
-        }
-
-        .status-dot-discord {
-            border: 2px solid #0a0f1b;
-            box-shadow: 0 0 15px rgba(245,196,81,.35);
-        }
-
-        .sys-name { color: var(--blue); text-shadow: 0 0 20px rgba(103,183,255,.2); }
-        .sys-handle { color: #7f8da3; }
-
-        .neofetch-list,
-        .vinyl-widget {
-            border-top: 1px solid rgba(148,163,184,.16);
-        }
-
-        .neofetch-line b { color: var(--magenta); }
-
-        .main-content {
-            padding: 30px;
-            gap: 28px;
-        }
-
-        .section-header {
-            color: #b9c5d8;
-            letter-spacing: 2px;
-        }
-
-        .section-header::after {
-            height: 1px;
-            background: linear-gradient(90deg, rgba(148,163,184,.35), transparent);
-        }
-
-        .matrix-box,
-        .graph-box,
-        .node-card {
-            background: rgba(15, 22, 38, .68);
-            border: 1px solid rgba(148,163,184,.18);
-            border-radius: 12px;
-            box-shadow: 0 12px 30px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.025);
-        }
-
-        .matrix-box {
-            padding: 20px;
-        }
-
-        .runtime-stream {
-            color: #cbd5e1;
-            border-left: 2px solid rgba(103,183,255,.55);
-        }
-
-        .nodes-grid {
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 14px;
-        }
-
-        .node-card {
-            position: relative;
-            overflow: hidden;
-            padding: 16px 18px;
-            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
-        }
-
-        .node-card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(110deg, transparent, rgba(255,255,255,.045), transparent);
-            transform: translateX(-110%);
-            transition: transform .5s ease;
-        }
-
-        .node-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(103,183,255,.45);
-            box-shadow: 0 14px 35px rgba(0,0,0,.28), 0 0 25px rgba(103,183,255,.06);
-        }
-
-        .node-card:hover::before { transform: translateX(110%); }
-
-        .node-label { color: #718096; }
-        .node-icon { color: var(--cyan); }
-
-        .v-btn {
-            color: #dce6f4;
-            background: rgba(255,255,255,.045);
-            border: 1px solid rgba(148,163,184,.25);
-            border-radius: 8px;
-            padding: 6px 12px;
-        }
-
-        .v-btn:hover {
-            color: #061018;
-            background: var(--cyan);
-            border-color: var(--cyan);
-            box-shadow: 0 0 18px rgba(85,230,208,.18);
-        }
-
-        .record {
-            box-shadow: 0 0 35px rgba(0,0,0,.35);
-        }
-
-        .lualine-bar {
-            background: rgba(3,7,15,.72);
-            border-top: 1px solid rgba(148,163,184,.14);
-        }
-
-        .lua-mode {
-            background: #161d2e;
-            color: var(--cyan);
-        }
-
-        .lua-loc,
-        .lua-clock {
-            background: rgba(255,255,255,.025);
-            border-color: rgba(148,163,184,.14);
-            color: #aab6c8;
-        }
-
-        .minimal-footnote { color: #66748a; }
-
-        @media (max-width: 840px) {
-            body { padding: 14px; }
-            .dashboard-container { border-radius: 14px; }
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .side-panel {
-                border-right: none;
-                border-bottom: 1px solid rgba(148,163,184,.18);
-            }
-            .main-content { padding: 22px; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: .01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: .01ms !important;
-            }
-        }
-
+        .taskbar-clock { font-size: 0.85rem; color: var(--text-main); }
     </style>
 </head>
 <body>
-    <!-- Place meddling.png beside this HTML file. It is used as the full-page background. -->
 
-    <div class="dashboard-container">
-        <div class="dashboard-header">
-            <div class="window-controls">
-                <div class="win-dot r"></div>
-                <div class="win-dot y"></div>
-                <div class="win-dot g"></div>
-            </div>
-            <div class="header-title">SYSTEM_CORE_MATRIX</div>
-            <div class="environment-badge">v2.4.2-stable</div>
+    <!-- DESKTOP -->
+    <div class="desktop-area" id="desktop">
+        <div class="desktop-icon" onclick="openWindow('terminal-window')">
+            <div class="icon-graphic">💻</div>
+            <div class="icon-name">Terminal</div>
         </div>
-
-        <div class="dashboard-grid">
-            <div class="side-panel">
-                <div class="profile-container">
-                    <img id="avatar-img" class="avatar" alt="Profile Avatar">
-                    <div id="avatar-placeholder" class="avatar-fallback">T</div>
-                    <div class="status-dot-discord"></div>
-                </div>
-                
-                <div class="sys-identity">
-                    <div class="sys-name">Tanmoy</div>
-                    <div class="sys-handle">@tnmXspark</div>
-                </div>
-
-                <div class="neofetch-list">
-                    <div class="neofetch-line"><b>Host</b>: tanmoy@local</div>
-                    <div class="neofetch-line"><b>OS</b>: Alpine Linux</div>
-                    <div class="neofetch-line"><b>Kernel</b>: hardened-virt</div>
-                    <div class="neofetch-line"><b>Shell</b>: bash</div>
-                    <div class="neofetch-line"><b>WM/Editor</b>: Neovim</div>
-                    <div class="neofetch-line"><b>Uptime</b>: infinite</div>
-                </div>
-
-                <div class="vinyl-widget">
-                    <div class="now-playing-text">
-                        <span class="np-label">Listening to:</span>
-                        <div class="np-track-container">
-                            <a id="np-link" href="#" target="_blank" class="np-track">Loading tracks...</a>
-                        </div>
-                    </div>
-                    
-                    <div class="vinyl-controls">
-                        <span id="song-timer" class="song-timer">00:00 / 00:00</span>
-                        <div class="control-buttons">
-                            <button id="btn-play-pause" class="v-btn">⏸ Pause</button>
-                            <button id="btn-skip" class="v-btn">⏭ Skip</button>
-                        </div>
-                    </div>
-                    
-                    <div class="vinyl-visual">
-                        <div class="record" id="vinyl-record">
-                            <div class="record-groove"></div>
-                            <div class="record-groove-2"></div>
-                            <div class="record-label">
-                                <div class="record-hole"></div>
-                            </div>
-                        </div>
-                        <div class="tonearm" id="vinyl-tonearm">
-                            <div class="tonearm-pivot"></div>
-                            <div class="tonearm-wand"></div>
-                            <div class="tonearm-head"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="main-content">
-                <div class="content-section">
-                    <div class="section-header">system // telemetry</div>
-                    <div class="matrix-box runtime-stream">
-                        Just an average student with excessive level of addiction to be terminally online. Loves to cook as to code, loves to read but is always intimidated by academics. Master procrastinator and nothing more. 
-                        <h3>Currently less active as i have syllabus to finish</h3>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="section-header">Capabilities Matrix</div>
-                    <div class="matrix-box">
-                        <div class="matrix-row">
-                            <div class="matrix-key">Languages:</div>
-                            <div class="matrix-val">Go, Python, TypeScript, C, Julia</div>
-                        </div>
-                        <div class="matrix-row">
-                            <div class="matrix-key">Core Focus:</div>
-                            <div class="matrix-val">Reverse Engineering, OSINT, Backend Eng</div>
-                        </div>
-                        <div class="matrix-row">
-                            <div class="matrix-key">Systems:</div>
-                            <div class="matrix-val">Automation, Data Analysis, Competitive Coding</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="section-header">Network Nodes / Index</div>
-                    <div class="nodes-grid">
-                        
-                        <a href="https://github.com/tnm-yes-anyidea" class="node-card nd-github" target="_blank" rel="noopener">
-                            <div class="node-meta">
-                                <span class="node-label">src/codebase</span>
-                                <span>GitHub</span>
-                            </div>
-                            <span class="node-icon">→</span>
-                        </a>
-
-                        <a href="https://gitlab.com/tnm-yes-anyidea" class="node-card nd-gitlab" target="_blank" rel="noopener">
-                            <div class="node-meta">
-                                <span class="node-label">mirror/ci-cd</span>
-                                <span>GitLab</span>
-                            </div>
-                            <span class="node-icon">→</span>
-                        </a>
-
-                        <a href="https://www.linkedin.com/in/tanmoy-ghosh-b94185368/" class="node-card nd-linkedin" target="_blank" rel="noopener">
-                            <div class="node-meta">
-                                <span class="node-label">professional/net</span>
-                                <span>LinkedIn</span>
-                            </div>
-                            <span class="node-icon">→</span>
-                        </a>
-
-                        <a href="https://discord.com/users/918732210868207696" class="node-card nd-discord" target="_blank" rel="noopener">
-                            <div class="node-meta">
-                                <span class="node-label">comm/handle</span>
-                                <span>Discord</span>
-                            </div>
-                            <span class="node-icon">→</span>
-                        </a>
-
-                        <a href="https://leetcode.com/u/Octavius_the_greatest/" class="node-card nd-leetcode" target="_blank" rel="noopener">
-                            <div class="node-meta">
-                                <span class="node-label">dsa/runtime</span>
-                                <span>LeetCode</span>
-                            </div>
-                            <span class="node-icon">→</span>
-                        </a>
-
-                        <a href="#" id="secure-email" class="node-card nd-email">
-                            <div class="node-meta">
-                                <span class="node-label">encrypted/routing</span>
-                                <span>Email Node [might reply after 2026]</span>
-                            </div>
-                            <span class="node-icon">→</span>
-                        </a>
-
-                    </div>
-                </div>
-                
-                <div class="content-section">
-                    <div class="section-header">Repository Graph</div>
-                    <div class="matrix-box graph-box">
-                        <div id="gh-graph" aria-label="GitHub repository graph"></div>
-                    </div>
-                </div>
-
-            </div>
+        <div class="desktop-icon" onclick="openFile('bandit_ctf_notes.txt', 'txt')">
+            <div class="icon-graphic">🚩</div>
+            <div class="icon-name">Bandit_CTF.txt</div>
         </div>
-
-        <div class="lualine-bar">
-            <div class="lua-seg lua-mode">WORKSPACE</div>
-            <div class="lua-seg lua-loc"> production</div>
-            <div class="lua-file">SOME MORE NERDS OF THIS GENERATION<a href="https://ring.seggs.lol">threadlocked</a> <span class="cursor"></span></div>
-            <div class="lua-seg lua-clock" class="clock-display">00:00:00 AM</div>
+        <div class="desktop-icon" onclick="openFile('uncommon-tinkering.csv', 'csv')">
+            <div class="icon-graphic">📊</div>
+            <div class="icon-name">ProjectData.csv</div>
         </div>
-        <div class="lualine-bar">
-                    <div class="lua-seg lua-mode">DESK-drawers</div>
-                    <div class="lua-seg lua-loc"> recess corner</div>
-                    <div class="lua-file">something <a href="https://archive.org/details/emiliosunforgottenmusic">Archives</a> <span class="cursor"></span></div>
-                    <div class="lua-seg lua-clock" class="clock-display">00:00:00 AM</div>
+        <div class="desktop-icon" onclick="openFile('meddling.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">meddling.png</div>
         </div>
-
     </div>
 
-    
+    <!-- TERMINAL WINDOW -->
+    <div id="terminal-window" class="window dashboard-container" style="z-index: 10;">
+        <div class="dashboard-header" id="terminal-window-header">
+            <div class="window-controls">
+                <div class="win-dot r" onclick="closeWindow('terminal-window')"></div>
+                <div class="win-dot y" onclick="minimizeWindow('terminal-window')"></div>
+                <div class="win-dot g" onclick="maximizeWindow('terminal-window')"></div>
+            </div>
+            <div class="header-title">SYSTEM_CORE_MATRIX</div>
+            <div class="environment-badge">v4.0.1-stable</div>
+        </div>
+        <div class="terminal-content">
+            <div>
+                <span class="prompt">neofetch</span>
+                <div class="output" style="margin-top: 10px;">
+                    <span style="color: var(--blue); font-weight: bold;">Tanmoy</span>@<span style="color: var(--blue); font-weight: bold;">tnmXspark</span><br>
+                    -------------------<br>
+                    <b>OS</b>: Debian GNU/Linux<br>
+                    <b>Shell</b>: zsh<br>
+                    <b>Editor</b>: Neovim (Custom Lua setup)<br>
+                    <b>Interests</b>: Backend Eng, Reverse Engineering, CTFs<br>
+                    <b>Status</b>: Currently less active due to syllabus constraints.
+                </div>
+            </div>
+            <div>
+                <span class="prompt">cat ./capabilities.txt</span>
+                <div class="output">
+                    [Go, Python, TypeScript, C, Julia]<br>
+                    Optimized for low-memory environments.
+                </div>
+            </div>
+            <div><span class="prompt"></span><span style="animation: blink 1.2s step-end infinite;">_</span></div>
+        </div>
+    </div>
+
+    <!-- FILE VIEWER WINDOW -->
+    <div id="file-viewer" class="window file-viewer-window hidden" style="z-index: 11;">
+        <div class="dashboard-header" id="file-viewer-header">
+            <div class="window-controls">
+                <div class="win-dot r" onclick="closeWindow('file-viewer')"></div>
+                <div class="win-dot y" onclick="minimizeWindow('file-viewer')"></div>
+                <div class="win-dot g" onclick="maximizeWindow('file-viewer')"></div>
+            </div>
+            <div id="viewer-title" class="header-title">File Viewer</div>
+        </div>
+        <div id="viewer-content" class="viewer-content"></div>
+    </div>
+
+    <!-- TASKBAR -->
+    <div class="taskbar">
+        <div class="start-btn" onclick="alert('Start Menu implementation loading...')">❖ Start</div>
+        <div class="taskbar-apps" id="taskbar-apps">
+            <div class="taskbar-app active" id="task-terminal-window" onclick="toggleWindow('terminal-window')">Terminal</div>
+        </div>
+        <div class="taskbar-clock" id="clock">00:00 AM</div>
+    </div>
+
     <script>
-        // Avatar Fallback Logic
-        const imgElement = document.getElementById('avatar-img');
-        const fallbackElement = document.getElementById('avatar-placeholder');
+        // --- Z-INDEX & STATE MANAGEMENT ---
+        let highestZ = 20;
+        const windows = document.querySelectorAll('.window');
         
-        const avatarSources = [
-            "https://github.com/tnm-yes-anyidea.png",
-            "https://gitlab.com/tnm-yes-anyidea.png",
-            "./profile.png"
-        ];
-        
-        let currentSourceIndex = 0;
-
-        function tryNextAvatarSource() {
-            if (currentSourceIndex < avatarSources.length) {
-                imgElement.src = avatarSources[currentSourceIndex];
-                currentSourceIndex++;
-            } else {
-                imgElement.style.display = 'none';
-                fallbackElement.style.display = 'flex';
-            }
-        }
-
-        imgElement.onerror = tryNextAvatarSource;
-        tryNextAvatarSource();
-
-        // Clock Logic
-        function refreshClock() {
-            const formattedTime = new Date().toLocaleTimeString('en-IN', {
-                timeZone: 'Asia/Kolkata',
-                hour12: true,
-                hour: 'numeric',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            document.querySelectorAll('.clock-display').forEach(el => el.innerText = formattedTime);
-        }
-        setInterval(refreshClock, 1000);
-        refreshClock();
-        
-        // Email protection
-        document.getElementById('secure-email').addEventListener('click', function(e) {
-            e.preventDefault();
-            const prefix = "public_profile.barbell221"; 
-            const domain = "passinbox.com";      
-            window.location.href = "mailto:" + prefix + "@" + domain;
+        windows.forEach(win => {
+            win.addEventListener('mousedown', () => { bringToFront(win.id); });
         });
 
-        // ------------------------------------------------------------------
-        // VINYL PLAYER & CSV LOGIC
-        // ------------------------------------------------------------------
-        const vinylRecord = document.getElementById('vinyl-record');
-        const vinylTonearm = document.getElementById('vinyl-tonearm');
-        const npLink = document.getElementById('np-link');
-        const songTimerEl = document.getElementById('song-timer');
-        const btnPlayPause = document.getElementById('btn-play-pause');
-        const btnSkip = document.getElementById('btn-skip');
+        function bringToFront(id) {
+            highestZ++;
+            document.getElementById(id).style.zIndex = highestZ;
+            updateTaskbarActive(id);
+        }
 
-        let currentSongList = [];
-        let isPlaying = false;
-        let currentDurationSecs = 0;
-        let elapsedSecs = 0;
-        let timerInterval = null;
-
-        // Custom parser to safely handle commas inside double-quoted CSV cells
-        function parseCSV(text) {
-            const rows = [];
-            let curRow = [], curCell = '', inQuotes = false;
+        // --- WINDOW CONTROLS ---
+        function openWindow(id, title = "App") {
+            const win = document.getElementById(id);
+            win.classList.remove('hidden');
+            bringToFront(id);
             
-            for (let i = 0; i < text.length; i++) {
-                const c = text[i];
-                if (c === '"') {
-                    if (inQuotes && text[i+1] === '"') { 
-                        curCell += '"'; i++; 
-                    } else { 
-                        inQuotes = !inQuotes; 
-                    }
-                } else if (c === ',' && !inQuotes) {
-                    curRow.push(curCell.trim()); curCell = '';
-                } else if (c === '\n' && !inQuotes) {
-                    curRow.push(curCell.trim()); rows.push(curRow); curRow = []; curCell = '';
-                } else if (c !== '\r') {
-                    curCell += c;
-                }
+            // Add to taskbar if not present
+            if(!document.getElementById('task-' + id)) {
+                const tbApps = document.getElementById('taskbar-apps');
+                tbApps.innerHTML += `<div class="taskbar-app" id="task-${id}" onclick="toggleWindow('${id}')">${title}</div>`;
             }
-            if (curCell !== '' || curRow.length > 0) { 
-                curRow.push(curCell.trim()); rows.push(curRow); 
+            updateTaskbarActive(id);
+        }
+
+        function closeWindow(id) {
+            document.getElementById(id).classList.add('hidden');
+            const tbApp = document.getElementById('task-' + id);
+            if(tbApp) tbApp.remove();
+        }
+
+        function minimizeWindow(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById('task-' + id).classList.remove('active');
+        }
+
+        function maximizeWindow(id) {
+            document.getElementById(id).classList.toggle('maximized');
+            bringToFront(id);
+        }
+
+        function toggleWindow(id) {
+            const win = document.getElementById(id);
+            if (win.classList.contains('hidden')) {
+                win.classList.remove('hidden');
+                bringToFront(id);
+            } else {
+                if (win.style.zIndex == highestZ) minimizeWindow(id);
+                else bringToFront(id);
             }
-            return rows.filter(row => row.length > 1);
         }
 
-        // Utility: Format seconds to MM:SS
-        function formatTime(totalSeconds) {
-            const m = Math.floor(totalSeconds / 60);
-            const s = Math.floor(totalSeconds % 60);
-            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        function updateTaskbarActive(activeId) {
+            document.querySelectorAll('.taskbar-app').forEach(app => app.classList.remove('active'));
+            const tbActive = document.getElementById('task-' + activeId);
+            if(tbActive) tbActive.classList.add('active');
         }
 
-        // Update the timer display
-        function updateTimerDisplay() {
-            songTimerEl.textContent = `${formatTime(elapsedSecs)} / ${formatTime(currentDurationSecs)}`;
+        // --- DRAG MECHANICS ---
+        function makeDraggable(winId, headerId) {
+            const win = document.getElementById(winId);
+            const header = document.getElementById(headerId);
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+            header.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                if(win.classList.contains('maximized')) return;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                win.style.top = (win.offsetTop - pos2) + "px";
+                win.style.left = (win.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
         }
 
-        // Playback State Management
-        function startPlayback() {
-            if (elapsedSecs >= currentDurationSecs) {
-                loadRandomSong();
+        makeDraggable('terminal-window', 'terminal-window-header');
+        makeDraggable('file-viewer', 'file-viewer-header');
+
+        // --- FILE VIEWER LOGIC ---
+        function openFile(filename, ext) {
+            openWindow('file-viewer', filename);
+            const title = document.getElementById('viewer-title');
+            const content = document.getElementById('viewer-content');
+            
+            title.innerText = filename + " (Read Only)";
+            content.innerHTML = "Fetching local filesystem data...";
+
+            if (ext === 'png' || ext === 'jpg') {
+                content.innerHTML = `<img src="${filename}" style="max-width:100%; border-radius:4px;">`;
                 return;
             }
-            
-            isPlaying = true;
-            vinylRecord.classList.add('playing');
-            vinylTonearm.classList.add('playing');
-            btnPlayPause.textContent = "⏸ Pause";
 
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                elapsedSecs++;
-                updateTimerDisplay();
-
-                if (elapsedSecs >= currentDurationSecs) {
-                    pausePlayback();
-                    setTimeout(loadRandomSong, 1500); // Small gap before auto-playing next track
-                }
-            }, 1000);
+            fetch(filename)
+                .then(response => { if (!response.ok) throw new Error("CORS or Missing File"); return response.text(); })
+                .then(data => { content.innerText = data; })
+                .catch(err => { 
+                    content.innerHTML = `<span style="color:var(--red);">Error: Unable to read '${filename}'.<br><br>[Requires local HTTP server to bypass browser restrictions on file:// URIs]</span>`; 
+                });
         }
 
-        function pausePlayback() {
-            isPlaying = false;
-            vinylRecord.classList.remove('playing');
-            vinylTonearm.classList.remove('playing');
-            btnPlayPause.textContent = "▶ Play";
-            clearInterval(timerInterval);
-        }
-
-        function togglePlayPause() {
-            if (isPlaying) {
-                pausePlayback();
-            } else {
-                startPlayback();
-            }
-        }
-
-        // Load a random song from the loaded CSV list
-        function loadRandomSong() {
-            if (!currentSongList || currentSongList.length === 0) return;
-
-            // Pick a random track
-            const randIndex = Math.floor(Math.random() * currentSongList.length);
-            const selectedSong = currentSongList[randIndex];
-
-            const title = selectedSong[0] ? selectedSong[0].replace(/^"|"$/g, '') : "Unknown";
-            const artist = selectedSong[1] ? selectedSong[1].replace(/^"|"$/g, '') : "Unknown";
-            const durationStr = selectedSong[2] || "3:00"; 
-            const link = selectedSong[3] || "#";
-
-            // Update UI
-            npLink.textContent = `${title} — ${artist}`;
-            npLink.href = link;
-            npLink.title = `${title} by ${artist} [${durationStr}]`;
-
-            // Calculate duration in seconds
-            let durationSecs = 180; // default 3 mins
-            const timeParts = durationStr.split(':');
-            if (timeParts.length === 2) {
-                const mins = parseInt(timeParts[0], 10) || 0;
-                const secs = parseInt(timeParts[1], 10) || 0;
-                durationSecs = (mins * 60) + secs;
-            }
-
-            // Reset Track State
-            currentDurationSecs = durationSecs;
-            elapsedSecs = 0;
-            updateTimerDisplay();
-            
-            // Auto-start
-            startPlayback();
-        }
-
-        // Event Listeners for Controls
-        btnPlayPause.addEventListener('click', togglePlayPause);
-        btnSkip.addEventListener('click', () => {
-            pausePlayback();
-            loadRandomSong();
-        });
-
-        // Fetch Data
-        fetch('songs.csv')
-            .then(response => {
-                if (!response.ok) throw new Error("Could not find songs.csv");
-                return response.text();
-            })
-            .then(csvText => {
-                const parsedData = parseCSV(csvText);
-                currentSongList = parsedData.slice(1); // Assume first row is header
-                
-                if (currentSongList.length > 0) {
-                    loadRandomSong();
-                } else {
-                    throw new Error("CSV is empty");
-                }
-            })
-            .catch(error => {
-                console.error("Vinyl error:", error);
-                npLink.textContent = "Lo-Fi Beats — System Default";
-                npLink.removeAttribute("href");
-                
-                // Fallback fake track duration
-                currentDurationSecs = 180; 
-                updateTimerDisplay();
-                startPlayback();
-            });
+        // --- CLOCK ---
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-IN', { hour12: true, hour: 'numeric', minute: '2-digit' });
+        }, 1000);
     </script>
-    <script src="gh-graph.js" data-username="tnm-yes-anyidea"></script>
 </body>
 </html>
