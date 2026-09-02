@@ -30,9 +30,9 @@
         body {
             font-family: 'JetBrains Mono', monospace;
             color: var(--text-main);
-            height: 100vh;
+            min-height: 100vh;
             width: 100vw;
-            overflow: hidden;
+            overflow-x: hidden;
             background: url('meddling.png') no-repeat center center fixed, var(--bg-base);
             background-size: cover;
             display: flex;
@@ -45,11 +45,12 @@
             position: relative;
             padding: 20px;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 20px;
             flex-wrap: wrap;
             align-content: flex-start;
             z-index: 1;
+            overflow-y: auto;
         }
 
         .desktop-icon {
@@ -63,6 +64,7 @@
             border-radius: 8px;
             transition: background 0.2s, border 0.2s;
             border: 1px solid transparent;
+            flex-shrink: 0;
         }
         .desktop-icon:hover { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); }
         .icon-graphic { font-size: 2.8rem; margin-bottom: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
@@ -70,7 +72,7 @@
 
         /* ===== WINDOW MANAGER ===== */
         .window {
-            position: absolute;
+            position: fixed;
             border: 1px solid rgba(148, 163, 184, 0.24);
             border-radius: 12px;
             background: rgba(7, 11, 21, 0.85);
@@ -109,109 +111,133 @@
         .header-title { color: #cbd5e1; letter-spacing: 2px; font-size: 0.8rem; font-weight: bold; pointer-events: none; }
         .environment-badge { font-size: 0.75rem; color: var(--cyan); background: rgba(85,230,208,.06); border: 1px solid rgba(85,230,208,.22); border-radius: 999px; padding: 2px 8px; }
 
-        /* Window Sizes */
-        /* Increased height to 88vh and moved top up slightly so it extends downwards further */
-        .dashboard-container { width: 1050px; max-width: 95vw; height: 88vh; top: 3%; left: 5%; }
-        .file-viewer-window { width: 600px; height: 450px; top: 15%; left: 30%; }
-        .elisa-container { width: 750px; height: 480px; top: 10%; left: 20%; background: rgba(18, 20, 31, 0.95); }
-        .netmap-container { width: 650px; height: 400px; top: 25%; left: 35%; }
+        /* Window Sizes - Responsive */
+        .dashboard-container { width: clamp(300px, 95vw, 1050px); height: clamp(400px, 88vh, 88vh); top: 3%; left: 5%; }
+        .file-viewer-window { width: clamp(300px, 90vw, 600px); height: clamp(300px, 80vh, 450px); top: 15%; left: 5%; }
+        .elisa-container { width: clamp(300px, 90vw, 750px); height: clamp(350px, 80vh, 480px); top: 10%; left: 5%; background: rgba(18, 20, 31, 0.95); }
+        .netmap-container { width: clamp(300px, 90vw, 650px); height: clamp(300px, 80vh, 500px); top: 8%; left: 5%; }
 
         /* ===== TERMINAL STYLES ===== */
-        .dashboard-grid { display: grid; grid-template-columns: 280px 1fr; flex-grow: 1; overflow: hidden; }
-        .side-panel { background: rgba(255,255,255,.018); border-right: 1px solid rgba(148,163,184,.18); padding: 30px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
-        .profile-container { position: relative; margin-bottom: 25px; width: 135px; height: 135px; }
-        .avatar { width: 135px; height: 135px; object-fit: cover; border: 1px solid rgba(103,183,255,.45); border-radius: 16px; box-shadow: 0 0 0 5px rgba(103,183,255,.04), 0 15px 35px rgba(0,0,0,.3); background-color: var(--bg-card); display: block; }
-        .status-dot-discord { position: absolute; bottom: -2px; right: -2px; width: 24px; height: 24px; background-color: var(--bg-surface); border: 2px solid #0a0f1b; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 15px rgba(245,196,81,.35); }
+        .dashboard-grid { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; flex-grow: 1; overflow: hidden; gap: 0; }
+        .side-panel { background: rgba(255,255,255,.018); border-right: 1px solid rgba(148,163,184,.18); padding: clamp(15px, 3vw, 30px); display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
+        .profile-container { position: relative; margin-bottom: 25px; width: clamp(100px, 20vw, 135px); height: clamp(100px, 20vw, 135px); }
+        .avatar { width: 100%; height: 100%; object-fit: cover; border: 1px solid rgba(103,183,255,.45); border-radius: 16px; box-shadow: 0 0 0 5px rgba(103,183,255,.04), 0 15px 35px rgba(0,0,0,.2); }
+        .status-dot-discord { position: absolute; bottom: -2px; right: -2px; width: 24px; height: 24px; background-color: var(--bg-surface); border: 2px solid #0a0f1b; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .status-dot-discord::after { content: ''; width: 14px; height: 14px; border-radius: 50%; box-shadow: -4px 4px 0 0 var(--status-idle); transform: translate(2px, -2px); }
         .sys-identity { text-align: center; width: 100%; margin-bottom: 25px; }
-        .sys-name { font-size: 1.25rem; font-weight: bold; color: var(--blue); text-shadow: 0 0 20px rgba(103,183,255,.2); }
+        .sys-name { font-size: clamp(1rem, 2vw, 1.25rem); font-weight: bold; color: var(--blue); text-shadow: 0 0 20px rgba(103,183,255,.2); }
         .sys-handle { font-size: 0.85rem; color: #7f8da3; margin-top: 2px; }
-        .neofetch-list { width: 100%; font-size: 0.8rem; line-height: 1.8; border-top: 1px solid rgba(148,163,184,.16); padding-top: 20px; }
+        .neofetch-list { width: 100%; font-size: 0.75rem; line-height: 1.6; border-top: 1px solid rgba(148,163,184,.16); padding-top: 20px; }
         .neofetch-line b { color: var(--magenta); font-weight: normal; }
         
-        .main-content { padding: 30px; display: flex; flex-direction: column; gap: 28px; overflow-y: auto; }
+        .main-content { padding: clamp(15px, 3vw, 30px); display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
         .content-section { display: flex; flex-direction: column; gap: 12px; }
-        .section-header { font-size: 0.8rem; font-weight: bold; color: #b9c5d8; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
+        .section-header { font-size: 0.75rem; font-weight: bold; color: #b9c5d8; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
         .section-header::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, rgba(148,163,184,.35), transparent); }
-        .matrix-box { background: rgba(15, 22, 38, .68); border: 1px solid rgba(148,163,184,.18); border-radius: 12px; padding: 20px; font-size: 0.85rem; line-height: 1.6; }
+        .matrix-box { background: rgba(15, 22, 38, .68); border: 1px solid rgba(148,163,184,.18); border-radius: 12px; padding: clamp(12px, 2vw, 20px); font-size: 0.8rem; line-height: 1.5; }
         .runtime-stream { color: #cbd5e1; border-left: 2px solid rgba(103,183,255,.55); }
-        .matrix-row { display: flex; margin-bottom: 8px; }
-        .matrix-key { color: var(--blue); min-width: 110px; flex-shrink: 0; }
-        .matrix-val { color: var(--text-main); }
+        .matrix-row { display: flex; flex-wrap: wrap; margin-bottom: 8px; gap: 8px; }
+        .matrix-key { color: var(--blue); min-width: 100px; flex-shrink: 0; font-size: 0.75rem; }
+        .matrix-val { color: var(--text-main); font-size: 0.75rem; }
         .graph-box { padding: 12px; }
-        #gh-graph { width: 100%; height: auto; min-height: 160px; max-height: 720px; display: block; overflow: visible; }
-        .lualine-bar { display: flex; background: rgba(3,7,15,.72); border-top: 1px solid rgba(148,163,184,.14); font-size: 0.8rem; font-weight: bold; flex-shrink: 0; }
-        .lua-seg { padding: 8px 16px; display: flex; align-items: center; }
+        #gh-graph { width: 100%; height: auto; min-height: 160px; max-height: 300px; display: block; overflow: visible; }
+        .lualine-bar { display: flex; background: rgba(3,7,15,.72); border-top: 1px solid rgba(148,163,184,.14); font-size: 0.7rem; font-weight: bold; flex-shrink: 0; flex-wrap: wrap; }
+        .lua-seg { padding: 6px 12px; display: flex; align-items: center; white-space: nowrap; }
         .lua-mode { background: #161d2e; color: var(--cyan); }
         .lua-loc, .lua-clock { background: rgba(255,255,255,.025); border-color: rgba(148,163,184,.14); color: #aab6c8; }
-        .lua-file { color: var(--text-muted); font-weight: normal; margin-left: 10px; align-self: center; }
+        .lua-file { color: var(--text-muted); font-weight: normal; margin-left: 10px; align-self: center; overflow: hidden; text-overflow: ellipsis; }
 
         /* ===== ELISA MUSIC PLAYER ===== */
-        .elisa-body { display: flex; flex-grow: 1; overflow: hidden; }
-        .elisa-sidebar { width: 180px; background: rgba(0,0,0,0.3); border-right: 1px solid var(--border-color); padding: 15px 10px; display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; }
-        .elisa-nav-item { padding: 10px 15px; border-radius: 6px; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; gap: 10px; transition: all 0.2s; }
+        .elisa-body { display: flex; flex-grow: 1; overflow: hidden; flex-direction: column; }
+        .elisa-sidebar { width: 100%; max-width: 180px; background: rgba(0,0,0,0.3); border-right: 1px solid var(--border-color); padding: 12px 10px; display: flex; flex-direction: row; gap: 6px; font-size: 0.75rem; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border-color); }
+        .elisa-nav-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; gap: 8px; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
         .elisa-nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
         .elisa-nav-item.active { background: var(--blue); color: #000; font-weight: bold; }
         .elisa-main { flex-grow: 1; display: flex; flex-direction: column; position: relative; }
-        .elisa-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(103,183,255,0.05) 0%, transparent 60%); }
-        .elisa-bottom-bar { height: 80px; background: rgba(0,0,0,0.4); border-top: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .elisa-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(103,183,255,0.05) 0%, transparent 70%); }
+        .elisa-bottom-bar { height: auto; min-height: 70px; background: rgba(0,0,0,0.4); border-top: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: stretch; justify-content: space-between; padding: 12px 16px; gap: 8px; }
         
-        .elisa-track-info { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-        .np-title { font-weight: bold; font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px; text-decoration: none; display: block; }
+        .elisa-track-info { flex: 1; overflow: hidden; min-width: 0; }
+        .np-title { font-weight: bold; font-size: 0.9rem; color: var(--text-main); margin-bottom: 4px; text-decoration: none; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .np-title:hover { color: var(--blue); text-decoration: underline; }
-        .np-artist { font-size: 0.75rem; color: var(--text-muted); }
+        .np-artist { font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .elisa-controls { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .control-btns { display: flex; gap: 15px; align-items: center; }
-        .elisa-btn { background: none; border: none; color: var(--text-main); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
+        .elisa-controls { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; justify-content: center; }
+        .control-btns { display: flex; gap: 12px; align-items: center; justify-content: center; }
+        .elisa-btn { background: none; border: none; color: var(--text-main); font-size: 1rem; cursor: pointer; transition: color 0.2s; }
         .elisa-btn:hover { color: var(--blue); }
-        .elisa-btn.play { font-size: 1.8rem; color: var(--blue); }
+        .elisa-btn.play { font-size: 1.4rem; color: var(--blue); }
         .elisa-btn.play:hover { color: var(--cyan); }
         
-        .progress-container { width: 100%; display: flex; align-items: center; gap: 10px; font-size: 0.7rem; color: var(--text-muted); }
+        .progress-container { width: 100%; display: flex; align-items: center; gap: 8px; font-size: 0.65rem; color: var(--text-muted); }
         .progress-bar { flex-grow: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative; overflow: hidden; }
         .progress-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--blue); width: 0%; transition: width 1s linear; }
 
-        .elisa-extra { flex: 1; display: flex; justify-content: flex-end; }
+        .elisa-extra { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
 
         /* Vinyl Visual in Elisa */
-        .vinyl-visual { position: relative; width: 220px; height: 220px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; }
-        .record { width: 200px; height: 200px; background-color: #121212; border-radius: 50%; border: 4px solid #2a2a2a; position: relative; display: flex; justify-content: center; align-items: center; box-shadow: 0 15px 35px rgba(0,0,0,.5); transition: transform 0.5s ease; }
+        .vinyl-visual { position: relative; width: clamp(150px, 30vw, 220px); height: clamp(150px, 30vw, 220px); display: flex; justify-content: center; align-items: center; margin-bottom: 12px; }
+        .record { width: 90%; height: 90%; background-color: #121212; border-radius: 50%; border: 4px solid #2a2a2a; position: relative; display: flex; justify-content: center; align-items: center; }
         .record.playing { animation: spinRecord 2.5s linear infinite; }
         @keyframes spinRecord { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .record-groove { position: absolute; width: 85%; height: 85%; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50%; }
         .record-groove-2 { position: absolute; width: 65%; height: 65%; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 50%; }
         .record-label { width: 66px; height: 66px; background: linear-gradient(135deg, var(--orange), var(--red)); border-radius: 50%; position: relative; border: 2px solid #1a1a1a; }
-        .record-hole { width: 12px; height: 12px; background-color: var(--bg-surface); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid #000; }
-        .tonearm { position: absolute; top: -10px; right: -15px; width: 30px; height: 140px; transform-origin: 15px 15px; transform: rotate(-15deg); transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 5; }
+        .record-hole { width: 12px; height: 12px; background-color: var(--bg-surface); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid #555; }
+        .tonearm { position: absolute; top: -10px; right: -15px; width: 30px; height: 140px; transform-origin: 15px 15px; transform: rotate(-15deg); transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); }
         .tonearm.playing { transform: rotate(26deg); }
         .tonearm-pivot { width: 30px; height: 30px; background: linear-gradient(135deg, #444, #111); border-radius: 50%; position: absolute; top: 0; left: 0; border: 2px solid #222; }
         .tonearm-wand { width: 6px; height: 110px; background: linear-gradient(90deg, #888, #bbb, #888); position: absolute; top: 15px; left: 12px; border-radius: 3px; }
         .tonearm-head { width: 18px; height: 30px; background-color: #222; border: 1px solid #555; position: absolute; bottom: 0; left: 6px; border-radius: 2px; transform: rotate(15deg); }
 
         /* ===== NETMAP VISUALIZER ===== */
-        .netmap-body { padding: 25px; overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 20px; }
-        .netmap-header-bar { font-size: 0.9rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
-        .node-card { position: relative; overflow: hidden; padding: 18px 20px; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 0.95rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(148,163,184,.18); border-radius: 12px; transition: transform .2s ease, border-color .2s ease, background .2s ease; display: flex; align-items: center; justify-content: space-between; }
+        .netmap-body { padding: clamp(15px, 3vw, 25px); overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 16px; }
+        .netmap-header-bar { font-size: 0.8rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .node-card { position: relative; overflow: hidden; padding: 14px 16px; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,.04); border: 1px solid rgba(148,163,184,.15); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
         .node-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.06); border-color: rgba(103,183,255,.45); box-shadow: 0 10px 25px rgba(0,0,0,.3); }
         .node-meta { display: flex; flex-direction: column; gap: 4px; }
-        .node-label { color: #718096; font-size: 0.75rem; font-family: sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+        .node-label { color: #718096; font-size: 0.7rem; font-family: sans-serif; text-transform: uppercase; letter-spacing: 1px; }
         .node-icon { color: var(--cyan); transition: transform 0.2s ease; }
         .node-card:hover .node-icon { transform: translateX(4px); }
 
         /* File Viewer */
-        .viewer-content { padding: 20px; flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.4); font-size: 0.85rem; white-space: pre-wrap; line-height: 1.5; }
+        .viewer-content { padding: 16px; flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.4); font-size: 0.8rem; white-space: pre-wrap; line-height: 1.5; word-wrap: break-word; }
 
         /* ===== TASKBAR ===== */
-        .taskbar { height: 45px; background: rgba(10, 15, 27, 0.95); border-top: 1px solid rgba(148, 163, 184, 0.20); display: flex; align-items: center; padding: 0 15px; z-index: 9999; flex-shrink: 0; }
-        .start-btn { background: var(--blue); color: #000; font-weight: bold; padding: 6px 16px; border-radius: 6px; cursor: pointer; margin-right: 15px; transition: background 0.2s; }
+        .taskbar { height: 45px; background: rgba(10, 15, 27, 0.95); border-top: 1px solid rgba(148, 163, 184, 0.20); display: flex; align-items: center; padding: 0 12px; z-index: 9999; flex-shrink: 0; gap: 8px; flex-wrap: wrap; overflow-y: auto; }
+        .start-btn { background: var(--blue); color: #000; font-weight: bold; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: background 0.2s; white-space: nowrap; font-size: 0.75rem; }
         .start-btn:hover { background: var(--cyan); }
-        .taskbar-apps { flex-grow: 1; display: flex; gap: 10px; }
-        .taskbar-app { padding: 6px 15px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+        .taskbar-apps { flex-grow: 1; display: flex; gap: 8px; overflow-x: auto; }
+        .taskbar-app { padding: 6px 12px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 6px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
         .taskbar-app.active { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-bottom: 2px solid var(--blue); }
         .taskbar-app:hover { background: rgba(255,255,255,0.1); }
-        .taskbar-clock { font-size: 0.85rem; }
+        .taskbar-clock { font-size: 0.75rem; white-space: nowrap; }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .side-panel { border-right: none; border-bottom: 1px solid rgba(148,163,184,.18); padding: 15px; max-height: 200px; overflow-y: auto; }
+            .elisa-sidebar { flex-direction: row; max-width: 100%; border-bottom: 1px solid var(--border-color); border-right: none; }
+            .elisa-body { flex-direction: column; }
+            .desktop-icon { width: 70px; }
+            .icon-graphic { font-size: 2rem; }
+            .icon-name { font-size: 0.65rem; }
+            .window { position: fixed !important; }
+            .dashboard-container { width: 100vw !important; height: 100vh !important; top: 0 !important; left: 0 !important; border-radius: 0; }
+            .elisa-container { width: 100vw !important; height: 100vh !important; top: 0 !important; left: 0 !important; border-radius: 0; }
+            .netmap-container { width: 100vw !important; height: 100vh !important; top: 0 !important; left: 0 !important; border-radius: 0; }
+            .file-viewer-window { width: 100vw !important; height: 100vh !important; top: 0 !important; left: 0 !important; border-radius: 0; }
+        }
+
+        @media (max-width: 480px) {
+            body { font-size: 12px; }
+            .taskbar { height: auto; padding: 8px; }
+            .lua-seg { padding: 4px 8px; font-size: 0.6rem; }
+            .desktop-icon { width: 60px; }
+            .icon-graphic { font-size: 1.5rem; margin-bottom: 4px; }
+            .icon-name { font-size: 0.55rem; }
+        }
     </style>
 </head>
 <body>
@@ -235,25 +261,21 @@
             <div class="icon-name">songs.csv</div>
         </div>
         <div class="desktop-icon" onclick="openFile('images/Pink-Floyd.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Pink-Floyd.png</div>
-</div>
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Pink-Floyd.png</div>
+        </div>
         <div class="desktop-icon" onclick="openFile('images/Abbey Road.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Abbey Road.png</div>
-</div>
-
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Abbey Road.png</div>
+        </div>
         <div class="desktop-icon" onclick="openFile('images/Back-in-Black_AC⁄DC.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Back-in-Black_AC⁄DC.png</div>
-</div>
-
-        
-
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Back-in-Black_AC⁄DC.png</div>
+        </div>
         <div class="desktop-icon" onclick="openFile('images/Tchaikovsky_Swan Lake -Marlinsky_Version.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Tchaikovsky_Swan Lake -Marlinsky_Version.png</div>
-</div>
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Tchaikovsky_Swan Lake</div>
+        </div>
     </div>
 
     <!-- TERMINAL WINDOW -->
@@ -290,7 +312,7 @@
                 <div class="content-section">
                     <div class="section-header">system // telemetry</div>
                     <div class="matrix-box runtime-stream">
-                        Just an average student with excessive level of addiction to be terminally online. Loves to cook as to code, loves to read but is always intimidated by academics. Master procrastinator and nothing more. 
+                        Just an average student with excessive level of addiction to be terminally online. Loves to cook as to code, loves to read but is always intimidated by academics. Master procrastinator but gets work done.
                         <br><br><h3>Currently less active as I have syllabus to finish</h3>
                     </div>
                 </div>
@@ -312,8 +334,8 @@
         </div>
         <div class="lualine-bar">
             <div class="lua-seg lua-mode">WORKSPACE</div>
-            <div class="lua-seg lua-loc"> production</div>
-            <div class="lua-file">SYSTEM TELEMETRY <span class="cursor" style="animation: blink 1.2s step-end infinite; display: inline-block; width: 8px; height: 14px; background-color: var(--text-main); margin-left: 4px;"></span></div>
+            <div class="lua-seg lua-loc">production</div>
+            <div class="lua-file">SYSTEM TELEMETRY <span class="cursor" style="animation: blink 1.2s step-end infinite; display: inline-block; width: 8px; height: 14px; background-color: var(--text-main);"></span></div>
         </div>
     </div>
 
@@ -326,7 +348,7 @@
                 <div class="win-dot g" onclick="maximizeWindow('elisa-window')"></div>
             </div>
             <div class="header-title">Elisa</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">Music Player</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">Music Player</div>
         </div>
         <div class="elisa-body">
             <div class="elisa-sidebar">
@@ -386,7 +408,7 @@
                 <div class="win-dot g" onclick="maximizeWindow('netmap-window')"></div>
             </div>
             <div class="header-title">NetMap Visualizer v1.2</div>
-            <div style="font-size:0.8rem; color:var(--text-muted);">node_status: active</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">node_status: active</div>
         </div>
         <div class="netmap-body">
             <div class="netmap-header-bar">Found 6 active connection nodes in current workspace...</div>
@@ -539,7 +561,7 @@
             content.innerHTML = "Loading...";
 
             if (ext === 'png') {
-                content.innerHTML = `<img src="${filename}" style="max-width:100%; border-radius:4px;">`;
+                content.innerHTML = `<img src="${filename}" style="max-width:100%; height:auto; border-radius:4px;">`;
                 return;
             }
             fetch(filename)
@@ -556,8 +578,8 @@
                 row.split(',').forEach(col => {
                     let c = col.replace(/"/g, '').trim();
                     html += i === 0 
-                        ? `<th style="border:1px solid var(--border-color); padding:6px; background:rgba(255,255,255,0.05);">${c}</th>` 
-                        : `<td style="border:1px solid var(--border-color); padding:6px;">${c}</td>`;
+                        ? `<th style="border:1px solid var(--border-color); padding:8px; background:rgba(255,255,255,0.05);">${c}</th>` 
+                        : `<td style="border:1px solid var(--border-color); padding:8px;">${c}</td>`;
                 });
                 html += '</tr>';
             });
@@ -617,8 +639,11 @@
             npLink.textContent = "Lo-Fi Beats"; npArtist.textContent = "System Default"; updateUI(); play();
         });
 
-        // Initialize Default Windows
+        // Initialize Default Windows & Auto-open NetMap
         openWindow('terminal-window');
+        setTimeout(() => {
+            openWindow('netmap-window');
+        }, 300);
     </script>
     <script src="gh-graph.js" data-username="tnm-yes-anyidea"></script>
 </body>
