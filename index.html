@@ -31,7 +31,7 @@
             font-family: 'JetBrains Mono', monospace;
             color: var(--text-main);
             min-height: 100vh;
-            width: 100vw;
+            width: 100%;
             overflow-x: hidden;
             background: url('meddling.png') no-repeat center center fixed, var(--bg-base);
             background-size: cover;
@@ -238,6 +238,592 @@
             .icon-graphic { font-size: 1.5rem; margin-bottom: 4px; }
             .icon-name { font-size: 0.55rem; }
         }
+
+        /* =========================================================
+           UNIVERSAL RESPONSIVE / MOBILE-FIRST POLISH
+           ========================================================= */
+
+        :root {
+            --taskbar-height: 48px;
+            --mobile-gutter: 12px;
+        }
+
+        html {
+            width: 100%;
+            min-height: 100%;
+            overflow: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100dvh;
+            height: 100dvh;
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
+        .desktop-area {
+            width: 100%;
+            min-height: 0;
+            padding: 18px;
+            padding-bottom: calc(var(--taskbar-height) + 18px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Bottom OS-style taskbar: always visible and never covered by windows. */
+        .taskbar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: var(--taskbar-height);
+            min-height: var(--taskbar-height);
+            padding: 5px 10px;
+            padding-bottom: max(5px, env(safe-area-inset-bottom));
+            z-index: 99999;
+            flex-wrap: nowrap;
+            overflow: hidden;
+        }
+
+        .start-btn {
+            flex: 0 0 auto;
+            min-height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 13px;
+        }
+
+        .taskbar-apps {
+            min-width: 0;
+            flex: 1 1 auto;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .taskbar-apps::-webkit-scrollbar {
+            display: none;
+        }
+
+        .taskbar-clock {
+            flex: 0 0 auto;
+            min-width: 62px;
+            text-align: right;
+        }
+
+        /* Every window stops above the bottom taskbar. */
+        .window {
+            max-width: calc(100vw - 24px);
+            max-height: calc(100dvh - var(--taskbar-height) - 16px);
+        }
+
+        .window.maximized {
+            width: 100% !important;
+            height: calc(100dvh - var(--taskbar-height)) !important;
+            max-width: none;
+            max-height: none;
+            top: 0 !important;
+            left: 0 !important;
+        }
+
+        .dashboard-grid {
+            min-height: 0;
+        }
+
+        .main-content,
+        .side-panel,
+        .netmap-body,
+        .viewer-content {
+            min-width: 0;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .matrix-val,
+        .matrix-key,
+        .node-card,
+        .viewer-content {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .node-card {
+            min-width: 0;
+        }
+
+        img, svg, canvas, video {
+            max-width: 100%;
+        }
+
+        button,
+        .desktop-icon,
+        .taskbar-app,
+        .start-btn,
+        .win-dot,
+        .node-card,
+        .elisa-nav-item {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Tablet */
+        @media (max-width: 900px) {
+            .dashboard-container {
+                width: calc(100vw - 24px);
+                height: calc(100dvh - var(--taskbar-height) - 24px);
+                top: 10px;
+                left: 12px;
+            }
+
+            .file-viewer-window,
+            .elisa-container,
+            .netmap-container {
+                width: calc(100vw - 24px);
+                max-width: none;
+                max-height: calc(100dvh - var(--taskbar-height) - 24px);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: minmax(175px, 30%) 1fr;
+            }
+
+            .elisa-body {
+                flex-direction: row;
+            }
+
+            .elisa-sidebar {
+                width: 150px;
+                max-width: 150px;
+                height: 100%;
+                flex-direction: column;
+                overflow-x: hidden;
+                overflow-y: auto;
+                border-right: 1px solid var(--border-color);
+                border-bottom: none;
+            }
+
+            .elisa-bottom-bar {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .nodes-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            }
+        }
+
+        /* Phones */
+        @media (max-width: 600px) {
+            :root {
+                --taskbar-height: 54px;
+            }
+
+            .desktop-area {
+                padding: 10px;
+                padding-bottom: calc(var(--taskbar-height) + 10px);
+                gap: 8px;
+            }
+
+            .desktop-icon {
+                width: clamp(64px, 18vw, 82px);
+                padding: 7px 4px;
+                border-radius: 10px;
+            }
+
+            .icon-graphic {
+                font-size: clamp(1.7rem, 8vw, 2.3rem);
+                margin-bottom: 4px;
+            }
+
+            .icon-name {
+                font-size: clamp(0.58rem, 2.5vw, 0.7rem);
+                line-height: 1.2;
+            }
+
+            .window,
+            .dashboard-container,
+            .elisa-container,
+            .netmap-container,
+            .file-viewer-window {
+                width: 100% !important;
+                max-width: none !important;
+                height: calc(100dvh - var(--taskbar-height)) !important;
+                max-height: none !important;
+                top: 0 !important;
+                left: 0 !important;
+                border-radius: 0;
+                border-left: 0;
+                border-right: 0;
+                border-bottom: 0;
+            }
+
+            .dashboard-header {
+                min-height: 48px;
+                padding: 10px 12px;
+                gap: 8px;
+            }
+
+            .window-controls {
+                gap: 10px;
+                flex: 0 0 auto;
+            }
+
+            .win-dot {
+                width: 14px;
+                height: 14px;
+            }
+
+            .header-title {
+                min-width: 0;
+                max-width: 52vw;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 0.7rem;
+            }
+
+            .environment-badge {
+                display: none;
+            }
+
+            /* System Core becomes a natural phone layout. */
+            .dashboard-grid {
+                display: flex;
+                flex-direction: column;
+                min-height: 0;
+            }
+
+            .side-panel {
+                flex: 0 0 auto;
+                width: 100%;
+                max-height: 145px;
+                min-height: 0;
+                padding: 10px 12px;
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                border-right: none;
+                border-bottom: 1px solid rgba(148,163,184,.18);
+            }
+
+            .profile-container {
+                flex: 0 0 72px;
+                width: 72px;
+                height: 72px;
+                margin: 0;
+            }
+
+            .status-dot-discord {
+                width: 20px;
+                height: 20px;
+            }
+
+            .status-dot-discord::after {
+                width: 11px;
+                height: 11px;
+            }
+
+            .sys-identity {
+                width: auto;
+                min-width: 105px;
+                margin: 0;
+                text-align: left;
+            }
+
+            .sys-name {
+                font-size: 1rem;
+            }
+
+            .sys-handle {
+                font-size: 0.7rem;
+            }
+
+            .neofetch-list {
+                min-width: max-content;
+                width: auto;
+                margin: 0;
+                padding: 0 0 0 12px;
+                border-top: 0;
+                border-left: 1px solid rgba(148,163,184,.16);
+                font-size: 0.65rem;
+                line-height: 1.5;
+            }
+
+            .main-content {
+                min-height: 0;
+                padding: 12px;
+                gap: 14px;
+            }
+
+            .matrix-row {
+                display: grid;
+                grid-template-columns: minmax(82px, 105px) 1fr;
+                gap: 6px;
+            }
+
+            .matrix-key,
+            .matrix-val {
+                min-width: 0;
+                font-size: 0.68rem;
+            }
+
+            .matrix-box {
+                padding: 11px;
+                font-size: 0.72rem;
+            }
+
+            .section-header {
+                font-size: 0.65rem;
+                letter-spacing: 1.4px;
+            }
+
+            #gh-graph {
+                min-height: 130px;
+            }
+
+            /* Elisa: compact phone player. */
+            .elisa-body {
+                flex-direction: column;
+                min-height: 0;
+            }
+
+            .elisa-sidebar {
+                width: 100%;
+                max-width: none;
+                height: auto;
+                max-height: 48px;
+                padding: 7px 8px;
+                flex-direction: row;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .elisa-nav-item {
+                padding: 7px 9px;
+                font-size: 0.65rem;
+            }
+
+            .elisa-nav-item:nth-child(n+4) {
+                display: none;
+            }
+
+            .elisa-main {
+                min-height: 0;
+            }
+
+            .elisa-view {
+                min-height: 0;
+                padding: 12px;
+            }
+
+            .vinyl-visual {
+                width: clamp(145px, 52vw, 205px);
+                height: clamp(145px, 52vw, 205px);
+            }
+
+            .tonearm {
+                transform: scale(.82) rotate(-15deg);
+                transform-origin: 15px 15px;
+            }
+
+            .tonearm.playing {
+                transform: scale(.82) rotate(26deg);
+            }
+
+            .elisa-bottom-bar {
+                min-height: 128px;
+                padding: 10px 12px;
+                gap: 8px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .elisa-track-info,
+            .elisa-controls,
+            .elisa-extra {
+                flex: 0 0 auto;
+                width: 100%;
+            }
+
+            .elisa-controls {
+                gap: 6px;
+            }
+
+            .elisa-extra {
+                display: none;
+            }
+
+            .control-btns {
+                gap: 20px;
+            }
+
+            .progress-container {
+                width: 100%;
+            }
+
+            /* NetMap cards become one column when the phone is narrow. */
+            .netmap-body {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .nodes-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .node-card {
+                padding: 12px;
+                font-size: 0.78rem;
+            }
+
+            .node-label {
+                font-size: 0.62rem;
+            }
+
+            .viewer-content {
+                padding: 12px;
+                font-size: 0.72rem;
+            }
+
+            .taskbar {
+                gap: 6px;
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+
+            .start-btn {
+                font-size: 0.68rem;
+                padding: 6px 10px;
+            }
+
+            .taskbar-app {
+                padding: 6px 9px;
+                font-size: 0.62rem;
+            }
+
+            .taskbar-clock {
+                font-size: 0.65rem;
+                min-width: 54px;
+            }
+        }
+
+        /* Very small phones / narrow portrait displays. */
+        @media (max-width: 380px) {
+            .desktop-area {
+                gap: 5px;
+            }
+
+            .desktop-icon {
+                width: 62px;
+            }
+
+            .icon-graphic {
+                font-size: 1.5rem;
+            }
+
+            .icon-name {
+                font-size: 0.52rem;
+            }
+
+            .side-panel {
+                max-height: 128px;
+            }
+
+            .profile-container {
+                flex-basis: 58px;
+                width: 58px;
+                height: 58px;
+            }
+
+            .sys-name {
+                font-size: 0.85rem;
+            }
+
+            .neofetch-list {
+                font-size: 0.58rem;
+            }
+
+            .main-content {
+                padding: 9px;
+            }
+
+            .matrix-row {
+                grid-template-columns: 76px 1fr;
+            }
+
+            .matrix-key,
+            .matrix-val {
+                font-size: 0.62rem;
+            }
+
+            .taskbar-apps {
+                gap: 4px;
+            }
+
+            .taskbar-app {
+                padding: 6px 7px;
+            }
+        }
+
+        /* Landscape phones: give the content more horizontal room. */
+        @media (max-width: 900px) and (orientation: landscape) {
+            .side-panel {
+                max-height: 105px;
+            }
+
+            .profile-container {
+                width: 58px;
+                height: 58px;
+            }
+
+            .elisa-bottom-bar {
+                min-height: 82px;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .elisa-track-info,
+            .elisa-controls {
+                flex: 1;
+            }
+
+            .elisa-extra {
+                display: flex;
+                width: auto;
+            }
+
+            .vinyl-visual {
+                width: min(34vw, 190px);
+                height: min(34vw, 190px);
+            }
+        }
+
+        /* Respect phones with a home-indicator safe area. */
+        @media (max-width: 600px) {
+            .taskbar {
+                padding-bottom: max(5px, env(safe-area-inset-bottom));
+                height: calc(var(--taskbar-height) + env(safe-area-inset-bottom));
+            }
+
+            .window {
+                height: calc(100dvh - var(--taskbar-height) - env(safe-area-inset-bottom)) !important;
+            }
+
+            .window.maximized {
+                height: calc(100dvh - var(--taskbar-height) - env(safe-area-inset-bottom)) !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -329,7 +915,7 @@
                 <div class="win-dot g" onclick="maximizeWindow('terminal-window')"></div>
             </div>
             <div class="header-title">SYSTEM_CORE_MATRIX</div>
-            <div class="environment-badge">v5.0.1-stable</div>
+            <div class="environment-badge">v5.0.3-stable</div>
         </div>
         <div class="dashboard-grid">
             <div class="side-panel">
@@ -590,20 +1176,51 @@
             if(tbActive) tbActive.classList.add('active');
         }
 
-        // Draggable
+        // Draggable — mouse + touchscreen friendly
         function makeDraggable(winId, headerId) {
             const win = document.getElementById(winId);
             const header = document.getElementById(headerId);
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            header.onmousedown = function(e) {
-                if(win.classList.contains('maximized')) return;
-                e.preventDefault(); pos3 = e.clientX; pos4 = e.clientY;
-                document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
-                document.onmousemove = (e) => {
-                    e.preventDefault(); pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY; pos3 = e.clientX; pos4 = e.clientY;
-                    win.style.top = (win.offsetTop - pos2) + "px"; win.style.left = (win.offsetLeft - pos1) + "px";
-                };
+            let startX = 0, startY = 0, startTop = 0, startLeft = 0, dragging = false;
+
+            header.addEventListener('pointerdown', (e) => {
+                if (win.classList.contains('maximized')) return;
+                if (e.target.closest('.win-dot')) return;
+
+                dragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startTop = win.offsetTop;
+                startLeft = win.offsetLeft;
+
+                header.setPointerCapture?.(e.pointerId);
+                e.preventDefault();
+            });
+
+            header.addEventListener('pointermove', (e) => {
+                if (!dragging) return;
+
+                const nextTop = startTop + (e.clientY - startY);
+                const nextLeft = startLeft + (e.clientX - startX);
+
+                // Keep the window reachable on smaller displays.
+                const taskbar = parseFloat(
+                    getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height')
+                ) || 48;
+                const maxLeft = Math.max(0, window.innerWidth - Math.min(win.offsetWidth, window.innerWidth));
+                const maxTop = Math.max(0, window.innerHeight - taskbar - Math.min(win.offsetHeight, window.innerHeight));
+
+                win.style.left = Math.min(Math.max(0, nextLeft), maxLeft) + "px";
+                win.style.top = Math.min(Math.max(0, nextTop), maxTop) + "px";
+            });
+
+            const stopDragging = (e) => {
+                if (!dragging) return;
+                dragging = false;
+                try { header.releasePointerCapture?.(e.pointerId); } catch (_) {}
             };
+
+            header.addEventListener('pointerup', stopDragging);
+            header.addEventListener('pointercancel', stopDragging);
         }
         makeDraggable('terminal-window', 'terminal-window-header');
         makeDraggable('elisa-window', 'elisa-header');
@@ -643,10 +1260,17 @@
             return html + '</table>';
         }
 
-        // Clock
-        setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-IN', { hour12: true, hour: 'numeric', minute: '2-digit' });
-        }, 1000);
+        // Clock — kept in the bottom taskbar like a desktop/phone system bar.
+        function updateClock() {
+            document.getElementById('clock').innerText =
+                new Date().toLocaleTimeString('en-IN', {
+                    hour12: true,
+                    hour: 'numeric',
+                    minute: '2-digit'
+                });
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
 
         // Elisa Music Logic
         const record = document.getElementById('vinyl-record'), arm = document.getElementById('vinyl-tonearm');
