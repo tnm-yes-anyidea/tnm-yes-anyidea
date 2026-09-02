@@ -689,7 +689,7 @@
         btnPlay.onclick = () => isPlaying ? pause() : play();
         document.getElementById('btn-skip').onclick = () => { pause(); loadSong(); };
 
-        fetch('songs.csv').then(r => r.text()).then(t => {
+        fetch('/songs.csv').then(r => r.text()).then(t => {
             songs = t.split('\n').map(l=>l.split(',')).filter(r=>r.length>1).slice(1);
             if(songs.length) loadSong();
         }).catch(() => {
@@ -702,7 +702,7 @@
             openWindow('netmap-window');
         }, 300);
     </script>
-    <script src="gh-graph.js" data-username="tnm-yes-anyidea"></script>
+    <script src="/gh-graph.js" data-username="tnm-yes-anyidea"></script>
 </body>
 </html>
 
