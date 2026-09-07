@@ -12,7 +12,7 @@
 
 I am a passionate developer who believes that **"Any Idea"** has the potential to change the world if executed with the right code. I thrive on building efficient systems, solving complex algorithmic challenges, and exploring the depths of how software interacts with hardware. 
 
-
+[Mirror website](https://tnm-yes-anyidea.github.io/tnm-yes-anyidea/)
 ---
 
 ### 🛠️ Tech Stack & Tools
