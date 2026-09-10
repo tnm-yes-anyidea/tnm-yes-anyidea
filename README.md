@@ -13,8 +13,8 @@
 I am a passionate developer who believes that **"Any Idea"** has the potential to change the world if executed with the right code. I thrive on building efficient systems, solving complex algorithmic challenges, and exploring the depths of how software interacts with hardware. 
 
 [MAIN SITE ](https://tnm-yes-anyidea.pages.dev/)
-[mirror 1 ](https://tnm-yes-anyidea.vercel.app)
-[mirror 2] (https://tnm-yes-anyidea-49d8f3.gitlab.io/)
+[mirror 1 ](https://tnm-yes-anyidea.vercel.app/)
+[mirror 2] (https://tnm-yes-anyidea-f8d5a8.gitlab.io/)
 [mirror 3](https://tnm-yes-anyidea.github.io/tnm-yes-anyidea/)
 ---
 
