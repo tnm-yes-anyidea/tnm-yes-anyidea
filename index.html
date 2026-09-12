@@ -92,7 +92,7 @@
         /* Window Sizes */
         .dashboard-container { width: clamp(300px, 95vw, 1050px); height: clamp(400px, 88vh, 88vh); top: 3%; left: 5%; }
         .file-viewer-window { width: clamp(300px, 90vw, 600px); height: clamp(300px, 80vh, 450px); top: 15%; left: 5%; }
-        .netmap-container { width: clamp(300px, 90vw, 650px); height: clamp(300px, 80vh, 500px); top: 8%; left: 5%; }
+        .netmap-container { width: clamp(300px, 90vw, 650px); height: clamp(300px, 80vh, 500px); top: 8%; left: 12%; }
 
         /* ===== TERMINAL STYLES ===== */
         .dashboard-grid { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; flex-grow: 1; overflow: hidden; gap: 0; min-height: 0; }
@@ -111,7 +111,7 @@
         .mini-player {
             margin-top: 15px; padding-top: 15px;
             border-top: 1px dashed rgba(148,163,184,0.2);
-            display: flex; align-items: center; gap: 15px;
+            display: flex; align-items: center; gap: 15px; width: 100%;
         }
         .turntable {
             width: 44px; height: 44px; border-radius: 50%; background: #111;
@@ -212,7 +212,7 @@
             .profile-container { flex: 0 0 72px; width: 72px; height: 72px; margin: 0; }
             .status-dot-discord { width: 20px; height: 20px; }
             .status-dot-discord::after { width: 11px; height: 11px; }
-            .sys-identity { display: none; } /* Hide names to save space, avatar is enough */
+            .sys-identity { display: none; }
             .neofetch-list { min-width: max-content; width: auto; margin: 0; padding: 0 0 0 12px; border-top: 0; border-left: 1px solid rgba(148,163,184,.16); font-size: 0.65rem; line-height: 1.5; }
             .mini-player { flex-direction: row; margin-top: 10px; padding-top: 10px; }
             .turntable { width: 36px; height: 36px; }
@@ -235,7 +235,6 @@
             .taskbar-clock { font-size: 0.65rem; min-width: 54px; }
         }
 
-        /* Small Phones */
         @media (max-width: 380px) {
             .desktop-area { gap: 5px; }
             .desktop-icon { width: 62px; }
@@ -264,7 +263,7 @@
             <div class="icon-name">NetMap</div>
         </div>
         
-        <!-- NEW FOLDER LOGIC -->
+        <!-- CLICKABLE MUSIC FOLDER -->
         <div class="desktop-icon" onclick="openFolder('Music')">
             <div class="icon-graphic">📁</div>
             <div class="icon-name">Music</div>
@@ -303,10 +302,6 @@
             <div class="icon-graphic">🖼️</div>
             <div class="icon-name">cover.png</div>
         </div>
-        <div class="desktop-icon" onclick="openFile('images/free-bird.png', 'png')">
-            <div class="icon-graphic">🖼️</div>
-            <div class="icon-name">free-bird.png</div>
-        </div>
         <div class="desktop-icon" onclick="openFile('images/Gianni-Tre-Italian-[Non Son Degno Di Te].png', 'png')">
             <div class="icon-graphic">🖼️</div>
             <div class="icon-name">Gianni-Tre-Italian-[Non Son Degno Di Te].png</div>
@@ -335,13 +330,9 @@
             <div class="icon-graphic">🖼️</div>
             <div class="icon-name">ok-computer.png</div>
         </div>
-        <div class="desktop-icon" onclick="openFile('images/Pink-Floyd.png', 'png')">
-            <div class="icon-graphic">🖼️</div>
-            <div class="icon-name">Pink-Floyd.png</div>
-        </div>
         <div class="desktop-icon" onclick="openFile('images/Tchaikovsky_Swan Lake -Marlinsky_Version.png', 'png')">
             <div class="icon-graphic">🖼️</div>
-            <div class="icon-name">Tchaikovsky_Swan Lake -Marlinsky_Version.png</div>
+            <div class="icon-name">Tchaikovsky_Swan Lake</div>
         </div>
 
         <div class="desktop-icon" onclick="openFile('docs/yt-playlists/Progreming videos.csv', 'csv')">
@@ -359,12 +350,12 @@
                 <div class="win-dot g" onclick="maximizeWindow('terminal-window')"></div>
             </div>
             <div class="header-title">SYSTEM_CORE_MATRIX</div>
-            <div class="environment-badge">v5.2.0-stable</div>
+            <div class="environment-badge">v6.0.0-stable</div>
         </div>
         <div class="dashboard-grid">
             <div class="side-panel">
                 <div class="profile-container">
-                    <img id="avatar-img" class="avatar" src="https://github.com/tnm-yes-anyidea.png" alt="Profile Avatar" onerror="this.src='./profile.png'">
+                    <img id="avatar-img" class="avatar" src="profile.png" alt="Profile Avatar" onerror="this.src='https://github.com/tnm-yes-anyidea.png'">
                     <div class="status-dot-discord"></div>
                 </div>
                 <div class="sys-identity">
@@ -379,7 +370,7 @@
                     <div class="neofetch-line"><b>WM/Editor</b>: Neovim</div>
                     <div class="neofetch-line"><b>Uptime</b>: infinite</div>
                     
-                    <!-- NEW TURNTABLE PLAYER -->
+                    <!-- TURNTABLE PLAYER UNDER UPTIME -->
                     <div class="mini-player">
                         <div class="turntable" id="turntable-disc"></div>
                         <div class="player-info">
@@ -441,7 +432,7 @@
             <div style="font-size:0.75rem; color:var(--text-muted);">node_status: active</div>
         </div>
         <div class="netmap-body">
-            <div class="netmap-header-bar">Found 10 active connection nodes in current workspace...</div>
+            <div class="netmap-header-bar">Found 9 active connection nodes in current workspace...</div>
             <div class="nodes-grid">
                 <a href="https://github.com/tnm-yes-anyidea" class="node-card" target="_blank">
                     <div class="node-meta"><span class="node-label">src/codebase</span><span>GitHub</span></div>
@@ -498,259 +489,355 @@
 
     <!-- TASKBAR -->
     <div class="taskbar">
-        <div class="start-btn" onclick="alert('Start Menu implementation loading...')">❖ Start</div>
+        <div class="start-btn" onclick="alert('Start Menu loading...')">❖ Start</div>
         <div class="taskbar-apps" id="taskbar-apps"></div>
         <div class="taskbar-clock" id="clock">00:00 AM</div>
     </div>
 
+    <!-- GH-GRAPH SCRIPT (Relative Path) -->
+    <script src="./gh-graph.js" data-username="tnm-yes-anyidea"></script>
+
     <script>
-        // Email Node
-document.getElementById('secure-email').addEventListener('click', function(e) {
-    e.preventDefault();
-    window.location.href = "mailto:public_profile.barbell221@passinbox.com";
-});
-
-// Window Management
-let highestZ = 20;
-const windows = document.querySelectorAll('.window');
-windows.forEach(win => { win.addEventListener('mousedown', () => { bringToFront(win.id); }); });
-
-function bringToFront(id) { 
-    highestZ++; 
-    document.getElementById(id).style.zIndex = highestZ; 
-    updateTaskbarActive(id); 
-}
-
-function getAppTitle(id) {
-    if(id === 'terminal-window') return 'System_Core';
-    if(id === 'netmap-window') return 'NetMap';
-    return 'File Explorer';
-}
-
-function openWindow(id) {
-    const win = document.getElementById(id);
-    win.classList.remove('hidden');
-    bringToFront(id);
-    if(!document.getElementById('task-' + id)) {
-        const title = getAppTitle(id);
-        document.getElementById('taskbar-apps').innerHTML += `<div class="taskbar-app" id="task-${id}" onclick="toggleWindow('${id}')">${title}</div>`;
-    }
-    updateTaskbarActive(id);
-}
-
-function closeWindow(id) {
-    document.getElementById(id).classList.add('hidden');
-    const tbApp = document.getElementById('task-' + id);
-    if(tbApp) tbApp.remove();
-}
-
-function minimizeWindow(id) {
-    document.getElementById(id).classList.add('hidden');
-    const tbApp = document.getElementById('task-' + id);
-    if(tbApp) tbApp.classList.remove('active');
-}
-
-function maximizeWindow(id) {
-    document.getElementById(id).classList.toggle('maximized');
-    bringToFront(id);
-}
-
-function toggleWindow(id) {
-    const win = document.getElementById(id);
-    if (win.classList.contains('hidden')) {
-        win.classList.remove('hidden');
-        bringToFront(id);
-    } else {
-        if (win.style.zIndex == highestZ) minimizeWindow(id);
-        else bringToFront(id);
-    }
-}
-
-function updateTaskbarActive(activeId) {
-    document.querySelectorAll('.taskbar-app').forEach(app => app.classList.remove('active'));
-    const tbActive = document.getElementById('task-' + activeId);
-    if(tbActive) tbActive.classList.add('active');
-}
-
-// Draggable Controls
-function makeDraggable(winId, headerId) {
-    const win = document.getElementById(winId);
-    const header = document.getElementById(headerId);
-    let startX = 0, startY = 0, startTop = 0, startLeft = 0, dragging = false;
-
-    header.addEventListener('pointerdown', (e) => {
-        if (win.classList.contains('maximized')) return;
-        if (e.target.closest('.win-dot')) return;
-        dragging = true;
-        startX = e.clientX; startY = e.clientY;
-        startTop = win.offsetTop; startLeft = win.offsetLeft;
-        header.setPointerCapture?.(e.pointerId);
-        e.preventDefault();
-    });
-
-    header.addEventListener('pointermove', (e) => {
-        if (!dragging) return;
-        const nextTop = startTop + (e.clientY - startY);
-        const nextLeft = startLeft + (e.clientX - startX);
-        const taskbar = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height')) || 48;
-        const maxLeft = Math.max(0, window.innerWidth - Math.min(win.offsetWidth, window.innerWidth));
-        const maxTop = Math.max(0, window.innerHeight - taskbar - Math.min(win.offsetHeight, window.innerHeight));
-
-        win.style.left = Math.min(Math.max(0, nextLeft), maxLeft) + "px";
-        win.style.top = Math.min(Math.max(0, nextTop), maxTop) + "px";
-    });
-
-    const stopDragging = (e) => {
-        if (!dragging) return;
-        dragging = false;
-        try { header.releasePointerCapture?.(e.pointerId); } catch (_) {}
-    };
-    header.addEventListener('pointerup', stopDragging);
-    header.addEventListener('pointercancel', stopDragging);
-}
-makeDraggable('terminal-window', 'terminal-window-header');
-makeDraggable('netmap-window', 'netmap-header');
-makeDraggable('file-viewer', 'file-viewer-header');
-
-// Image Gallery
-let imageGallery = [];
-let currentImgIndex = -1;
-
-document.querySelectorAll('.desktop-icon').forEach(icon => {
-    const onclickStr = icon.getAttribute('onclick');
-    if (onclickStr && onclickStr.includes('.png')) {
-        const match = onclickStr.match(/'([^']+)'/);
-        if (match && !imageGallery.includes(match[1])) {
-            imageGallery.push(match[1]);
+        // Email Link Setup
+        const secureEmail = document.getElementById('secure-email');
+        if (secureEmail) {
+            secureEmail.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = "mailto:public_profile.barbell221@passinbox.com";
+            });
         }
-    }
-});
 
-function renderImage() {
-    const content = document.getElementById('viewer-content');
-    content.innerHTML = `<img id="gallery-img" src="${imageGallery[currentImgIndex]}" style="max-width:100%; height:auto; border-radius:4px; opacity:0; transition: opacity 0.3s ease-in-out;">`;
-    setTimeout(() => { const img = document.getElementById('gallery-img'); if(img) img.style.opacity = 1; }, 10);
-    document.getElementById('viewer-title').innerText = imageGallery[currentImgIndex];
-}
+        // Window Management
+        let highestZ = 20;
+        const windows = document.querySelectorAll('.window');
+        windows.forEach(win => { win.addEventListener('mousedown', () => bringToFront(win.id)); });
+        
+        function bringToFront(id) { 
+            const win = document.getElementById(id);
+            if (!win) return;
+            highestZ++; 
+            win.style.zIndex = highestZ; 
+            updateTaskbarActive(id); 
+        }
 
-document.addEventListener('keydown', (e) => {
-    const viewer = document.getElementById('file-viewer');
-    if (viewer.classList.contains('hidden') || currentImgIndex === -1) return;
-    if (e.key === 'ArrowRight') { currentImgIndex = (currentImgIndex + 1) % imageGallery.length; renderImage(); }
-    else if (e.key === 'ArrowLeft') { currentImgIndex = (currentImgIndex - 1 + imageGallery.length) % imageGallery.length; renderImage(); }
-});
+        function getAppTitle(id) {
+            if(id === 'terminal-window') return 'System_Core';
+            if(id === 'netmap-window') return 'NetMap';
+            return 'File Explorer';
+        }
 
-//  Folder Logic (points to root songs.csv)
-function openFolder(folderName) {
-    openWindow('file-viewer');
-    document.getElementById('viewer-title').innerText = "/home/tanmoy/Desktop/" + folderName;
-    const content = document.getElementById('viewer-content');
-    
-    if (folderName === 'Music') {
-        content.innerHTML = `
-            <div class="folder-grid">
-                <div class="desktop-icon" onclick="openFile('songs.csv', 'csv')">
-                    <div class="icon-graphic" style="font-size: 2.5rem;">📊</div>
-                    <div class="icon-name" style="color: var(--text-main); text-shadow: none;">songs.csv</div>
-                </div>
-            </div>
-        `;
-    } else {
-        content.innerHTML = `<div style="color:var(--text-muted); font-style:italic;">Directory is empty.</div>`;
-    }
-    currentImgIndex = -1; 
-}
+        function openWindow(id) {
+            const win = document.getElementById(id);
+            if (!win) return;
+            win.classList.remove('hidden');
+            bringToFront(id);
+            if (!document.getElementById('task-' + id)) {
+                const title = getAppTitle(id);
+                document.getElementById('taskbar-apps').innerHTML += `<div class="taskbar-app" id="task-${id}" onclick="toggleWindow('${id}')">${title}</div>`;
+            }
+            updateTaskbarActive(id);
+        }
 
-// Quote-Aware CSV Parser
-function parseCSVToHTML(text) {
-    // Prevent rendering HTML error responses as CSV
-    if (text.trim().startsWith('<')) {
-        return `<span style="color:var(--red);">Error: Unable to load valid CSV data.</span>`;
-    }
+        function closeWindow(id) {
+            const win = document.getElementById(id);
+            if (win) win.classList.add('hidden');
+            const tbApp = document.getElementById('task-' + id);
+            if (tbApp) tbApp.remove();
+        }
 
-    const parseCSVRow = (str) => {
-        const arr = [];
-        let quote = false;
-        let col = '';
-        for (let c = 0; c < str.length; c++) {
-            const cc = str[c];
-            const nc = str[c+1];
-            if (cc === '"') {
-                if (quote && nc === '"') { col += '"'; c++; }
-                else { quote = !quote; }
-            } else if (cc === ',' && !quote) {
-                arr.push(col.trim());
-                col = '';
+        function minimizeWindow(id) {
+            const win = document.getElementById(id);
+            if (win) win.classList.add('hidden');
+            const tbApp = document.getElementById('task-' + id);
+            if (tbApp) tbApp.classList.remove('active');
+        }
+
+        function maximizeWindow(id) {
+            const win = document.getElementById(id);
+            if (win) win.classList.toggle('maximized');
+            bringToFront(id);
+        }
+
+        function toggleWindow(id) {
+            const win = document.getElementById(id);
+            if (!win) return;
+            if (win.classList.contains('hidden')) {
+                openWindow(id);
             } else {
-                col += cc;
+                if (win.style.zIndex == highestZ) minimizeWindow(id);
+                else bringToFront(id);
             }
         }
-        arr.push(col.trim());
-        return arr;
-    };
 
-    const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
-    if (!lines.length) return '<div style="padding:12px; color:var(--text-muted);">Empty file</div>';
+        function updateTaskbarActive(activeId) {
+            document.querySelectorAll('.taskbar-app').forEach(app => app.classList.remove('active'));
+            const tbActive = document.getElementById('task-' + activeId);
+            if (tbActive) tbActive.classList.add('active');
+        }
 
-    let html = '<table class="csv-tbl" style="width:100%; border-collapse:collapse; text-align:left;">';
-    lines.forEach((line, i) => {
-        const cols = parseCSVRow(line);
-        html += '<tr style="border-bottom: 1px solid rgba(148,163,184,0.15);">';
-        cols.forEach(col => {
-            html += i === 0 
-                ? `<th style="padding:12px; background:rgba(103,183,255,0.15); color:var(--blue); font-weight:bold; position:sticky; top:0;">${col}</th>` 
-                : `<td style="padding:12px; color:var(--text-main);">${col}</td>`;
+        // Draggable Control Setup
+        function makeDraggable(winId, headerId) {
+            const win = document.getElementById(winId);
+            const header = document.getElementById(headerId);
+            if (!win || !header) return;
+            let startX = 0, startY = 0, startTop = 0, startLeft = 0, dragging = false;
+
+            header.addEventListener('pointerdown', (e) => {
+                if (win.classList.contains('maximized')) return;
+                if (e.target.closest('.win-dot')) return;
+                dragging = true;
+                startX = e.clientX; startY = e.clientY;
+                startTop = win.offsetTop; startLeft = win.offsetLeft;
+                header.setPointerCapture?.(e.pointerId);
+                e.preventDefault();
+            });
+
+            header.addEventListener('pointermove', (e) => {
+                if (!dragging) return;
+                const nextTop = startTop + (e.clientY - startY);
+                const nextLeft = startLeft + (e.clientX - startX);
+                const taskbar = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height')) || 48;
+                const maxLeft = Math.max(0, window.innerWidth - Math.min(win.offsetWidth, window.innerWidth));
+                const maxTop = Math.max(0, window.innerHeight - taskbar - Math.min(win.offsetHeight, window.innerHeight));
+
+                win.style.left = Math.min(Math.max(0, nextLeft), maxLeft) + "px";
+                win.style.top = Math.min(Math.max(0, nextTop), maxTop) + "px";
+            });
+
+            const stopDragging = (e) => {
+                if (!dragging) return;
+                dragging = false;
+                try { header.releasePointerCapture?.(e.pointerId); } catch (_) {}
+            };
+            header.addEventListener('pointerup', stopDragging);
+            header.addEventListener('pointercancel', stopDragging);
+        }
+        makeDraggable('terminal-window', 'terminal-window-header');
+        makeDraggable('netmap-window', 'netmap-header');
+        makeDraggable('file-viewer', 'file-viewer-header');
+
+        // Image Viewer & Gallery State
+        let imageGallery = [];
+        let currentImgIndex = -1;
+
+        document.querySelectorAll('.desktop-icon').forEach(icon => {
+            const onclickStr = icon.getAttribute('onclick');
+            if (onclickStr && onclickStr.includes('.png')) {
+                const match = onclickStr.match(/'([^']+)'/);
+                if (match && !imageGallery.includes(match[1])) {
+                    imageGallery.push(match[1]);
+                }
+            }
         });
-        html += '</tr>';
-    });
-    return html + '</table>';
-}
 
-// Robust CSV Line Parser for Turntable Engine
-function parseCSVLine(str) {
-    const arr = [];
-    let quote = false;
-    let col = '';
-    for (let c = 0; c < str.length; c++) {
-        const cc = str[c];
-        const nc = str[c+1];
-        if (cc === '"') {
-            if (quote && nc === '"') { col += '"'; c++; }
-            else { quote = !quote; }
-        } else if (cc === ',' && !quote) {
+        function renderImage() {
+            const content = document.getElementById('viewer-content');
+            content.innerHTML = `<img id="gallery-img" src="${imageGallery[currentImgIndex]}" style="max-width:100%; height:auto; border-radius:4px; opacity:0; transition: opacity 0.3s ease-in-out;">`;
+            setTimeout(() => { const img = document.getElementById('gallery-img'); if(img) img.style.opacity = 1; }, 10);
+            document.getElementById('viewer-title').innerText = imageGallery[currentImgIndex];
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const viewer = document.getElementById('file-viewer');
+            if (viewer.classList.contains('hidden') || currentImgIndex === -1) return;
+            if (e.key === 'ArrowRight') { currentImgIndex = (currentImgIndex + 1) % imageGallery.length; renderImage(); }
+            else if (e.key === 'ArrowLeft') { currentImgIndex = (currentImgIndex - 1 + imageGallery.length) % imageGallery.length; renderImage(); }
+        });
+
+        // Folder & File Viewer Handlers
+        function openFolder(folderName) {
+            openWindow('file-viewer');
+            document.getElementById('viewer-title').innerText = "/home/tanmoy/Desktop/" + folderName;
+            const content = document.getElementById('viewer-content');
+            
+            if (folderName === 'Music') {
+                content.innerHTML = `
+                    <div class="folder-grid">
+                        <div class="desktop-icon" onclick="openFile('songs.csv', 'csv')">
+                            <div class="icon-graphic" style="font-size: 2.5rem;">📊</div>
+                            <div class="icon-name" style="color: var(--text-main); text-shadow: none;">songs.csv</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `<div style="color:var(--text-muted); font-style:italic;">Directory is empty.</div>`;
+            }
+            currentImgIndex = -1; 
+        }
+
+        function openFile(filename, ext) {
+            openWindow('file-viewer');
+            document.getElementById('viewer-title').innerText = filename;
+            const content = document.getElementById('viewer-content');
+            content.innerHTML = "Loading...";
+
+            if (ext === 'png') {
+                currentImgIndex = imageGallery.indexOf(filename);
+                if (currentImgIndex !== -1) renderImage();
+                else content.innerHTML = `<img src="${filename}" style="max-width:100%; height:auto; border-radius:4px;">`;
+                return;
+            }
+            currentImgIndex = -1;
+
+            fetch(filename)
+                .then(r => r.ok ? r.text() : Promise.reject())
+                .then(d => content.innerHTML = ext === 'csv' ? parseCSVToHTML(d) : d)
+                .catch(() => content.innerHTML = `<span style="color:var(--red);">Error reading file: ${filename}</span>`);
+        }
+
+        function parseCSVToHTML(text) {
+            if (text.trim().startsWith('<')) {
+                return `<span style="color:var(--red);">Error: Unable to load CSV content.</span>`;
+            }
+
+            const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
+            if (!lines.length) return '<div style="padding:12px; color:var(--text-muted);">Empty file</div>';
+
+            let html = '<table class="csv-tbl" style="width:100%; border-collapse:collapse; text-align:left;">';
+            lines.forEach((line, i) => {
+                const cols = parseCSVLine(line);
+                html += '<tr style="border-bottom: 1px solid rgba(148,163,184,0.15);">';
+                cols.forEach(col => {
+                    html += i === 0 
+                        ? `<th style="padding:12px; background:rgba(103,183,255,0.15); color:var(--blue); font-weight:bold; position:sticky; top:0;">${col}</th>` 
+                        : `<td style="padding:12px; color:var(--text-main);">${col}</td>`;
+                });
+                html += '</tr>';
+            });
+            return html + '</table>';
+        }
+
+        // Live Clock
+        function updateClock() { 
+            const clockEl = document.getElementById('clock');
+            if (clockEl) clockEl.innerText = new Date().toLocaleTimeString('en-IN', { hour12: true, hour: 'numeric', minute: '2-digit' }); 
+        }
+        updateClock(); setInterval(updateClock, 1000);
+
+        // Turntable Player Engine & Song Parser
+        const matrixNP = document.getElementById('matrix-now-playing');
+        const matrixArtist = document.getElementById('matrix-artist');
+        const btnPlay = document.getElementById('btn-play-pause');
+        const record = document.getElementById('turntable-disc');
+
+        let songs = [];
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        let durSec = 180;
+        let elapSec = 0;
+        let timer = null;
+
+        function parseCSVLine(str) {
+            const arr = [];
+            let quote = false;
+            let col = '';
+            for (let c = 0; c < str.length; c++) {
+                const cc = str[c];
+                const nc = str[c+1];
+                if (cc === '"') {
+                    if (quote && nc === '"') { col += '"'; c++; }
+                    else { quote = !quote; }
+                } else if (cc === ',' && !quote) {
+                    arr.push(col.trim());
+                    col = '';
+                } else {
+                    col += cc;
+                }
+            }
             arr.push(col.trim());
-            col = '';
-        } else {
-            col += cc;
+            return arr;
         }
-    }
-    arr.push(col.trim());
-    return arr;
-}
 
-// Turntable Fetch Engine (Points to root songs.csv)
-fetch('songs.csv')
-    .then(r => {
-        if (!r.ok) throw new Error("HTTP Error " + r.status);
-        return r.text();
-    })
-    .then(t => {
-        if (t.trim().startsWith('<')) throw new Error("Received HTML response instead of CSV");
-        
-        songs = t.split(/\r?\n/)
-            .filter(l => l.trim() !== '')
-            .map(l => parseCSVLine(l));
-        
-        if (songs.length > 0 && songs[0][0].toLowerCase().includes('title')) {
-            songs.shift(); // Remove header row
+        function play() {
+            if (elapSec >= durSec) return nextSong();
+            isPlaying = true; 
+            if (record) record.classList.add('playing');
+            if (btnPlay) btnPlay.textContent = "⏸";
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => {
+                elapSec++;
+                if (elapSec >= durSec) { pause(); setTimeout(nextSong, 1000); }
+            }, 1000);
         }
-        if (songs.length) loadSong(0);
-    })
-    .catch(() => {
-        if (matrixNP) matrixNP.textContent = "songs.csv Not Found";
-        if (matrixArtist) matrixArtist.textContent = "Place songs.csv in root";
-    });
 
-<script src="/gh-graph.js" data-username="tnm-yes-anyidea"></script>
+        function pause() {
+            isPlaying = false; 
+            if (record) record.classList.remove('playing');
+            if (btnPlay) btnPlay.textContent = "▶"; 
+            if (timer) clearInterval(timer);
+        }
+
+        function loadSong(index) {
+            if (!songs.length) return;
+            currentSongIndex = index !== undefined ? (index + songs.length) % songs.length : 0;
+
+            const s = songs[currentSongIndex];
+            const songTitle = s[0] ? s[0].replace(/^"|"$/g, '').trim() : "Unknown Track";
+            const songArtist = s[1] ? s[1].replace(/^"|"$/g, '').trim() : "Unknown Artist";
+            const songUrl = (s[3] && s[3].trim() !== '' && s[3].trim() !== '#') ? s[3].replace(/^"|"$/g, '').trim() : null;
+
+            if (matrixNP) {
+                matrixNP.textContent = songTitle;
+                if (songUrl) {
+                    matrixNP.href = songUrl;
+                    matrixNP.setAttribute('target', '_blank');
+                    matrixNP.setAttribute('rel', 'noopener noreferrer');
+                    matrixNP.style.pointerEvents = 'auto';
+                    matrixNP.style.cursor = 'pointer';
+                } else {
+                    matrixNP.removeAttribute('href');
+                    matrixNP.style.pointerEvents = 'none';
+                }
+            }
+
+            if (matrixArtist) matrixArtist.textContent = songArtist;
+
+            let t = (s[2] || "3:00").replace(/^"|"$/g, '').trim().split(':'); 
+            durSec = (parseInt(t[0]) || 3) * 60 + (parseInt(t[1]) || 0);
+            elapSec = 0; 
+            play();
+        }
+
+        function prevSong() { pause(); loadSong(currentSongIndex - 1); }
+        function nextSong() { pause(); loadSong(currentSongIndex + 1); }
+
+        if (btnPlay) btnPlay.onclick = () => isPlaying ? pause() : play();
+        if (document.getElementById('btn-prev')) document.getElementById('btn-prev').onclick = prevSong;
+        if (document.getElementById('btn-next')) document.getElementById('btn-next').onclick = nextSong;
+
+        // Load songs directly from root songs.csv
+        fetch('./songs.csv')
+            .then(r => {
+                if (!r.ok) throw new Error("HTTP Error " + r.status);
+                return r.text();
+            })
+            .then(t => {
+                if (t.trim().startsWith('<')) throw new Error("Received HTML response instead of CSV");
+                
+                songs = t.split(/\r?\n/)
+                    .filter(l => l.trim() !== '')
+                    .map(l => parseCSVLine(l));
+
+                if (songs.length > 0 && songs[0][0].toLowerCase().includes('title')) {
+                    songs.shift(); // Remove CSV Header
+                }
+
+                if (songs.length) {
+                    loadSong(0);
+                } else {
+                    if (matrixNP) matrixNP.textContent = "No Songs Available";
+                }
+            })
+            .catch(() => {
+                if (matrixNP) matrixNP.textContent = "songs.csv Not Loaded";
+                if (matrixArtist) matrixArtist.textContent = "Check Root Path";
+            });
+
+        // Initialize Windows On Load
+        document.addEventListener('DOMContentLoaded', () => {
+            openWindow('terminal-window');
+            openWindow('netmap-window');
+        });
+    </script>
 </body>
 </html>
