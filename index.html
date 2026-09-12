@@ -359,7 +359,7 @@
                 <div class="win-dot g" onclick="maximizeWindow('terminal-window')"></div>
             </div>
             <div class="header-title">SYSTEM_CORE_MATRIX</div>
-            <div class="environment-badge">v5.1.0-stable</div>
+            <div class="environment-badge">v5.2.0-stable</div>
         </div>
         <div class="dashboard-grid">
             <div class="side-panel">
@@ -640,7 +640,7 @@ document.addEventListener('keydown', (e) => {
     else if (e.key === 'ArrowLeft') { currentImgIndex = (currentImgIndex - 1 + imageGallery.length) % imageGallery.length; renderImage(); }
 });
 
-// Folder & File Logic
+//  Folder Logic (points to root songs.csv)
 function openFolder(folderName) {
     openWindow('file-viewer');
     document.getElementById('viewer-title').innerText = "/home/tanmoy/Desktop/" + folderName;
@@ -649,7 +649,7 @@ function openFolder(folderName) {
     if (folderName === 'Music') {
         content.innerHTML = `
             <div class="folder-grid">
-                <div class="desktop-icon" onclick="openFile('Music/songs.csv', 'csv')">
+                <div class="desktop-icon" onclick="openFile('songs.csv', 'csv')">
                     <div class="icon-graphic" style="font-size: 2.5rem;">📊</div>
                     <div class="icon-name" style="color: var(--text-main); text-shadow: none;">songs.csv</div>
                 </div>
@@ -661,140 +661,96 @@ function openFolder(folderName) {
     currentImgIndex = -1; 
 }
 
-function openFile(filename, ext) {
-    openWindow('file-viewer');
-    document.getElementById('viewer-title').innerText = filename;
-    const content = document.getElementById('viewer-content');
-    content.innerHTML = "Loading...";
-
-    if (ext === 'png') {
-        currentImgIndex = imageGallery.indexOf(filename);
-        if (currentImgIndex !== -1) renderImage();
-        else content.innerHTML = `<img src="${filename}" style="max-width:100%; height:auto; border-radius:4px;">`;
-        return;
-    }
-    currentImgIndex = -1;
-
-    fetch(filename)
-        .then(r => r.ok ? r.text() : Promise.reject())
-        .then(d => content.innerHTML = ext === 'csv' ? parseCSVToHTML(d) : d)
-        .catch(() => content.innerHTML = `<span style="color:var(--red);">Error: Unable to load ${filename}. Check file path.</span>`);
-}
-
+// Quote-Aware CSV Parser
 function parseCSVToHTML(text) {
+    // Prevent rendering HTML error responses as CSV
+    if (text.trim().startsWith('<')) {
+        return `<span style="color:var(--red);">Error: Unable to load valid CSV data.</span>`;
+    }
+
+    const parseCSVRow = (str) => {
+        const arr = [];
+        let quote = false;
+        let col = '';
+        for (let c = 0; c < str.length; c++) {
+            const cc = str[c];
+            const nc = str[c+1];
+            if (cc === '"') {
+                if (quote && nc === '"') { col += '"'; c++; }
+                else { quote = !quote; }
+            } else if (cc === ',' && !quote) {
+                arr.push(col.trim());
+                col = '';
+            } else {
+                col += cc;
+            }
+        }
+        arr.push(col.trim());
+        return arr;
+    };
+
+    const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
+    if (!lines.length) return '<div style="padding:12px; color:var(--text-muted);">Empty file</div>';
+
     let html = '<table class="csv-tbl" style="width:100%; border-collapse:collapse; text-align:left;">';
-    text.split('\n').forEach((row, i) => {
-        if(!row.trim()) return;
-        html += '<tr style="border-bottom: 1px solid rgba(148,163,184,0.15); transition: background 0.2s;">';
-        row.split(',').forEach(col => {
-            let c = col.replace(/"/g, '').trim();
+    lines.forEach((line, i) => {
+        const cols = parseCSVRow(line);
+        html += '<tr style="border-bottom: 1px solid rgba(148,163,184,0.15);">';
+        cols.forEach(col => {
             html += i === 0 
-                ? `<th style="padding:12px; background:rgba(103,183,255,0.15); color:var(--blue); font-weight:bold; position:sticky; top:0; z-index:2;">${c}</th>` 
-                : `<td style="padding:12px; color:var(--text-main);">${c}</td>`;
+                ? `<th style="padding:12px; background:rgba(103,183,255,0.15); color:var(--blue); font-weight:bold; position:sticky; top:0;">${col}</th>` 
+                : `<td style="padding:12px; color:var(--text-main);">${col}</td>`;
         });
         html += '</tr>';
     });
     return html + '</table>';
 }
 
-// Clock
-function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-IN', { hour12: true, hour: 'numeric', minute: '2-digit' }); }
-updateClock(); setInterval(updateClock, 1000);
-
-// Terminal Turntable Audio Engine
-const matrixNP = document.getElementById('matrix-now-playing');
-const matrixArtist = document.getElementById('matrix-artist');
-const btnPlay = document.getElementById('btn-play-pause');
-const record = document.getElementById('turntable-disc');
-
-let songs = [];
-let currentSongIndex = 0;
-let isPlaying = false;
-let durSec = 180;
-let elapSec = 0;
-let timer = null;
-
-function play() {
-    if(elapSec >= durSec) return nextSong();
-    isPlaying = true; 
-    record.classList.add('playing');
-    btnPlay.textContent = "⏸";
-    if (timer) clearInterval(timer);
-    timer = setInterval(() => {
-        elapSec++;
-        if(elapSec >= durSec) { pause(); setTimeout(nextSong, 1000); }
-    }, 1000);
-}
-
-function pause() {
-    isPlaying = false; 
-    record.classList.remove('playing');
-    btnPlay.textContent = "▶"; 
-    if (timer) clearInterval(timer);
-}
-
-function loadSong(index) {
-    if(!songs.length) return;
-    currentSongIndex = index !== undefined ? (index + songs.length) % songs.length : Math.floor(Math.random() * songs.length);
-
-    const s = songs[currentSongIndex];
-    const songTitle = s[0] ? s[0].replace(/"/g, '').trim() : "Unknown Track";
-    const songArtist = s[1] ? s[1].replace(/"/g, '').trim() : "Unknown Artist";
-    const songUrl = (s[3] && s[3].trim() !== '' && s[3].trim() !== '#') ? s[3].trim() : null;
-
-    if (matrixNP) {
-        matrixNP.textContent = songTitle;
-        if (songUrl) {
-            matrixNP.href = songUrl;
-            matrixNP.setAttribute('target', '_blank');
-            matrixNP.setAttribute('rel', 'noopener noreferrer');
-            matrixNP.style.pointerEvents = 'auto';
-            matrixNP.style.cursor = 'pointer';
+// Robust CSV Line Parser for Turntable Engine
+function parseCSVLine(str) {
+    const arr = [];
+    let quote = false;
+    let col = '';
+    for (let c = 0; c < str.length; c++) {
+        const cc = str[c];
+        const nc = str[c+1];
+        if (cc === '"') {
+            if (quote && nc === '"') { col += '"'; c++; }
+            else { quote = !quote; }
+        } else if (cc === ',' && !quote) {
+            arr.push(col.trim());
+            col = '';
         } else {
-            matrixNP.removeAttribute('href');
-            matrixNP.style.pointerEvents = 'none';
+            col += cc;
         }
     }
-    if (matrixArtist) matrixArtist.textContent = songArtist;
-
-    let t = (s[2] || "3:00").replace(/"/g, '').trim().split(':'); 
-    durSec = (parseInt(t[0]) || 3) * 60 + (parseInt(t[1]) || 0);
-    elapSec = 0; 
-    play();
+    arr.push(col.trim());
+    return arr;
 }
 
-function prevSong() { pause(); loadSong(currentSongIndex - 1); }
-function nextSong() { pause(); loadSong(currentSongIndex + 1); }
-
-btnPlay.onclick = () => isPlaying ? pause() : play();
-document.getElementById('btn-prev').onclick = prevSong;
-document.getElementById('btn-next').onclick = nextSong;
-
-// Primary fetch from Music/songs.csv with fallback to songs.csv
-fetch('Music/songs.csv')
-    .catch(() => fetch('songs.csv'))
-    .then(r => r.ok ? r.text() : Promise.reject())
+// Turntable Fetch Engine (Points to root songs.csv)
+fetch('songs.csv')
+    .then(r => {
+        if (!r.ok) throw new Error("HTTP Error " + r.status);
+        return r.text();
+    })
     .then(t => {
-        songs = t.split('\n')
-            .map(l => l.split(','))
-            .filter(r => r.length > 1 && r[0].trim() !== '');
+        if (t.trim().startsWith('<')) throw new Error("Received HTML response instead of CSV");
         
-        // Remove CSV header if present
+        songs = t.split(/\r?\n/)
+            .filter(l => l.trim() !== '')
+            .map(l => parseCSVLine(l));
+        
         if (songs.length > 0 && songs[0][0].toLowerCase().includes('title')) {
-            songs.shift();
+            songs.shift(); // Remove header row
         }
         if (songs.length) loadSong(0);
     })
     .catch(() => {
-        if (matrixNP) matrixNP.textContent = "Unable to load songs.csv";
-        if (matrixArtist) matrixArtist.textContent = "Check file location";
+        if (matrixNP) matrixNP.textContent = "songs.csv Not Found";
+        if (matrixArtist) matrixArtist.textContent = "Place songs.csv in root";
     });
 
-// Initialize Default Windows
-openWindow('terminal-window');
-setTimeout(() => { openWindow('netmap-window'); }, 300);
-    </script>
-
-    <script src="/gh-graph.js" data-username="tnm-yes-anyidea"></script>
+<script src="/gh-graph.js" data-username="tnm-yes-anyidea"></script>
 </body>
 </html>
