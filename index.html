@@ -23,48 +23,37 @@
             --cyan: #55e6d0;
             --green: #8be28b;
             --status-idle: #f5c451;
+            --taskbar-height: 48px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
+        html { width: 100%; min-height: 100%; overflow: hidden; -webkit-text-size-adjust: 100%; }
+
         body {
             font-family: 'JetBrains Mono', monospace;
             color: var(--text-main);
-            min-height: 100vh;
-            width: 100%;
-            overflow-x: hidden;
+            min-height: 100dvh; height: 100dvh; width: 100%;
+            overflow: hidden; overscroll-behavior: none;
             background: url('meddling.png') no-repeat center center fixed, var(--bg-base);
             background-size: cover;
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
         }
 
         /* ===== DESKTOP ICONS ===== */
         .desktop-area {
-            flex-grow: 1;
-            position: relative;
-            padding: 20px;
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-            flex-wrap: wrap;
-            align-content: flex-start;
-            z-index: 1;
-            overflow-y: auto;
+            flex-grow: 1; position: relative; padding: 18px;
+            padding-bottom: calc(var(--taskbar-height) + 18px);
+            display: flex; flex-direction: row; gap: 20px; flex-wrap: wrap;
+            align-content: flex-start; z-index: 1;
+            overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
         }
 
         .desktop-icon {
-            width: 90px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background 0.2s, border 0.2s;
-            border: 1px solid transparent;
-            flex-shrink: 0;
+            width: 90px; display: flex; flex-direction: column; align-items: center;
+            text-align: center; cursor: pointer; padding: 10px; border-radius: 8px;
+            transition: background 0.2s, border 0.2s; border: 1px solid transparent;
+            flex-shrink: 0; -webkit-tap-highlight-color: transparent;
         }
         .desktop-icon:hover { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); }
         .icon-graphic { font-size: 2.8rem; margin-bottom: 8px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
@@ -72,37 +61,26 @@
 
         /* ===== WINDOW MANAGER ===== */
         .window {
-            position: fixed;
-            border: 1px solid rgba(148, 163, 184, 0.24);
-            border-radius: 12px;
-            background: rgba(7, 11, 21, 0.85);
-            box-shadow: 0 30px 90px rgba(0,0,0,.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            position: fixed; border: 1px solid rgba(148, 163, 184, 0.24); border-radius: 12px;
+            background: rgba(7, 11, 21, 0.85); box-shadow: 0 30px 90px rgba(0,0,0,.6);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; overflow: hidden;
             transition: transform 0.2s ease, opacity 0.2s ease;
+            max-width: calc(100vw - 24px); max-height: calc(100dvh - var(--taskbar-height) - 16px);
         }
         
-        .window.maximized { top: 0 !important; left: 0 !important; width: 100vw !important; height: calc(100vh - 45px) !important; border-radius: 0; transform: none; }
+        .window.maximized { top: 0 !important; left: 0 !important; width: 100% !important; height: calc(100dvh - var(--taskbar-height)) !important; max-width: none; max-height: none; border-radius: 0; transform: none; }
         .window.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
 
         .dashboard-header {
-            padding: 13px 18px;
-            background: rgba(255,255,255,.05);
-            border-bottom: 1px solid rgba(148,163,184,.18);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: grab;
-            user-select: none;
-            flex-shrink: 0;
+            padding: 13px 18px; background: rgba(255,255,255,.05); border-bottom: 1px solid rgba(148,163,184,.18);
+            display: flex; align-items: center; justify-content: space-between;
+            cursor: grab; user-select: none; flex-shrink: 0;
         }
         .dashboard-header:active { cursor: grabbing; }
 
         .window-controls { display: flex; gap: 8px; }
-        .win-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: filter 0.2s; border: 0;}
+        .win-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: filter 0.2s; -webkit-tap-highlight-color: transparent;}
         .win-dot:hover { filter: brightness(1.2); }
         .win-dot.r { background: var(--red); box-shadow: 0 0 12px var(--red); }
         .win-dot.y { background: var(--yellow); box-shadow: 0 0 12px var(--yellow); }
@@ -111,15 +89,14 @@
         .header-title { color: #cbd5e1; letter-spacing: 2px; font-size: 0.8rem; font-weight: bold; pointer-events: none; }
         .environment-badge { font-size: 0.75rem; color: var(--cyan); background: rgba(85,230,208,.06); border: 1px solid rgba(85,230,208,.22); border-radius: 999px; padding: 2px 8px; }
 
-        /* Window Sizes - Responsive */
+        /* Window Sizes */
         .dashboard-container { width: clamp(300px, 95vw, 1050px); height: clamp(400px, 88vh, 88vh); top: 3%; left: 5%; }
         .file-viewer-window { width: clamp(300px, 90vw, 600px); height: clamp(300px, 80vh, 450px); top: 15%; left: 5%; }
-        .elisa-container { width: clamp(300px, 90vw, 750px); height: clamp(350px, 80vh, 480px); top: 10%; left: 5%; background: rgba(18, 20, 31, 0.95); }
         .netmap-container { width: clamp(300px, 90vw, 650px); height: clamp(300px, 80vh, 500px); top: 8%; left: 5%; }
 
         /* ===== TERMINAL STYLES ===== */
-        .dashboard-grid { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; flex-grow: 1; overflow: hidden; gap: 0; }
-        .side-panel { background: rgba(255,255,255,.018); border-right: 1px solid rgba(148,163,184,.18); padding: clamp(15px, 3vw, 30px); display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
+        .dashboard-grid { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; flex-grow: 1; overflow: hidden; gap: 0; min-height: 0; }
+        .side-panel { background: rgba(255,255,255,.018); border-right: 1px solid rgba(148,163,184,.18); padding: clamp(15px, 3vw, 30px); display: flex; flex-direction: column; align-items: center; overflow-y: auto; min-width: 0; }
         .profile-container { position: relative; margin-bottom: 25px; width: clamp(100px, 20vw, 135px); height: clamp(100px, 20vw, 135px); }
         .avatar { width: 100%; height: 100%; object-fit: cover; border: 1px solid rgba(103,183,255,.45); border-radius: 16px; box-shadow: 0 0 0 5px rgba(103,183,255,.04), 0 15px 35px rgba(0,0,0,.2); }
         .status-dot-discord { position: absolute; bottom: -2px; right: -2px; width: 24px; height: 24px; background-color: var(--bg-surface); border: 2px solid #0a0f1b; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
@@ -129,701 +106,149 @@
         .sys-handle { font-size: 0.85rem; color: #7f8da3; margin-top: 2px; }
         .neofetch-list { width: 100%; font-size: 0.75rem; line-height: 1.6; border-top: 1px solid rgba(148,163,184,.16); padding-top: 20px; }
         .neofetch-line b { color: var(--magenta); font-weight: normal; }
+
+        /* --- TURNTABLE MINI PLAYER --- */
+        .mini-player {
+            margin-top: 15px; padding-top: 15px;
+            border-top: 1px dashed rgba(148,163,184,0.2);
+            display: flex; align-items: center; gap: 15px;
+        }
+        .turntable {
+            width: 44px; height: 44px; border-radius: 50%; background: #111;
+            box-shadow: 0 0 0 1px #000, inset 0 0 0 3px #1a1a1a, inset 0 0 0 7px #111, inset 0 0 0 10px #1a1a1a, inset 0 0 0 14px #111;
+            position: relative; display: flex; justify-content: center; align-items: center;
+            flex-shrink: 0;
+        }
+        .turntable::after {
+            content: ''; width: 12px; height: 12px; background: var(--blue);
+            border-radius: 50%; border: 1px solid #000;
+        }
+        .turntable.playing { animation: spin 2s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
         
-        .main-content { padding: clamp(15px, 3vw, 30px); display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
+        .player-info { display: flex; flex-direction: column; gap: 6px; overflow: hidden; flex-grow: 1; }
+        .player-track { font-size: 0.75rem; font-weight: bold; color: var(--cyan); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: none; }
+        .player-track:hover { text-decoration: underline; color: var(--blue); }
+        .player-artist { font-size: 0.65rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: -4px;}
+        .player-controls { display: flex; gap: 14px; align-items: center; }
+        .p-btn { background: none; border: none; color: var(--text-main); font-size: 1rem; cursor: pointer; padding: 0; transition: color 0.2s, transform 0.1s; display: flex; align-items: center; justify-content: center; }
+        .p-btn:hover { color: var(--blue); transform: scale(1.15); }
+        .p-btn:active { transform: scale(0.9); }
+        .p-btn.play { color: var(--blue); font-size: 1.15rem; }
+
+        .main-content { padding: clamp(15px, 3vw, 30px); display: flex; flex-direction: column; gap: 20px; overflow-y: auto; min-width: 0; }
         .content-section { display: flex; flex-direction: column; gap: 12px; }
         .section-header { font-size: 0.75rem; font-weight: bold; color: #b9c5d8; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; }
         .section-header::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, rgba(148,163,184,.35), transparent); }
         .matrix-box { background: rgba(15, 22, 38, .68); border: 1px solid rgba(148,163,184,.18); border-radius: 12px; padding: clamp(12px, 2vw, 20px); font-size: 0.8rem; line-height: 1.5; }
         .runtime-stream { color: #cbd5e1; border-left: 2px solid rgba(103,183,255,.55); }
         .matrix-row { display: flex; flex-wrap: wrap; margin-bottom: 8px; gap: 8px; }
-        .matrix-key { color: var(--blue); min-width: 100px; flex-shrink: 0; font-size: 0.75rem; }
-        .matrix-val { color: var(--text-main); font-size: 0.75rem; }
+        .matrix-key { color: var(--blue); min-width: 100px; flex-shrink: 0; font-size: 0.75rem; overflow-wrap: anywhere; word-break: break-word; }
+        .matrix-val { color: var(--text-main); font-size: 0.75rem; overflow-wrap: anywhere; word-break: break-word; }
         .graph-box { padding: 12px; }
         #gh-graph { width: 100%; height: auto; min-height: 160px; max-height: 300px; display: block; overflow: visible; }
         .lualine-bar { display: flex; background: rgba(3,7,15,.72); border-top: 1px solid rgba(148,163,184,.14); font-size: 0.7rem; font-weight: bold; flex-shrink: 0; flex-wrap: wrap; }
         .lua-seg { padding: 6px 12px; display: flex; align-items: center; white-space: nowrap; }
         .lua-mode { background: #161d2e; color: var(--cyan); }
-        .lua-loc, .lua-clock { background: rgba(255,255,255,.025); border-color: rgba(148,163,184,.14); color: #aab6c8; }
         .lua-file { color: var(--text-muted); font-weight: normal; margin-left: 10px; align-self: center; overflow: hidden; text-overflow: ellipsis; }
 
-        /* ===== ELISA MUSIC PLAYER ===== */
-        .elisa-body { display: flex; flex-grow: 1; overflow: hidden; flex-direction: column; }
-        .elisa-sidebar { width: 100%; max-width: 180px; background: rgba(0,0,0,0.3); border-right: 1px solid var(--border-color); padding: 12px 10px; display: flex; flex-direction: row; gap: 6px; font-size: 0.75rem; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border-color); }
-        .elisa-nav-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; gap: 8px; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
-        .elisa-nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
-        .elisa-nav-item.active { background: var(--blue); color: #000; font-weight: bold; }
-        .elisa-main { flex-grow: 1; display: flex; flex-direction: column; position: relative; }
-        .elisa-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle at center, rgba(103,183,255,0.05) 0%, transparent 70%); }
-        .elisa-bottom-bar { height: auto; min-height: 70px; background: rgba(0,0,0,0.4); border-top: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: stretch; justify-content: space-between; padding: 12px 16px; gap: 8px; }
-        
-        .elisa-track-info { flex: 1; overflow: hidden; min-width: 0; }
-        .np-title { font-weight: bold; font-size: 0.9rem; color: var(--text-main); margin-bottom: 4px; text-decoration: none; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .np-title:hover { color: var(--blue); text-decoration: underline; }
-        .np-artist { font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .elisa-controls { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; justify-content: center; }
-        .control-btns { display: flex; gap: 12px; align-items: center; justify-content: center; }
-        .elisa-btn { background: none; border: none; color: var(--text-main); font-size: 1rem; cursor: pointer; transition: color 0.2s; }
-        .elisa-btn:hover { color: var(--blue); }
-        .elisa-btn.play { font-size: 1.4rem; color: var(--blue); }
-        .elisa-btn.play:hover { color: var(--cyan); }
-        
-        .progress-container { width: 100%; display: flex; align-items: center; gap: 8px; font-size: 0.65rem; color: var(--text-muted); }
-        .progress-bar { flex-grow: 1; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative; overflow: hidden; }
-        .progress-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--blue); width: 0%; transition: width 1s linear; }
-
-        .elisa-extra { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
-
-        /* Vinyl Visual in Elisa */
-        .vinyl-visual { position: relative; width: clamp(150px, 30vw, 220px); height: clamp(150px, 30vw, 220px); display: flex; justify-content: center; align-items: center; margin-bottom: 12px; }
-        .record { width: 90%; height: 90%; background-color: #121212; border-radius: 50%; border: 4px solid #2a2a2a; position: relative; display: flex; justify-content: center; align-items: center; }
-        .record.playing { animation: spinRecord 2.5s linear infinite; }
-        @keyframes spinRecord { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .record-groove { position: absolute; width: 85%; height: 85%; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 50%; }
-        .record-groove-2 { position: absolute; width: 65%; height: 65%; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 50%; }
-        .record-label { width: 66px; height: 66px; background: linear-gradient(135deg, var(--orange), var(--red)); border-radius: 50%; position: relative; border: 2px solid #1a1a1a; }
-        .record-hole { width: 12px; height: 12px; background-color: var(--bg-surface); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid #555; }
-        .tonearm { position: absolute; top: -10px; right: -15px; width: 30px; height: 140px; transform-origin: 15px 15px; transform: rotate(-15deg); transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); }
-        .tonearm.playing { transform: rotate(26deg); }
-        .tonearm-pivot { width: 30px; height: 30px; background: linear-gradient(135deg, #444, #111); border-radius: 50%; position: absolute; top: 0; left: 0; border: 2px solid #222; }
-        .tonearm-wand { width: 6px; height: 110px; background: linear-gradient(90deg, #888, #bbb, #888); position: absolute; top: 15px; left: 12px; border-radius: 3px; }
-        .tonearm-head { width: 18px; height: 30px; background-color: #222; border: 1px solid #555; position: absolute; bottom: 0; left: 6px; border-radius: 2px; transform: rotate(15deg); }
-
         /* ===== NETMAP VISUALIZER ===== */
-        .netmap-body { padding: clamp(15px, 3vw, 25px); overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 16px; }
+        .netmap-body { padding: clamp(15px, 3vw, 25px); overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
         .netmap-header-bar { font-size: 0.8rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-        .node-card { position: relative; overflow: hidden; padding: 14px 16px; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,.04); border: 1px solid rgba(148,163,184,.15); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .node-card { position: relative; overflow: hidden; padding: 14px 16px; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,.04); border: 1px solid rgba(148,163,184,.15); border-radius: 8px; cursor: pointer; transition: all 0.2s; min-width: 0; overflow-wrap: anywhere; word-break: break-word; -webkit-tap-highlight-color: transparent; }
         .node-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.06); border-color: rgba(103,183,255,.45); box-shadow: 0 10px 25px rgba(0,0,0,.3); }
         .node-meta { display: flex; flex-direction: column; gap: 4px; }
         .node-label { color: #718096; font-size: 0.7rem; font-family: sans-serif; text-transform: uppercase; letter-spacing: 1px; }
         .node-icon { color: var(--cyan); transition: transform 0.2s ease; }
         .node-card:hover .node-icon { transform: translateX(4px); }
 
-        /* File Viewer */
-        .viewer-content { padding: 16px; flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.4); font-size: 0.8rem; white-space: pre-wrap; line-height: 1.5; word-wrap: break-word; }
+        /* File Viewer & Enhanced CSV */
+        .viewer-content { padding: 16px; flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.4); font-size: 0.8rem; white-space: pre-wrap; line-height: 1.5; word-wrap: break-word; min-width: 0; overflow-wrap: anywhere; }
+        .csv-tbl tr:hover td { background: rgba(255,255,255,0.08); }
+        .folder-grid { display: flex; flex-wrap: wrap; gap: 15px; padding: 10px; }
 
         /* ===== TASKBAR ===== */
-        .taskbar { height: 45px; background: rgba(10, 15, 27, 0.95); border-top: 1px solid rgba(148, 163, 184, 0.20); display: flex; align-items: center; padding: 0 12px; z-index: 9999; flex-shrink: 0; gap: 8px; flex-wrap: wrap; overflow-y: auto; }
-        .start-btn { background: var(--blue); color: #000; font-weight: bold; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: background 0.2s; white-space: nowrap; font-size: 0.75rem; }
+        .taskbar { 
+            position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: var(--taskbar-height);
+            min-height: var(--taskbar-height); background: rgba(10, 15, 27, 0.95); 
+            border-top: 1px solid rgba(148, 163, 184, 0.20); display: flex; align-items: center; 
+            padding: 5px 10px; padding-bottom: max(5px, env(safe-area-inset-bottom));
+            z-index: 99999; gap: 8px; flex-wrap: nowrap; overflow: hidden; 
+        }
+        .start-btn { flex: 0 0 auto; min-height: 34px; background: var(--blue); color: #000; font-weight: bold; padding: 6px 13px; border-radius: 6px; cursor: pointer; transition: background 0.2s; white-space: nowrap; font-size: 0.75rem; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
         .start-btn:hover { background: var(--cyan); }
-        .taskbar-apps { flex-grow: 1; display: flex; gap: 8px; overflow-x: auto; }
-        .taskbar-app { padding: 6px 12px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 6px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .taskbar-apps { min-width: 0; flex: 1 1 auto; display: flex; gap: 8px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .taskbar-apps::-webkit-scrollbar { display: none; }
+        .taskbar-app { padding: 6px 12px; background: rgba(255,255,255,0.05); border: 1px solid transparent; border-radius: 6px; font-size: 0.7rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
         .taskbar-app.active { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-bottom: 2px solid var(--blue); }
         .taskbar-app:hover { background: rgba(255,255,255,0.1); }
-        .taskbar-clock { font-size: 0.75rem; white-space: nowrap; }
+        .taskbar-clock { flex: 0 0 auto; min-width: 62px; text-align: right; font-size: 0.75rem; white-space: nowrap; }
 
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .side-panel { border-right: none; border-bottom: 1px solid rgba(148,163,184,.18); padding: 15px; max-height: 200px; overflow-y: auto; }
-            .elisa-sidebar { flex-direction: row; max-width: 100%; border-bottom: 1px solid var(--border-color); border-right: none; }
-            .elisa-body { flex-direction: column; }
-            .desktop-icon { width: 70px; }
-            .icon-graphic { font-size: 2rem; }
-            .icon-name { font-size: 0.65rem; }
-            .window { position: fixed !important; }
-            .dashboard-container { width: 100vw !important; height: 100vh !important; top: 0 !important; left: 0 !important; border-radius: 0; }
-            .elisa-container { width: 100vw !important; height: 100vh !important; top: 0 !important; left: 0 !important; border-radius: 0; }
-            .netmap-container { width: 100vw !important; height: 100vh !important; top: 0 !important; left: 0 !important; border-radius: 0; }
-            .file-viewer-window { width: 100vw !important; height: 100vh !important; top: 0 !important; left: 0 !important; border-radius: 0; }
-        }
+        img, svg, canvas, video { max-width: 100%; }
 
-        @media (max-width: 480px) {
-            body { font-size: 12px; }
-            .taskbar { height: auto; padding: 8px; }
-            .lua-seg { padding: 4px 8px; font-size: 0.6rem; }
-            .desktop-icon { width: 60px; }
-            .icon-graphic { font-size: 1.5rem; margin-bottom: 4px; }
-            .icon-name { font-size: 0.55rem; }
-        }
-
-        /* =========================================================
-           UNIVERSAL RESPONSIVE / MOBILE-FIRST POLISH
-           ========================================================= */
-
-        :root {
-            --taskbar-height: 48px;
-            --mobile-gutter: 12px;
-        }
-
-        html {
-            width: 100%;
-            min-height: 100%;
-            overflow: hidden;
-            -webkit-text-size-adjust: 100%;
-        }
-
-        body {
-            width: 100%;
-            min-height: 100dvh;
-            height: 100dvh;
-            overflow: hidden;
-            overscroll-behavior: none;
-        }
-
-        .desktop-area {
-            width: 100%;
-            min-height: 0;
-            padding: 18px;
-            padding-bottom: calc(var(--taskbar-height) + 18px);
-            overflow-y: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* Bottom OS-style taskbar: always visible and never covered by windows. */
-        .taskbar {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: var(--taskbar-height);
-            min-height: var(--taskbar-height);
-            padding: 5px 10px;
-            padding-bottom: max(5px, env(safe-area-inset-bottom));
-            z-index: 99999;
-            flex-wrap: nowrap;
-            overflow: hidden;
-        }
-
-        .start-btn {
-            flex: 0 0 auto;
-            min-height: 34px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6px 13px;
-        }
-
-        .taskbar-apps {
-            min-width: 0;
-            flex: 1 1 auto;
-            overflow-x: auto;
-            overflow-y: hidden;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .taskbar-apps::-webkit-scrollbar {
-            display: none;
-        }
-
-        .taskbar-clock {
-            flex: 0 0 auto;
-            min-width: 62px;
-            text-align: right;
-        }
-
-        /* Every window stops above the bottom taskbar. */
-        .window {
-            max-width: calc(100vw - 24px);
-            max-height: calc(100dvh - var(--taskbar-height) - 16px);
-        }
-
-        .window.maximized {
-            width: 100% !important;
-            height: calc(100dvh - var(--taskbar-height)) !important;
-            max-width: none;
-            max-height: none;
-            top: 0 !important;
-            left: 0 !important;
-        }
-
-        .dashboard-grid {
-            min-height: 0;
-        }
-
-        .main-content,
-        .side-panel,
-        .netmap-body,
-        .viewer-content {
-            min-width: 0;
-            scrollbar-width: thin;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .matrix-val,
-        .matrix-key,
-        .node-card,
-        .viewer-content {
-            overflow-wrap: anywhere;
-            word-break: break-word;
-        }
-
-        .node-card {
-            min-width: 0;
-        }
-
-        img, svg, canvas, video {
-            max-width: 100%;
-        }
-
-        button,
-        .desktop-icon,
-        .taskbar-app,
-        .start-btn,
-        .win-dot,
-        .node-card,
-        .elisa-nav-item {
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Tablet */
+        /* Tablet Responsive */
         @media (max-width: 900px) {
-            .dashboard-container {
-                width: calc(100vw - 24px);
-                height: calc(100dvh - var(--taskbar-height) - 24px);
-                top: 10px;
-                left: 12px;
-            }
-
-            .file-viewer-window,
-            .elisa-container,
-            .netmap-container {
-                width: calc(100vw - 24px);
-                max-width: none;
-                max-height: calc(100dvh - var(--taskbar-height) - 24px);
-            }
-
-            .dashboard-grid {
-                grid-template-columns: minmax(175px, 30%) 1fr;
-            }
-
-            .elisa-body {
-                flex-direction: row;
-            }
-
-            .elisa-sidebar {
-                width: 150px;
-                max-width: 150px;
-                height: 100%;
-                flex-direction: column;
-                overflow-x: hidden;
-                overflow-y: auto;
-                border-right: 1px solid var(--border-color);
-                border-bottom: none;
-            }
-
-            .elisa-bottom-bar {
-                flex-direction: row;
-                align-items: center;
-            }
-
-            .nodes-grid {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            }
+            .dashboard-container { width: calc(100vw - 24px); height: calc(100dvh - var(--taskbar-height) - 24px); top: 10px; left: 12px; }
+            .file-viewer-window, .netmap-container { width: calc(100vw - 24px); max-width: none; max-height: calc(100dvh - var(--taskbar-height) - 24px); }
+            .dashboard-grid { grid-template-columns: minmax(175px, 30%) 1fr; }
+            .nodes-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
         }
 
-        /* Phones */
+        /* Mobile Phone Responsive */
         @media (max-width: 600px) {
-            :root {
-                --taskbar-height: 54px;
-            }
-
-            .desktop-area {
-                padding: 10px;
-                padding-bottom: calc(var(--taskbar-height) + 10px);
-                gap: 8px;
-            }
-
-            .desktop-icon {
-                width: clamp(64px, 18vw, 82px);
-                padding: 7px 4px;
-                border-radius: 10px;
-            }
-
-            .icon-graphic {
-                font-size: clamp(1.7rem, 8vw, 2.3rem);
-                margin-bottom: 4px;
-            }
-
-            .icon-name {
-                font-size: clamp(0.58rem, 2.5vw, 0.7rem);
-                line-height: 1.2;
-            }
-
-            .window,
-            .dashboard-container,
-            .elisa-container,
-            .netmap-container,
-            .file-viewer-window {
-                width: 100% !important;
-                max-width: none !important;
-                height: calc(100dvh - var(--taskbar-height)) !important;
-                max-height: none !important;
-                top: 0 !important;
-                left: 0 !important;
-                border-radius: 0;
-                border-left: 0;
-                border-right: 0;
-                border-bottom: 0;
-            }
-
-            .dashboard-header {
-                min-height: 48px;
-                padding: 10px 12px;
-                gap: 8px;
-            }
-
-            .window-controls {
-                gap: 10px;
-                flex: 0 0 auto;
-            }
-
-            .win-dot {
-                width: 14px;
-                height: 14px;
-            }
-
-            .header-title {
-                min-width: 0;
-                max-width: 52vw;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                font-size: 0.7rem;
-            }
-
-            .environment-badge {
-                display: none;
-            }
-
-            /* System Core becomes a natural phone layout. */
-            .dashboard-grid {
-                display: flex;
-                flex-direction: column;
-                min-height: 0;
-            }
-
-            .side-panel {
-                flex: 0 0 auto;
-                width: 100%;
-                max-height: 145px;
-                min-height: 0;
-                padding: 10px 12px;
-                flex-direction: row;
-                align-items: center;
-                gap: 12px;
-                overflow-x: auto;
-                overflow-y: hidden;
-                border-right: none;
-                border-bottom: 1px solid rgba(148,163,184,.18);
-            }
-
-            .profile-container {
-                flex: 0 0 72px;
-                width: 72px;
-                height: 72px;
-                margin: 0;
-            }
-
-            .status-dot-discord {
-                width: 20px;
-                height: 20px;
-            }
-
-            .status-dot-discord::after {
-                width: 11px;
-                height: 11px;
-            }
-
-            .sys-identity {
-                width: auto;
-                min-width: 105px;
-                margin: 0;
-                text-align: left;
-            }
-
-            .sys-name {
-                font-size: 1rem;
-            }
-
-            .sys-handle {
-                font-size: 0.7rem;
-            }
-
-            .neofetch-list {
-                min-width: max-content;
-                width: auto;
-                margin: 0;
-                padding: 0 0 0 12px;
-                border-top: 0;
-                border-left: 1px solid rgba(148,163,184,.16);
-                font-size: 0.65rem;
-                line-height: 1.5;
-            }
-
-            .main-content {
-                min-height: 0;
-                padding: 12px;
-                gap: 14px;
-            }
-
-            .matrix-row {
-                display: grid;
-                grid-template-columns: minmax(82px, 105px) 1fr;
-                gap: 6px;
-            }
-
-            .matrix-key,
-            .matrix-val {
-                min-width: 0;
-                font-size: 0.68rem;
-            }
-
-            .matrix-box {
-                padding: 11px;
-                font-size: 0.72rem;
-            }
-
-            .section-header {
-                font-size: 0.65rem;
-                letter-spacing: 1.4px;
-            }
-
-            #gh-graph {
-                min-height: 130px;
-            }
-
-            /* Elisa: compact phone player. */
-            .elisa-body {
-                flex-direction: column;
-                min-height: 0;
-            }
-
-            .elisa-sidebar {
-                width: 100%;
-                max-width: none;
-                height: auto;
-                max-height: 48px;
-                padding: 7px 8px;
-                flex-direction: row;
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-                overflow-x: auto;
-                overflow-y: hidden;
-            }
-
-            .elisa-nav-item {
-                padding: 7px 9px;
-                font-size: 0.65rem;
-            }
-
-            .elisa-nav-item:nth-child(n+4) {
-                display: none;
-            }
-
-            .elisa-main {
-                min-height: 0;
-            }
-
-            .elisa-view {
-                min-height: 0;
-                padding: 12px;
-            }
-
-            .vinyl-visual {
-                width: clamp(145px, 52vw, 205px);
-                height: clamp(145px, 52vw, 205px);
-            }
-
-            .tonearm {
-                transform: scale(.82) rotate(-15deg);
-                transform-origin: 15px 15px;
-            }
-
-            .tonearm.playing {
-                transform: scale(.82) rotate(26deg);
-            }
-
-            .elisa-bottom-bar {
-                min-height: 128px;
-                padding: 10px 12px;
-                gap: 8px;
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .elisa-track-info,
-            .elisa-controls,
-            .elisa-extra {
-                flex: 0 0 auto;
-                width: 100%;
-            }
-
-            .elisa-controls {
-                gap: 6px;
-            }
-
-            .elisa-extra {
-                display: none;
-            }
-
-            .control-btns {
-                gap: 20px;
-            }
-
-            .progress-container {
-                width: 100%;
-            }
-
-            /* NetMap cards become one column when the phone is narrow. */
-            .netmap-body {
-                padding: 12px;
-                gap: 12px;
-            }
-
-            .nodes-grid {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .node-card {
-                padding: 12px;
-                font-size: 0.78rem;
-            }
-
-            .node-label {
-                font-size: 0.62rem;
-            }
-
-            .viewer-content {
-                padding: 12px;
-                font-size: 0.72rem;
-            }
-
-            .taskbar {
-                gap: 6px;
-                padding-left: 8px;
-                padding-right: 8px;
-            }
-
-            .start-btn {
-                font-size: 0.68rem;
-                padding: 6px 10px;
-            }
-
-            .taskbar-app {
-                padding: 6px 9px;
-                font-size: 0.62rem;
-            }
-
-            .taskbar-clock {
-                font-size: 0.65rem;
-                min-width: 54px;
-            }
+            :root { --taskbar-height: 54px; }
+            .desktop-area { padding: 10px; padding-bottom: calc(var(--taskbar-height) + 10px); gap: 8px; }
+            .desktop-icon { width: clamp(64px, 18vw, 82px); padding: 7px 4px; border-radius: 10px; }
+            .icon-graphic { font-size: clamp(1.7rem, 8vw, 2.3rem); margin-bottom: 4px; }
+            .icon-name { font-size: clamp(0.58rem, 2.5vw, 0.7rem); line-height: 1.2; }
+            .window, .dashboard-container, .netmap-container, .file-viewer-window { width: 100% !important; max-width: none !important; height: calc(100dvh - var(--taskbar-height)) !important; max-height: none !important; top: 0 !important; left: 0 !important; border-radius: 0; border: 0; }
+            .dashboard-header { min-height: 48px; padding: 10px 12px; gap: 8px; }
+            .window-controls { gap: 10px; flex: 0 0 auto; }
+            .win-dot { width: 14px; height: 14px; }
+            .header-title { min-width: 0; max-width: 52vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.7rem; }
+            .dashboard-grid { display: flex; flex-direction: column; min-height: 0; }
+            .side-panel { flex: 0 0 auto; width: 100%; max-height: 220px; min-height: 0; padding: 10px 12px; flex-direction: row; align-items: flex-start; gap: 12px; overflow-x: auto; overflow-y: hidden; border-right: none; border-bottom: 1px solid rgba(148,163,184,.18); }
+            .profile-container { flex: 0 0 72px; width: 72px; height: 72px; margin: 0; }
+            .status-dot-discord { width: 20px; height: 20px; }
+            .status-dot-discord::after { width: 11px; height: 11px; }
+            .sys-identity { display: none; } /* Hide names to save space, avatar is enough */
+            .neofetch-list { min-width: max-content; width: auto; margin: 0; padding: 0 0 0 12px; border-top: 0; border-left: 1px solid rgba(148,163,184,.16); font-size: 0.65rem; line-height: 1.5; }
+            .mini-player { flex-direction: row; margin-top: 10px; padding-top: 10px; }
+            .turntable { width: 36px; height: 36px; }
+            .turntable::after { width: 10px; height: 10px; }
+            .main-content { min-height: 0; padding: 12px; gap: 14px; }
+            .matrix-row { display: grid; grid-template-columns: minmax(82px, 105px) 1fr; gap: 6px; }
+            .matrix-key, .matrix-val { min-width: 0; font-size: 0.68rem; }
+            .matrix-box { padding: 11px; font-size: 0.72rem; }
+            .section-header { font-size: 0.65rem; letter-spacing: 1.4px; }
+            #gh-graph { min-height: 130px; }
+            .netmap-body { padding: 12px; gap: 12px; }
+            .nodes-grid { grid-template-columns: 1fr; gap: 8px; }
+            .node-card { padding: 12px; font-size: 0.78rem; }
+            .node-label { font-size: 0.62rem; }
+            .viewer-content { padding: 12px; font-size: 0.72rem; }
+            .taskbar { gap: 6px; padding-left: 8px; padding-right: 8px; padding-bottom: max(5px, env(safe-area-inset-bottom)); height: calc(var(--taskbar-height) + env(safe-area-inset-bottom)); }
+            .window, .window.maximized { height: calc(100dvh - var(--taskbar-height) - env(safe-area-inset-bottom)) !important; }
+            .start-btn { font-size: 0.68rem; padding: 6px 10px; }
+            .taskbar-app { padding: 6px 9px; font-size: 0.62rem; }
+            .taskbar-clock { font-size: 0.65rem; min-width: 54px; }
         }
 
-        /* Very small phones / narrow portrait displays. */
+        /* Small Phones */
         @media (max-width: 380px) {
-            .desktop-area {
-                gap: 5px;
-            }
-
-            .desktop-icon {
-                width: 62px;
-            }
-
-            .icon-graphic {
-                font-size: 1.5rem;
-            }
-
-            .icon-name {
-                font-size: 0.52rem;
-            }
-
-            .side-panel {
-                max-height: 128px;
-            }
-
-            .profile-container {
-                flex-basis: 58px;
-                width: 58px;
-                height: 58px;
-            }
-
-            .sys-name {
-                font-size: 0.85rem;
-            }
-
-            .neofetch-list {
-                font-size: 0.58rem;
-            }
-
-            .main-content {
-                padding: 9px;
-            }
-
-            .matrix-row {
-                grid-template-columns: 76px 1fr;
-            }
-
-            .matrix-key,
-            .matrix-val {
-                font-size: 0.62rem;
-            }
-
-            .taskbar-apps {
-                gap: 4px;
-            }
-
-            .taskbar-app {
-                padding: 6px 7px;
-            }
+            .desktop-area { gap: 5px; }
+            .desktop-icon { width: 62px; }
+            .icon-graphic { font-size: 1.5rem; }
+            .icon-name { font-size: 0.52rem; }
+            .profile-container { flex-basis: 58px; width: 58px; height: 58px; }
+            .neofetch-list { font-size: 0.58rem; }
+            .main-content { padding: 9px; }
+            .matrix-row { grid-template-columns: 76px 1fr; }
+            .matrix-key, .matrix-val { font-size: 0.62rem; }
+            .taskbar-apps { gap: 4px; }
+            .taskbar-app { padding: 6px 7px; }
         }
-
-        /* Landscape phones: give the content more horizontal room. */
-        @media (max-width: 900px) and (orientation: landscape) {
-            .side-panel {
-                max-height: 105px;
-            }
-
-            .profile-container {
-                width: 58px;
-                height: 58px;
-            }
-
-            .elisa-bottom-bar {
-                min-height: 82px;
-                flex-direction: row;
-                align-items: center;
-            }
-
-            .elisa-track-info,
-            .elisa-controls {
-                flex: 1;
-            }
-
-            .elisa-extra {
-                display: flex;
-                width: auto;
-            }
-
-            .vinyl-visual {
-                width: min(34vw, 190px);
-                height: min(34vw, 190px);
-            }
-        }
-
-        /* Respect phones with a home-indicator safe area. */
-        @media (max-width: 600px) {
-            .taskbar {
-                padding-bottom: max(5px, env(safe-area-inset-bottom));
-                height: calc(var(--taskbar-height) + env(safe-area-inset-bottom));
-            }
-
-            .window {
-                height: calc(100dvh - var(--taskbar-height) - env(safe-area-inset-bottom)) !important;
-            }
-
-            .window.maximized {
-                height: calc(100dvh - var(--taskbar-height) - env(safe-area-inset-bottom)) !important;
-            }
-        }
-
     </style>
 </head>
 <body>
@@ -834,17 +259,15 @@
             <div class="icon-graphic">💻</div>
             <div class="icon-name">System_Core</div>
         </div>
-        <div class="desktop-icon" onclick="openWindow('elisa-window')">
-            <div class="icon-graphic">🎵</div>
-            <div class="icon-name">Elisa</div>
-        </div>
         <div class="desktop-icon" onclick="openWindow('netmap-window')">
             <div class="icon-graphic">🌐</div>
             <div class="icon-name">NetMap</div>
         </div>
-        <div class="desktop-icon" onclick="openFile('songs.txt', 'csv')">
-            <div class="icon-graphic">📊</div>
-            <div class="icon-name">songs</div>
+        
+        <!-- NEW FOLDER LOGIC -->
+        <div class="desktop-icon" onclick="openFolder('Music')">
+            <div class="icon-graphic">📁</div>
+            <div class="icon-name">Music</div>
         </div>
                
         <div class="desktop-icon" onclick="openFile('docs/my-resume-cv.tex', 'tex')">
@@ -852,18 +275,15 @@
             <div class="icon-name">Curriculum-Vitae</div>
         </div>
 
-        <!-- song-list begin -->
-<div class="desktop-icon" onclick="openFile('images/Pink-Floyd.png', 'png')">
+        <div class="desktop-icon" onclick="openFile('images/Pink-Floyd.png', 'png')">
             <div class="icon-graphic">🖼️</div>
             <div class="icon-name">Pink-Floyd.png</div>
         </div>
-
-<div class="desktop-icon" onclick="openFile('images/free-bird.png', 'png')">
-                    <div class="icon-graphic">🖼️</div>
-                    <div class="icon-name">Lyhnerd-Skynerd</div>
+        <div class="desktop-icon" onclick="openFile('images/free-bird.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Lyhnerd-Skynerd</div>
         </div>
-
-<div class="desktop-icon" onclick="openFile('images/Aaftaab-Album-by-The-Local-Train.png', 'png')">
+        <div class="desktop-icon" onclick="openFile('images/Aaftaab-Album-by-The-Local-Train.png', 'png')">
             <div class="icon-graphic">🖼️</div>
             <div class="icon-name">Aaftaab Album by The Local Train</div>
         </div>
@@ -871,66 +291,64 @@
             <div class="icon-graphic">🖼️</div>
             <div class="icon-name">Aalas Ka Pedh Album by The Local Train</div>
         </div>
+        <div class="desktop-icon" onclick="openFile('images/Abbey Road.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Abbey Road.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/Back-in-Black_AC⁄DC.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Back-in-Black_AC⁄DC.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/cover.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">cover.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/free-bird.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">free-bird.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/Gianni-Tre-Italian-[Non Son Degno Di Te].png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Gianni-Tre-Italian-[Non Son Degno Di Te].png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/Glassworks- Philip Glass.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Glassworks- Philip Glass.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/Holst-The_Planets.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Holst-The_Planets.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/in-rainbows.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">in-rainbows.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/kid-A-amnesia.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">kid-A-amnesia.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/meddling.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">meddling.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/ok-computer.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">ok-computer.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/Pink-Floyd.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Pink-Floyd.png</div>
+        </div>
+        <div class="desktop-icon" onclick="openFile('images/Tchaikovsky_Swan Lake -Marlinsky_Version.png', 'png')">
+            <div class="icon-graphic">🖼️</div>
+            <div class="icon-name">Tchaikovsky_Swan Lake -Marlinsky_Version.png</div>
+        </div>
 
-<div class="desktop-icon" onclick="openFile('images/Abbey Road.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Abbey Road.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/Back-in-Black_AC⁄DC.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Back-in-Black_AC⁄DC.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/cover.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">cover.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/free-bird.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">free-bird.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/Gianni-Tre-Italian-[Non Son Degno Di Te].png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Gianni-Tre-Italian-[Non Son Degno Di Te].png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/Glassworks- Philip Glass.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Glassworks- Philip Glass.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/Holst-The_Planets.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Holst-The_Planets.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/in-rainbows.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">in-rainbows.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/kid-A-amnesia.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">kid-A-amnesia.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/meddling.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">meddling.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/ok-computer.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">ok-computer.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/Pink-Floyd.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Pink-Floyd.png</div>
-</div>
-<div class="desktop-icon" onclick="openFile('images/Tchaikovsky_Swan Lake -Marlinsky_Version.png', 'png')">
-    <div class="icon-graphic">🖼️</div>
-    <div class="icon-name">Tchaikovsky_Swan Lake -Marlinsky_Version.png</div>
-</div>
-
-    <!-- song-list end -->
-
-<div class="desktop-icon" onclick="openFile('docs/yt-playlists/Progreming videos.csv', 'csv')">
+        <div class="desktop-icon" onclick="openFile('docs/yt-playlists/Progreming videos.csv', 'csv')">
             <div class="icon-graphic">📊</div>
             <div class="icon-name">Progreming videos.csv</div>
         </div>
+    </div>
 
     <!-- TERMINAL WINDOW -->
     <div id="terminal-window" class="window dashboard-container" style="z-index: 10;">
@@ -960,6 +378,20 @@
                     <div class="neofetch-line"><b>Shell</b>: bash</div>
                     <div class="neofetch-line"><b>WM/Editor</b>: Neovim</div>
                     <div class="neofetch-line"><b>Uptime</b>: infinite</div>
+                    
+                    <!-- NEW TURNTABLE PLAYER -->
+                    <div class="mini-player">
+                        <div class="turntable" id="turntable-disc"></div>
+                        <div class="player-info">
+                            <a href="#" id="matrix-now-playing" class="player-track" target="_blank">Loading Playlist...</a>
+                            <div class="player-artist" id="matrix-artist">System Default</div>
+                            <div class="player-controls">
+                                <button class="p-btn" id="btn-prev" title="Previous Track">⏮</button>
+                                <button class="p-btn play" id="btn-play-pause" title="Play / Pause">▶</button>
+                                <button class="p-btn" id="btn-next" title="Next Track">⏭</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="main-content">
@@ -986,73 +418,13 @@
                 </div>
             </div>
         </div>
-       <div class="lualine-bar">
-    <div class="lua-seg lua-mode">WEBRING</div>
-    <div class="lua-file">
-        <a href="https://ring.seggs.lol/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
-            WEBRING OF INDIA'S YOUNGEST TECH-Nerds
-        </a>
-        <span class="cursor" style="animation: blink 1.2s step-end infinite; display: inline-block; width: 8px; height: 14px; background-color: var(--text-main);"></span>
-    </div>
-</div>
-    </div>
-
-    <!-- ELISA MUSIC PLAYER WINDOW -->
-    <div id="elisa-window" class="window elisa-container hidden" style="z-index: 11;">
-        <div class="dashboard-header" id="elisa-header">
-            <div class="window-controls">
-                <div class="win-dot r" onclick="closeWindow('elisa-window')"></div>
-                <div class="win-dot y" onclick="minimizeWindow('elisa-window')"></div>
-                <div class="win-dot g" onclick="maximizeWindow('elisa-window')"></div>
-            </div>
-            <div class="header-title">Elisa</div>
-            <div style="font-size:0.75rem; color:var(--text-muted);">Music Player</div>
-        </div>
-        <div class="elisa-body">
-            <div class="elisa-sidebar">
-                <div class="elisa-nav-item active">🎵 Now Playing</div>
-                <div class="elisa-nav-item">📁 Tracks</div>
-                <div class="elisa-nav-item">💿 Albums</div>
-                <div class="elisa-nav-item">📻 Radios</div>
-                <div style="flex-grow:1;"></div>
-                <div class="elisa-nav-item">⚙️ Settings</div>
-            </div>
-            <div class="elisa-main">
-                <div class="elisa-view">
-                    <div class="vinyl-visual">
-                        <div class="record" id="vinyl-record">
-                            <div class="record-groove"></div>
-                            <div class="record-groove-2"></div>
-                            <div class="record-label"><div class="record-hole"></div></div>
-                        </div>
-                        <div class="tonearm" id="vinyl-tonearm">
-                            <div class="tonearm-pivot"></div>
-                            <div class="tonearm-wand"></div>
-                            <div class="tonearm-head"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="elisa-bottom-bar">
-                    <div class="elisa-track-info">
-                        <a id="np-link" href="#" target="_blank" class="np-title">Loading tracks...</a>
-                        <div id="np-artist" class="np-artist">System Default</div>
-                    </div>
-                    <div class="elisa-controls">
-                        <div class="control-btns">
-                            <button class="elisa-btn">⏮</button>
-                            <button id="btn-play-pause" class="elisa-btn play">▶</button>
-                            <button id="btn-skip" class="elisa-btn">⏭</button>
-                        </div>
-                        <div class="progress-container">
-                            <span id="elisa-time-current">0:00</span>
-                            <div class="progress-bar"><div id="elisa-progress" class="progress-fill"></div></div>
-                            <span id="elisa-time-total">3:00</span>
-                        </div>
-                    </div>
-                    <div class="elisa-extra">
-                        <button class="elisa-btn">🔊</button>
-                    </div>
-                </div>
+        <div class="lualine-bar">
+            <div class="lua-seg lua-mode">WEBRING</div>
+            <div class="lua-file">
+                <a href="https://ring.seggs.lol/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+                    WEBRING OF INDIA'S YOUNGEST TECH-Nerds
+                </a>
+                <span class="cursor" style="animation: blink 1.2s step-end infinite; display: inline-block; width: 8px; height: 14px; background-color: var(--text-main);"></span>
             </div>
         </div>
     </div>
@@ -1106,9 +478,6 @@
                 <a href="https://www.youtube.com/@unconscious-hazelnut" class="node-card" target="_blank">
                     <div class="node-meta"><span class="node-label">Outreach/Educational</span><span>Youtube</span></div>
                     <span class="node-icon">→</span>
-                
-
-
                 </a>
             </div>
         </div>
@@ -1130,233 +499,302 @@
     <!-- TASKBAR -->
     <div class="taskbar">
         <div class="start-btn" onclick="alert('Start Menu implementation loading...')">❖ Start</div>
-        <div class="taskbar-apps" id="taskbar-apps">
-            <!-- Populated by JS -->
-        </div>
+        <div class="taskbar-apps" id="taskbar-apps"></div>
         <div class="taskbar-clock" id="clock">00:00 AM</div>
     </div>
 
     <script>
         // Email Node
-        document.getElementById('secure-email').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = "mailto:public_profile.barbell221@passinbox.com";
+document.getElementById('secure-email').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.location.href = "mailto:public_profile.barbell221@passinbox.com";
+});
+
+// Window Management
+let highestZ = 20;
+const windows = document.querySelectorAll('.window');
+windows.forEach(win => { win.addEventListener('mousedown', () => { bringToFront(win.id); }); });
+
+function bringToFront(id) { 
+    highestZ++; 
+    document.getElementById(id).style.zIndex = highestZ; 
+    updateTaskbarActive(id); 
+}
+
+function getAppTitle(id) {
+    if(id === 'terminal-window') return 'System_Core';
+    if(id === 'netmap-window') return 'NetMap';
+    return 'File Explorer';
+}
+
+function openWindow(id) {
+    const win = document.getElementById(id);
+    win.classList.remove('hidden');
+    bringToFront(id);
+    if(!document.getElementById('task-' + id)) {
+        const title = getAppTitle(id);
+        document.getElementById('taskbar-apps').innerHTML += `<div class="taskbar-app" id="task-${id}" onclick="toggleWindow('${id}')">${title}</div>`;
+    }
+    updateTaskbarActive(id);
+}
+
+function closeWindow(id) {
+    document.getElementById(id).classList.add('hidden');
+    const tbApp = document.getElementById('task-' + id);
+    if(tbApp) tbApp.remove();
+}
+
+function minimizeWindow(id) {
+    document.getElementById(id).classList.add('hidden');
+    const tbApp = document.getElementById('task-' + id);
+    if(tbApp) tbApp.classList.remove('active');
+}
+
+function maximizeWindow(id) {
+    document.getElementById(id).classList.toggle('maximized');
+    bringToFront(id);
+}
+
+function toggleWindow(id) {
+    const win = document.getElementById(id);
+    if (win.classList.contains('hidden')) {
+        win.classList.remove('hidden');
+        bringToFront(id);
+    } else {
+        if (win.style.zIndex == highestZ) minimizeWindow(id);
+        else bringToFront(id);
+    }
+}
+
+function updateTaskbarActive(activeId) {
+    document.querySelectorAll('.taskbar-app').forEach(app => app.classList.remove('active'));
+    const tbActive = document.getElementById('task-' + activeId);
+    if(tbActive) tbActive.classList.add('active');
+}
+
+// Draggable Controls
+function makeDraggable(winId, headerId) {
+    const win = document.getElementById(winId);
+    const header = document.getElementById(headerId);
+    let startX = 0, startY = 0, startTop = 0, startLeft = 0, dragging = false;
+
+    header.addEventListener('pointerdown', (e) => {
+        if (win.classList.contains('maximized')) return;
+        if (e.target.closest('.win-dot')) return;
+        dragging = true;
+        startX = e.clientX; startY = e.clientY;
+        startTop = win.offsetTop; startLeft = win.offsetLeft;
+        header.setPointerCapture?.(e.pointerId);
+        e.preventDefault();
+    });
+
+    header.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const nextTop = startTop + (e.clientY - startY);
+        const nextLeft = startLeft + (e.clientX - startX);
+        const taskbar = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height')) || 48;
+        const maxLeft = Math.max(0, window.innerWidth - Math.min(win.offsetWidth, window.innerWidth));
+        const maxTop = Math.max(0, window.innerHeight - taskbar - Math.min(win.offsetHeight, window.innerHeight));
+
+        win.style.left = Math.min(Math.max(0, nextLeft), maxLeft) + "px";
+        win.style.top = Math.min(Math.max(0, nextTop), maxTop) + "px";
+    });
+
+    const stopDragging = (e) => {
+        if (!dragging) return;
+        dragging = false;
+        try { header.releasePointerCapture?.(e.pointerId); } catch (_) {}
+    };
+    header.addEventListener('pointerup', stopDragging);
+    header.addEventListener('pointercancel', stopDragging);
+}
+makeDraggable('terminal-window', 'terminal-window-header');
+makeDraggable('netmap-window', 'netmap-header');
+makeDraggable('file-viewer', 'file-viewer-header');
+
+// Image Gallery
+let imageGallery = [];
+let currentImgIndex = -1;
+
+document.querySelectorAll('.desktop-icon').forEach(icon => {
+    const onclickStr = icon.getAttribute('onclick');
+    if (onclickStr && onclickStr.includes('.png')) {
+        const match = onclickStr.match(/'([^']+)'/);
+        if (match && !imageGallery.includes(match[1])) {
+            imageGallery.push(match[1]);
+        }
+    }
+});
+
+function renderImage() {
+    const content = document.getElementById('viewer-content');
+    content.innerHTML = `<img id="gallery-img" src="${imageGallery[currentImgIndex]}" style="max-width:100%; height:auto; border-radius:4px; opacity:0; transition: opacity 0.3s ease-in-out;">`;
+    setTimeout(() => { const img = document.getElementById('gallery-img'); if(img) img.style.opacity = 1; }, 10);
+    document.getElementById('viewer-title').innerText = imageGallery[currentImgIndex];
+}
+
+document.addEventListener('keydown', (e) => {
+    const viewer = document.getElementById('file-viewer');
+    if (viewer.classList.contains('hidden') || currentImgIndex === -1) return;
+    if (e.key === 'ArrowRight') { currentImgIndex = (currentImgIndex + 1) % imageGallery.length; renderImage(); }
+    else if (e.key === 'ArrowLeft') { currentImgIndex = (currentImgIndex - 1 + imageGallery.length) % imageGallery.length; renderImage(); }
+});
+
+// Folder & File Logic
+function openFolder(folderName) {
+    openWindow('file-viewer');
+    document.getElementById('viewer-title').innerText = "/home/tanmoy/Desktop/" + folderName;
+    const content = document.getElementById('viewer-content');
+    
+    if (folderName === 'Music') {
+        content.innerHTML = `
+            <div class="folder-grid">
+                <div class="desktop-icon" onclick="openFile('Music/songs.csv', 'csv')">
+                    <div class="icon-graphic" style="font-size: 2.5rem;">📊</div>
+                    <div class="icon-name" style="color: var(--text-main); text-shadow: none;">songs.csv</div>
+                </div>
+            </div>
+        `;
+    } else {
+        content.innerHTML = `<div style="color:var(--text-muted); font-style:italic;">Directory is empty.</div>`;
+    }
+    currentImgIndex = -1; 
+}
+
+function openFile(filename, ext) {
+    openWindow('file-viewer');
+    document.getElementById('viewer-title').innerText = filename;
+    const content = document.getElementById('viewer-content');
+    content.innerHTML = "Loading...";
+
+    if (ext === 'png') {
+        currentImgIndex = imageGallery.indexOf(filename);
+        if (currentImgIndex !== -1) renderImage();
+        else content.innerHTML = `<img src="${filename}" style="max-width:100%; height:auto; border-radius:4px;">`;
+        return;
+    }
+    currentImgIndex = -1;
+
+    fetch(filename)
+        .then(r => r.ok ? r.text() : Promise.reject())
+        .then(d => content.innerHTML = ext === 'csv' ? parseCSVToHTML(d) : d)
+        .catch(() => content.innerHTML = `<span style="color:var(--red);">Error: Unable to load ${filename}. Check file path.</span>`);
+}
+
+function parseCSVToHTML(text) {
+    let html = '<table class="csv-tbl" style="width:100%; border-collapse:collapse; text-align:left;">';
+    text.split('\n').forEach((row, i) => {
+        if(!row.trim()) return;
+        html += '<tr style="border-bottom: 1px solid rgba(148,163,184,0.15); transition: background 0.2s;">';
+        row.split(',').forEach(col => {
+            let c = col.replace(/"/g, '').trim();
+            html += i === 0 
+                ? `<th style="padding:12px; background:rgba(103,183,255,0.15); color:var(--blue); font-weight:bold; position:sticky; top:0; z-index:2;">${c}</th>` 
+                : `<td style="padding:12px; color:var(--text-main);">${c}</td>`;
         });
+        html += '</tr>';
+    });
+    return html + '</table>';
+}
 
-        // Window Management
-        let highestZ = 20;
-        const windows = document.querySelectorAll('.window');
-        windows.forEach(win => { win.addEventListener('mousedown', () => { bringToFront(win.id); }); });
+// Clock
+function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-IN', { hour12: true, hour: 'numeric', minute: '2-digit' }); }
+updateClock(); setInterval(updateClock, 1000);
+
+// Terminal Turntable Audio Engine
+const matrixNP = document.getElementById('matrix-now-playing');
+const matrixArtist = document.getElementById('matrix-artist');
+const btnPlay = document.getElementById('btn-play-pause');
+const record = document.getElementById('turntable-disc');
+
+let songs = [];
+let currentSongIndex = 0;
+let isPlaying = false;
+let durSec = 180;
+let elapSec = 0;
+let timer = null;
+
+function play() {
+    if(elapSec >= durSec) return nextSong();
+    isPlaying = true; 
+    record.classList.add('playing');
+    btnPlay.textContent = "⏸";
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => {
+        elapSec++;
+        if(elapSec >= durSec) { pause(); setTimeout(nextSong, 1000); }
+    }, 1000);
+}
+
+function pause() {
+    isPlaying = false; 
+    record.classList.remove('playing');
+    btnPlay.textContent = "▶"; 
+    if (timer) clearInterval(timer);
+}
+
+function loadSong(index) {
+    if(!songs.length) return;
+    currentSongIndex = index !== undefined ? (index + songs.length) % songs.length : Math.floor(Math.random() * songs.length);
+
+    const s = songs[currentSongIndex];
+    const songTitle = s[0] ? s[0].replace(/"/g, '').trim() : "Unknown Track";
+    const songArtist = s[1] ? s[1].replace(/"/g, '').trim() : "Unknown Artist";
+    const songUrl = (s[3] && s[3].trim() !== '' && s[3].trim() !== '#') ? s[3].trim() : null;
+
+    if (matrixNP) {
+        matrixNP.textContent = songTitle;
+        if (songUrl) {
+            matrixNP.href = songUrl;
+            matrixNP.setAttribute('target', '_blank');
+            matrixNP.setAttribute('rel', 'noopener noreferrer');
+            matrixNP.style.pointerEvents = 'auto';
+            matrixNP.style.cursor = 'pointer';
+        } else {
+            matrixNP.removeAttribute('href');
+            matrixNP.style.pointerEvents = 'none';
+        }
+    }
+    if (matrixArtist) matrixArtist.textContent = songArtist;
+
+    let t = (s[2] || "3:00").replace(/"/g, '').trim().split(':'); 
+    durSec = (parseInt(t[0]) || 3) * 60 + (parseInt(t[1]) || 0);
+    elapSec = 0; 
+    play();
+}
+
+function prevSong() { pause(); loadSong(currentSongIndex - 1); }
+function nextSong() { pause(); loadSong(currentSongIndex + 1); }
+
+btnPlay.onclick = () => isPlaying ? pause() : play();
+document.getElementById('btn-prev').onclick = prevSong;
+document.getElementById('btn-next').onclick = nextSong;
+
+// Primary fetch from Music/songs.csv with fallback to songs.csv
+fetch('Music/songs.csv')
+    .catch(() => fetch('songs.csv'))
+    .then(r => r.ok ? r.text() : Promise.reject())
+    .then(t => {
+        songs = t.split('\n')
+            .map(l => l.split(','))
+            .filter(r => r.length > 1 && r[0].trim() !== '');
         
-        function bringToFront(id) { 
-            highestZ++; 
-            document.getElementById(id).style.zIndex = highestZ; 
-            updateTaskbarActive(id); 
+        // Remove CSV header if present
+        if (songs.length > 0 && songs[0][0].toLowerCase().includes('title')) {
+            songs.shift();
         }
+        if (songs.length) loadSong(0);
+    })
+    .catch(() => {
+        if (matrixNP) matrixNP.textContent = "Unable to load songs.csv";
+        if (matrixArtist) matrixArtist.textContent = "Check file location";
+    });
 
-        function getAppTitle(id) {
-            if(id === 'terminal-window') return 'System_Core';
-            if(id === 'elisa-window') return 'Elisa';
-            if(id === 'netmap-window') return 'NetMap';
-            return 'File Viewer';
-        }
-
-        function openWindow(id) {
-            const win = document.getElementById(id);
-            win.classList.remove('hidden');
-            bringToFront(id);
-            if(!document.getElementById('task-' + id)) {
-                const title = getAppTitle(id);
-                document.getElementById('taskbar-apps').innerHTML += `<div class="taskbar-app" id="task-${id}" onclick="toggleWindow('${id}')">${title}</div>`;
-            }
-            updateTaskbarActive(id);
-        }
-
-        function closeWindow(id) {
-            document.getElementById(id).classList.add('hidden');
-            const tbApp = document.getElementById('task-' + id);
-            if(tbApp) tbApp.remove();
-        }
-
-        function minimizeWindow(id) {
-            document.getElementById(id).classList.add('hidden');
-            const tbApp = document.getElementById('task-' + id);
-            if(tbApp) tbApp.classList.remove('active');
-        }
-
-        function maximizeWindow(id) {
-            document.getElementById(id).classList.toggle('maximized');
-            bringToFront(id);
-        }
-
-        function toggleWindow(id) {
-            const win = document.getElementById(id);
-            if (win.classList.contains('hidden')) {
-                win.classList.remove('hidden');
-                bringToFront(id);
-            } else {
-                if (win.style.zIndex == highestZ) minimizeWindow(id);
-                else bringToFront(id);
-            }
-        }
-
-        function updateTaskbarActive(activeId) {
-            document.querySelectorAll('.taskbar-app').forEach(app => app.classList.remove('active'));
-            const tbActive = document.getElementById('task-' + activeId);
-            if(tbActive) tbActive.classList.add('active');
-        }
-
-        // Draggable — mouse + touchscreen friendly
-        function makeDraggable(winId, headerId) {
-            const win = document.getElementById(winId);
-            const header = document.getElementById(headerId);
-            let startX = 0, startY = 0, startTop = 0, startLeft = 0, dragging = false;
-
-            header.addEventListener('pointerdown', (e) => {
-                if (win.classList.contains('maximized')) return;
-                if (e.target.closest('.win-dot')) return;
-
-                dragging = true;
-                startX = e.clientX;
-                startY = e.clientY;
-                startTop = win.offsetTop;
-                startLeft = win.offsetLeft;
-
-                header.setPointerCapture?.(e.pointerId);
-                e.preventDefault();
-            });
-
-            header.addEventListener('pointermove', (e) => {
-                if (!dragging) return;
-
-                const nextTop = startTop + (e.clientY - startY);
-                const nextLeft = startLeft + (e.clientX - startX);
-
-                // Keep the window reachable on smaller displays.
-                const taskbar = parseFloat(
-                    getComputedStyle(document.documentElement).getPropertyValue('--taskbar-height')
-                ) || 48;
-                const maxLeft = Math.max(0, window.innerWidth - Math.min(win.offsetWidth, window.innerWidth));
-                const maxTop = Math.max(0, window.innerHeight - taskbar - Math.min(win.offsetHeight, window.innerHeight));
-
-                win.style.left = Math.min(Math.max(0, nextLeft), maxLeft) + "px";
-                win.style.top = Math.min(Math.max(0, nextTop), maxTop) + "px";
-            });
-
-            const stopDragging = (e) => {
-                if (!dragging) return;
-                dragging = false;
-                try { header.releasePointerCapture?.(e.pointerId); } catch (_) {}
-            };
-
-            header.addEventListener('pointerup', stopDragging);
-            header.addEventListener('pointercancel', stopDragging);
-        }
-        makeDraggable('terminal-window', 'terminal-window-header');
-        makeDraggable('elisa-window', 'elisa-header');
-        makeDraggable('netmap-window', 'netmap-header');
-        makeDraggable('file-viewer', 'file-viewer-header');
-
-        // File Viewer
-        function openFile(filename, ext) {
-            openWindow('file-viewer');
-            document.getElementById('viewer-title').innerText = filename;
-            const content = document.getElementById('viewer-content');
-            content.innerHTML = "Loading...";
-
-            if (ext === 'png') {
-                content.innerHTML = `<img src="${filename}" style="max-width:100%; height:auto; border-radius:4px;">`;
-                return;
-            }
-            fetch(filename)
-                .then(r => r.ok ? r.text() : Promise.reject())
-                .then(d => content.innerHTML = ext === 'csv' ? parseCSVToHTML(d) : d)
-                .catch(() => content.innerHTML = `<span style="color:var(--red);">Error: Requires Live Server to read local files.</span>`);
-        }
-
-        function parseCSVToHTML(text) {
-            let html = '<table style="width:100%; border-collapse:collapse;">';
-            text.split('\n').forEach((row, i) => {
-                if(!row.trim()) return;
-                html += '<tr>';
-                row.split(',').forEach(col => {
-                    let c = col.replace(/"/g, '').trim();
-                    html += i === 0 
-                        ? `<th style="border:1px solid var(--border-color); padding:8px; background:rgba(255,255,255,0.05);">${c}</th>` 
-                        : `<td style="border:1px solid var(--border-color); padding:8px;">${c}</td>`;
-                });
-                html += '</tr>';
-            });
-            return html + '</table>';
-        }
-
-        // Clock — kept in the bottom taskbar like a desktop/phone system bar.
-        function updateClock() {
-            document.getElementById('clock').innerText =
-                new Date().toLocaleTimeString('en-IN', {
-                    hour12: true,
-                    hour: 'numeric',
-                    minute: '2-digit'
-                });
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-
-        // Elisa Music Logic
-        const record = document.getElementById('vinyl-record'), arm = document.getElementById('vinyl-tonearm');
-        const npLink = document.getElementById('np-link'), npArtist = document.getElementById('np-artist');
-        const timeCur = document.getElementById('elisa-time-current'), timeTot = document.getElementById('elisa-time-total');
-        const progFill = document.getElementById('elisa-progress'), btnPlay = document.getElementById('btn-play-pause');
-        
-        let songs = [], isPlaying = false, durSec = 180, elapSec = 0, timer = null;
-
-        function fmtTime(s) { return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`; }
-        function updateUI() {
-            timeCur.textContent = fmtTime(elapSec); timeTot.textContent = fmtTime(durSec);
-            progFill.style.width = `${(elapSec/durSec)*100}%`;
-        }
-
-        function play() {
-            if(elapSec >= durSec) return loadSong();
-            isPlaying = true; record.classList.add('playing'); arm.classList.add('playing');
-            btnPlay.textContent = "⏸";
-            timer = setInterval(() => {
-                elapSec++; updateUI();
-                if(elapSec >= durSec) { pause(); setTimeout(loadSong, 1000); }
-            }, 1000);
-        }
-        function pause() {
-            isPlaying = false; record.classList.remove('playing'); arm.classList.remove('playing');
-            btnPlay.textContent = "▶"; clearInterval(timer);
-        }
-
-        function loadSong() {
-            if(!songs.length) return;
-            const s = songs[Math.floor(Math.random() * songs.length)];
-            npLink.textContent = s[0].replace(/"/g, ''); 
-            npArtist.textContent = s[1].replace(/"/g, '');
-            npLink.href = s[3] || '#';
-            let t = (s[2]||"3:00").split(':'); durSec = parseInt(t[0])*60 + parseInt(t[1]||0);
-            elapSec = 0; updateUI(); play();
-        }
-
-        btnPlay.onclick = () => isPlaying ? pause() : play();
-        document.getElementById('btn-skip').onclick = () => { pause(); loadSong(); };
-
-        fetch('/songs.csv').then(r => r.text()).then(t => {
-            songs = t.split('\n').map(l=>l.split(',')).filter(r=>r.length>1).slice(1);
-            if(songs.length) loadSong();
-        }).catch(() => {
-            npLink.textContent = "Lo-Fi Beats"; npArtist.textContent = "System Default"; updateUI(); play();
-        });
-
-        // Initialize Default Windows & Auto-open NetMap
-        openWindow('terminal-window');
-        setTimeout(() => {
-            openWindow('netmap-window');
-        }, 300);
+// Initialize Default Windows
+openWindow('terminal-window');
+setTimeout(() => { openWindow('netmap-window'); }, 300);
     </script>
+
     <script src="/gh-graph.js" data-username="tnm-yes-anyidea"></script>
 </body>
 </html>
-
