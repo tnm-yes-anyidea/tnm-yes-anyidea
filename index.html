@@ -92,7 +92,7 @@
         /* Window Sizes */
         .dashboard-container { width: clamp(300px, 95vw, 1050px); height: clamp(400px, 88vh, 88vh); top: 3%; left: 5%; }
         .file-viewer-window { width: clamp(300px, 90vw, 600px); height: clamp(300px, 80vh, 450px); top: 15%; left: 5%; }
-        .netmap-container { width: clamp(300px, 90vw, 650px); height: clamp(300px, 80vh, 500px); top: 8%; left: 12%; }
+        .netmap-container { width: clamp(300px, 90vw, 680px); height: clamp(300px, 80vh, 520px); top: 8%; left: 12%; }
 
         /* ===== TERMINAL STYLES ===== */
         .dashboard-grid { display: grid; grid-template-columns: minmax(200px, 280px) 1fr; flex-grow: 1; overflow: hidden; gap: 0; min-height: 0; }
@@ -156,11 +156,11 @@
         .netmap-body { padding: clamp(15px, 3vw, 25px); overflow-y: auto; flex-grow: 1; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
         .netmap-header-bar { font-size: 0.8rem; color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         .nodes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-        .node-card { position: relative; overflow: hidden; padding: 14px 16px; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,.04); border: 1px solid rgba(148,163,184,.15); border-radius: 8px; cursor: pointer; transition: all 0.2s; min-width: 0; overflow-wrap: anywhere; word-break: break-word; -webkit-tap-highlight-color: transparent; }
+        .node-card { position: relative; overflow: hidden; padding: 14px 16px; text-decoration: none; color: var(--text-main); font-weight: bold; font-size: 0.9rem; background: rgba(255,255,255,.04); border: 1px solid rgba(148,163,184,.15); border-radius: 8px; cursor: pointer; transition: all 0.2s; min-width: 0; overflow-wrap: anywhere; word-break: break-word; -webkit-tap-highlight-color: transparent; display: flex; justify-content: space-between; align-items: center; }
         .node-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.06); border-color: rgba(103,183,255,.45); box-shadow: 0 10px 25px rgba(0,0,0,.3); }
         .node-meta { display: flex; flex-direction: column; gap: 4px; }
         .node-label { color: #718096; font-size: 0.7rem; font-family: sans-serif; text-transform: uppercase; letter-spacing: 1px; }
-        .node-icon { color: var(--cyan); transition: transform 0.2s ease; }
+        .node-icon { color: var(--cyan); transition: transform 0.2s ease; margin-left: 8px; }
         .node-card:hover .node-icon { transform: translateX(4px); }
 
         /* File Viewer & Enhanced CSV */
@@ -350,7 +350,7 @@
                 <div class="win-dot g" onclick="maximizeWindow('terminal-window')"></div>
             </div>
             <div class="header-title">SYSTEM_CORE_MATRIX</div>
-            <div class="environment-badge">v6.0.0-stable</div>
+            <div class="environment-badge">v7.0.0-stable</div>
         </div>
         <div class="dashboard-grid">
             <div class="side-panel">
@@ -432,25 +432,27 @@
             <div style="font-size:0.75rem; color:var(--text-muted);">node_status: active</div>
         </div>
         <div class="netmap-body">
-            <div class="netmap-header-bar">Found 9 active connection nodes in current workspace...</div>
+            <div class="netmap-header-bar" id="netmap-status-bar">Scanning network nodes...</div>
+            
+            <div class="section-header" style="font-size: 0.65rem;">IDENTITY & SOCIAL NODES</div>
             <div class="nodes-grid">
-                <a href="https://github.com/tnm-yes-anyidea" class="node-card" target="_blank">
+                <a href="https://github.com/tnm-yes-anyidea" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">src/codebase</span><span>GitHub</span></div>
                     <span class="node-icon">→</span>
                 </a>
-                <a href="https://gitlab.com/tnm-yes-anyidea" class="node-card" target="_blank">
+                <a href="https://gitlab.com/tnm-yes-anyidea" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">mirror/ci-cd</span><span>GitLab</span></div>
                     <span class="node-icon">→</span>
                 </a>
-                <a href="https://www.linkedin.com/in/tanmoy-ghosh-b94185368/" class="node-card" target="_blank">
+                <a href="https://www.linkedin.com/in/tanmoy-ghosh-b94185368/" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">professional/net</span><span>LinkedIn</span></div>
                     <span class="node-icon">→</span>
                 </a>
-                <a href="https://discord.com/users/918732210868207696" class="node-card" target="_blank">
+                <a href="https://discord.com/users/918732210868207696" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">comm/handle</span><span>Discord</span></div>
                     <span class="node-icon">→</span>
                 </a>
-                <a href="https://leetcode.com/u/Octavius_the_greatest/" class="node-card" target="_blank">
+                <a href="https://leetcode.com/u/Octavius_the_greatest/" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">dsa/runtime</span><span>LeetCode</span></div>
                     <span class="node-icon">→</span>
                 </a>
@@ -458,18 +460,23 @@
                     <div class="node-meta"><span class="node-label">encrypted/routing</span><span>Email Node [Offline]</span></div>
                     <span class="node-icon">→</span>
                 </a>
-                <a href="https://huggingface.co/willy-wonka5745" class="node-card" target="_blank">
+                <a href="https://huggingface.co/willy-wonka5745" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">database/llm</span><span>Hugging Face</span></div>
                     <span class="node-icon">→</span>
                 </a>
-                <a href="https://codeberg.org/tnm-yes-anyidea" class="node-card" target="_blank">
+                <a href="https://codeberg.org/tnm-yes-anyidea" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">codebase/foss</span><span>Codeberg</span></div>
                     <span class="node-icon">→</span>
                 </a>
-                <a href="https://www.youtube.com/@unconscious-hazelnut" class="node-card" target="_blank">
+                <a href="https://www.youtube.com/@unconscious-hazelnut" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">Outreach/Educational</span><span>Youtube</span></div>
                     <span class="node-icon">→</span>
                 </a>
+            </div>
+
+            <div class="section-header" style="font-size: 0.65rem; color: var(--cyan); margin-top: 10px;">RESEARCH & BLOG NODES // GITHUB-PAGES</div>
+            <div class="nodes-grid" id="netmap-blog-grid">
+                <div style="color:var(--text-muted); font-size:0.75rem; grid-column: 1/-1;">Fetching blog nodes...</div>
             </div>
         </div>
     </div>
@@ -498,6 +505,54 @@
     <script src="./gh-graph.js" data-username="tnm-yes-anyidea"></script>
 
     <script>
+        // Dynamic NetMap GitHub Pages Blog Loader
+        const BLOG_API = 'https://tnm-yes-anyidea.github.io/blogs/blogs.json';
+        const BLOG_BASE_URL = 'https://tnm-yes-anyidea.github.io/blogs/';
+
+        async function loadNetmapBlogs() {
+            const blogGrid = document.getElementById('netmap-blog-grid');
+            const statusBar = document.getElementById('netmap-status-bar');
+            if (!blogGrid) return;
+
+            try {
+                const response = await fetch(BLOG_API);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const blogs = await response.json();
+                
+                if (blogs && blogs.length > 0) {
+                    blogGrid.innerHTML = blogs.map(blog => `
+                        <a href="${BLOG_BASE_URL}${blog.path}" class="node-card" target="_blank" rel="noopener">
+                            <div class="node-meta">
+                                <span class="node-label" style="color: var(--cyan);">node / ${blog.folder || 'paper'}</span>
+                                <span>${blog.title}</span>
+                            </div>
+                            <span class="node-icon">→</span>
+                        </a>
+                    `).join('');
+
+                    if (statusBar) {
+                        statusBar.innerText = `Found ${9 + blogs.length} active connection nodes in current workspace...`;
+                    }
+                } else {
+                    blogGrid.innerHTML = `<div style="color:var(--text-muted); font-size:0.75rem; grid-column: 1/-1;">No published blog nodes found.</div>`;
+                }
+            } catch (err) {
+                console.warn('NetMap Blog Fetch Notice:', err);
+                blogGrid.innerHTML = `
+                    <a href="${BLOG_BASE_URL}" class="node-card" target="_blank" rel="noopener">
+                        <div class="node-meta">
+                            <span class="node-label" style="color: var(--yellow);">node / static</span>
+                            <span>Visit Blog Index</span>
+                        </div>
+                        <span class="node-icon">→</span>
+                    </a>`;
+                if (statusBar) {
+                    statusBar.innerText = `Found 10 connection nodes in current workspace...`;
+                }
+            }
+        }
+
         // Email Link Setup
         const secureEmail = document.getElementById('secure-email');
         if (secureEmail) {
@@ -833,10 +888,11 @@
                 if (matrixArtist) matrixArtist.textContent = "Check Root Path";
             });
 
-        // Initialize Windows On Load
+        // Initialize Windows & Dynamic Fetch On Load
         document.addEventListener('DOMContentLoaded', () => {
             openWindow('terminal-window');
             openWindow('netmap-window');
+            loadNetmapBlogs();
         });
     </script>
 </body>
