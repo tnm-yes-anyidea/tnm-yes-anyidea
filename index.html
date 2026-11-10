@@ -118,13 +118,18 @@
             box-shadow: 0 0 0 1px #000, inset 0 0 0 3px #1a1a1a, inset 0 0 0 7px #111, inset 0 0 0 10px #1a1a1a, inset 0 0 0 14px #111;
             position: relative; display: flex; justify-content: center; align-items: center;
             flex-shrink: 0;
+            transition: box-shadow 0.3s ease;
         }
         .turntable::after {
             content: ''; width: 12px; height: 12px; background: var(--blue);
             border-radius: 50%; border: 1px solid #000;
         }
-        .turntable.playing { animation: spin 2s linear infinite; }
+        .turntable.playing {
+            animation: spin 2s linear infinite;
+            box-shadow: 0 0 10px rgba(85, 230, 208, 0.35), inset 0 0 0 3px #1a1a1a, inset 0 0 0 7px #111, inset 0 0 0 10px #1a1a1a, inset 0 0 0 14px #111;
+        }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         
         .player-info { display: flex; flex-direction: column; gap: 6px; overflow: hidden; flex-grow: 1; }
         .player-track { font-size: 0.75rem; font-weight: bold; color: var(--cyan); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-decoration: none; }
@@ -268,7 +273,7 @@
             <div class="icon-graphic">📁</div>
             <div class="icon-name">Music</div>
         </div>
-               
+                
         <div class="desktop-icon" onclick="openFile('docs/my-resume-cv.tex', 'tex')">
             <div class="icon-graphic">📊</div>
             <div class="icon-name">Curriculum-Vitae</div>
@@ -379,11 +384,11 @@
                     <div class="mini-player">
                         <div class="turntable" id="turntable-disc"></div>
                         <div class="player-info">
-                            <a href="#" id="matrix-now-playing" class="player-track" target="_blank">Loading Playlist...</a>
-                            <div class="player-artist" id="matrix-artist">System Default</div>
+                            <a href="#" id="matrix-now-playing" class="player-track" target="_blank">Spokoynaya Noch (inspired Synth)</a>
+                            <div class="player-artist" id="matrix-artist">Кино(inspired) // .js  </div>
                             <div class="player-controls">
                                 <button class="p-btn" id="btn-prev" title="Previous Track">⏮</button>
-                                <button class="p-btn play" id="btn-play-pause" title="Play / Pause">▶</button>
+                                <button class="p-btn play" id="btn-play-pause" title="Play / Pause Synth">▶</button>
                                 <button class="p-btn" id="btn-next" title="Next Track">⏭</button>
                             </div>
                         </div>
@@ -415,20 +420,20 @@
             </div>
         </div>
         <div class="lualine-bar">
-    <div class="lua-seg lua-mode">WEBRING</div>
-    <div class="lua-file" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-        <a href="https://ring.seggs.lol/redirect?from=tanmoy&dir=prev" style="color: var(--cyan); text-decoration: none;">← prev</a>
-        <span>|</span>
-        <a href="https://ring.seggs.lol/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
-            WEBRING OF INDIA'S YOUNGEST TECH-Nerds
-        </a>
-        <span>|</span>
-        <a href="https://ring.seggs.lol/random" style="color: var(--yellow); text-decoration: none;">random</a>
-        <span>|</span>
-        <a href="https://ring.seggs.lol/redirect?from=tanmoy&dir=next" style="color: var(--cyan); text-decoration: none;">next →</a>
-        <span class="cursor" style="animation: blink 1.2s step-end infinite; display: inline-block; width: 8px; height: 14px; background-color: var(--text-main);"></span>
-    </div>
-</div>
+            <div class="lua-seg lua-mode">WEBRING</div>
+            <div class="lua-file" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <a href="https://ring.seggs.lol/redirect?from=tanmoy&dir=prev" style="color: var(--cyan); text-decoration: none;">← prev</a>
+                <span>|</span>
+                <a href="https://ring.seggs.lol/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+                    WEBRING OF INDIA'S YOUNGEST TECH-Nerds
+                </a>
+                <span>|</span>
+                <a href="https://ring.seggs.lol/random" style="color: var(--yellow); text-decoration: none;">random</a>
+                <span>|</span>
+                <a href="https://ring.seggs.lol/redirect?from=tanmoy&dir=next" style="color: var(--cyan); text-decoration: none;">next →</a>
+                <span class="cursor" style="animation: blink 1.2s step-end infinite; display: inline-block; width: 8px; height: 14px; background-color: var(--text-main);"></span>
+            </div>
+        </div>
     </div>
 
     <!-- NETMAP VISUALIZER WINDOW -->
@@ -457,7 +462,7 @@
                 </a>
                 <a href="https://www.linkedin.com/in/tanmoy-ghosh-b94185368/" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">professional/net</span><span>LinkedIn</span></div>
-                  <span class="node-icon">→</span>
+                    <span class="node-icon">→</span>
                 </a>
                 <a href="https://leetcode.com/u/Octavius_the_greatest/" class="node-card" target="_blank" rel="noopener">
                     <div class="node-meta"><span class="node-label">dsa/runtime</span><span>LeetCode</span></div>
@@ -515,6 +520,9 @@
         <div class="taskbar-apps" id="taskbar-apps"></div>
         <div class="taskbar-clock" id="clock">00:00 AM</div>
     </div>
+
+    <!-- TONE.JS WEB AUDIO SYNTHESIS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
 
     <!-- GH-GRAPH SCRIPT (Relative Path) -->
     <script src="./gh-graph.js" data-username="tnm-yes-anyidea"></script>
@@ -784,7 +792,7 @@
         }
         updateClock(); setInterval(updateClock, 1000);
 
-        // Turntable Player Engine & Song Parser
+// Turntable Player Engine & Cinematic 5-Stage Soundscape Synthesizer
         const matrixNP = document.getElementById('matrix-now-playing');
         const matrixArtist = document.getElementById('matrix-artist');
         const btnPlay = document.getElementById('btn-play-pause');
@@ -793,9 +801,185 @@
         let songs = [];
         let currentSongIndex = 0;
         let isPlaying = false;
-        let durSec = 180;
+        let durSec = 270; // 4.5 minutes total cinematic runtime
         let elapSec = 0;
         let timer = null;
+        let synthInitialized = false;
+
+        function initPostPunkSynth() {
+            if (synthInitialized) return;
+            Tone.Transport.bpm.value = 135; // Fast tempo for Interstellar & Trap drive
+
+            const masterVol = new Tone.Volume(-6).toDestination();
+
+            // Master Effects
+            const reverb = new Tone.Reverb({ decay: 6.0, preDelay: 0.1, wet: 0.35 }).connect(masterVol);
+            const delay = new Tone.FeedbackDelay({ delayTime: "8n", feedback: 0.3, wet: 0.2 }).connect(reverb);
+            const chorus = new Tone.Chorus({ frequency: 1.4, delayTime: 4.0, depth: 0.8, wet: 0.6 }).connect(delay).start();
+
+            // Dynamic Volume Channels for Smooth Crossfading
+            const interstellarVol = new Tone.Volume(-2).connect(chorus);
+            const kinoVol = new Tone.Volume(-35).connect(chorus);
+            const tronVol = new Tone.Volume(-35).connect(chorus);
+            const timeVol = new Tone.Volume(-35).connect(chorus);
+            const oppenheimerVol = new Tone.Volume(-40).connect(masterVol);
+
+
+            // --- STAGE 1: HANS ZIMMER - CORNFIELD CHASE (Bars 0 to 4) ---
+            const interstellarSynth = new Tone.Synth({
+                oscillator: { type: "sawtooth" },
+                envelope: { attack: 0.005, decay: 0.15, sustain: 0.1, release: 0.2 }
+            });
+            const interstellarFilter = new Tone.Filter({ frequency: 2500, type: "lowpass" }).connect(interstellarVol);
+            interstellarSynth.connect(interstellarFilter);
+
+            // Driving 7/8-feel rolling arpeggios
+            const cornfieldNotes = [
+                ["0:0:0", "E4"], ["0:0:2", "G4"], ["0:1:0", "B4"], ["0:1:2", "E5"],
+                ["0:2:0", "G4"], ["0:2:2", "B4"], ["0:3:0", "E5"],
+                ["1:0:0", "C5"], ["1:0:2", "E5"], ["1:1:0", "G5"], ["1:1:2", "C6"],
+                ["1:2:0", "E5"], ["1:2:2", "G5"], ["1:3:0", "C6"],
+                ["2:0:0", "A4"], ["2:0:2", "C5"], ["2:1:0", "E5"], ["2:1:2", "A5"],
+                ["2:2:0", "C5"], ["2:2:2", "E5"], ["2:3:0", "A5"],
+                ["3:0:0", "B4"], ["3:0:2", "D#5"], ["3:1:0", "F#5"], ["3:1:2", "B5"],
+                ["3:2:0", "D#5"], ["3:2:2", "F#5"], ["3:3:0", "B5"]
+            ];
+
+            const cornfieldPart = new Tone.Part((time, note) => {
+                interstellarSynth.triggerAttackRelease(note, "16n", time, 0.7);
+            }, cornfieldNotes);
+            cornfieldPart.loop = true;
+            cornfieldPart.loopEnd = "4m";
+            cornfieldPart.start(0);
+
+            // Fade out Interstellar as Kino takes over
+            interstellarVol.volume.rampTo(-35, 6, "4:0:0");
+
+
+            // --- STAGE 2: KINO - SPOKOYNAYA NOCH (Active Bars 4 to 12) ---
+            const kinoGuitar = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: "fatsawtooth", count: 3, spread: 15 },
+                envelope: { attack: 0.02, decay: 0.8, sustain: 0.15, release: 1.8 }
+            });
+            const kinoFilter = new Tone.Filter({ frequency: 2200, type: "lowpass" }).connect(kinoVol);
+            kinoGuitar.connect(kinoFilter);
+
+            const kinoNotes = [
+                ["4:0:0", "E4"], ["4:0:2", "G4"], ["4:1:0", "B4"], ["4:1:2", "E5"],
+                ["4:2:0", "G5"], ["4:2:2", "E5"], ["4:3:0", "B4"], ["4:3:2", "G4"],
+                ["5:0:0", "C4"], ["5:0:2", "E4"], ["5:1:0", "G4"], ["5:1:2", "C5"],
+                ["5:2:0", "E5"], ["5:2:2", "C5"], ["5:3:0", "G4"], ["5:3:2", "E4"],
+                ["6:0:0", "A3"], ["6:0:2", "C4"], ["6:1:0", "E4"], ["6:1:2", "A4"],
+                ["6:2:0", "C5"], ["6:2:2", "A4"], ["6:3:0", "E4"], ["6:3:2", "C4"],
+                ["7:0:0", "B3"], ["7:0:2", "D#4"], ["7:1:0", "F#4"], ["7:1:2", "A4"],
+                ["7:2:0", "B4"], ["7:2:2", "A4"], ["7:3:0", "F#4"], ["7:3:2", "D#4"]
+            ];
+
+            const kinoPart = new Tone.Part((time, note) => {
+                kinoGuitar.triggerAttackRelease(note, "8n", time, 0.65);
+            }, kinoNotes);
+            kinoPart.loop = true;
+            kinoPart.loopEnd = "4m";
+            kinoPart.start("4m");
+
+            // Fade Kino in at Bar 4
+            kinoVol.volume.rampTo(0, 4, "4:0:0");
+
+
+            // --- STAGE 3: DAFT PUNK / TRON TRAP DROP (Active Bars 8 to 16) ---
+            const tronLead = new Tone.Synth({
+                oscillator: { type: "square" },
+                envelope: { attack: 0.01, decay: 0.15, sustain: 0.2, release: 0.3 }
+            });
+            const tronFilter = new Tone.Filter({ frequency: 1200, type: "lowpass" }).connect(tronVol);
+            tronLead.connect(tronFilter);
+
+            const tronNotes = [
+                ["8:0:0", "E3"], ["8:0:1", "G3"], ["8:0:2", "B3"], ["8:0:3", "E4"],
+                ["8:1:0", "G3"], ["8:1:1", "B3"], ["8:1:2", "E4"], ["8:1:3", "G4"],
+                ["8:2:0", "E3"], ["8:2:1", "A3"], ["8:2:2", "C4"], ["8:2:3", "E4"],
+                ["8:3:0", "A3"], ["8:3:1", "C4"], ["8:3:2", "E4"], ["8:3:3", "A4"],
+                ["9:0:0", "D3"], ["9:0:1", "F#3"], ["9:0:2", "A3"], ["9:0:3", "D4"],
+                ["9:1:0", "F#3"], ["9:1:1", "A3"], ["9:1:2", "D4"], ["9:1:3", "F#4"],
+                ["9:2:0", "C3"], ["9:2:1", "E3"], ["9:2:2", "G3"], ["9:2:3", "C4"],
+                ["9:3:0", "B2"], ["9:3:1", "D#3"], ["9:3:2", "F#3"], ["9:3:3", "B3"]
+            ];
+
+            const tronPart = new Tone.Part((time, note) => {
+                tronLead.triggerAttackRelease(note, "16n", time, 0.7);
+            }, tronNotes);
+            tronPart.loop = true;
+            tronPart.loopEnd = "2m";
+            tronPart.start("8m");
+
+            const kick = new Tone.MembraneSynth({ pitchDecay: 0.04, octaves: 5 }).connect(tronVol);
+            const snare = new Tone.NoiseSynth({ noise: { type: "white" }, envelope: { attack: 0.002, decay: 0.18 } }).connect(tronVol);
+            snare.volume.value = -2;
+
+            const trapBeat = new Tone.Part((time, drum) => {
+                if (drum === "kick") kick.triggerAttackRelease("C1", "8n", time, 1.0);
+                if (drum === "snare") snare.triggerAttackRelease("16n", time, 0.85);
+            }, [
+                ["8:0:0", "kick"], ["8:1:2", "snare"], ["8:2:0", "kick"], ["8:3:0", "snare"],
+                ["9:0:0", "kick"], ["9:1:2", "snare"], ["9:2:0", "kick"], ["9:3:0", "snare"],
+                ["10:0:0", "kick"], ["10:1:2", "snare"], ["10:2:0", "kick"], ["10:3:0", "snare"],
+                ["11:0:0", "kick"], ["11:1:2", "snare"], ["11:2:0", "kick"], ["11:3:0", "snare"]
+            ]);
+            trapBeat.loop = true;
+            trapBeat.loopEnd = "4m";
+            trapBeat.start("8m");
+
+            // Fade TRON in at Bar 8, then Kino & TRON fade out leaving only Daft Punk before Floyd
+            tronVol.volume.rampTo(0, 4, "8:0:0");
+            kinoVol.volume.rampTo(-35, 6, "12:0:0");
+            tronVol.volume.rampTo(-35, 6, "14:0:0");
+
+
+            // --- STAGE 4: PINK FLOYD - TIME SOLO (Active Bars 16 to 24) ---
+            const floydSynth = new Tone.Synth({
+                oscillator: { type: "sine" },
+                envelope: { attack: 0.05, decay: 1.2, sustain: 0.4, release: 2.0 }
+            }).connect(timeVol);
+
+            const timeNotes = [
+                ["16:0:0", "F#4"], ["16:1:0", "A4"], ["16:2:0", "E5"], ["16:3:0", "C#5"],
+                ["17:0:0", "E4"], ["17:1:0", "G#4"], ["17:2:0", "B4"], ["17:3:0", "E5"],
+                ["18:0:0", "D4"], ["18:1:0", "F#4"], ["18:2:0", "A4"], ["18:3:0", "D5"],
+                ["19:0:0", "A3"], ["19:1:0", "C#4"], ["19:2:0", "E4"], ["19:3:0", "A4"]
+            ];
+
+            const timePart = new Tone.Part((time, note) => {
+                floydSynth.triggerAttackRelease(note, "4n", time, 0.8);
+            }, timeNotes);
+            timePart.loop = true;
+            timePart.loopEnd = "4m";
+            timePart.start("16m");
+
+            // Fade Pink Floyd Time in at Bar 16, fade out at Bar 24
+            timeVol.volume.rampTo(0, 6, "16:0:0");
+            timeVol.volume.rampTo(-35, 8, "24:0:0");
+
+
+            // --- STAGE 5: OPPENHEIMER FINALE (Active from Bar 24 onwards) ---
+            const oppenheimerDrone = new Tone.Synth({
+                oscillator: { type: "sawtooth" },
+                envelope: { attack: 3.0, decay: 4.0, sustain: 0.8, release: 6.0 }
+            }).connect(oppenheimerVol);
+            const droneFilter = new Tone.Filter({ frequency: 180, type: "lowpass" }).connect(oppenheimerVol);
+            oppenheimerDrone.connect(droneFilter);
+
+            const oppenheimerPart = new Tone.Part((time, note) => {
+                oppenheimerDrone.triggerAttackRelease(note, "4m", time, 0.95);
+            }, [
+                ["24:0:0", "A1"], ["28:0:0", "E1"]
+            ]);
+            oppenheimerPart.start(0);
+
+            // Fade Oppenheimer drone in at Bar 24
+            oppenheimerVol.volume.rampTo(-2, 6, "24:0:0");
+
+            synthInitialized = true;
+        }
 
         function parseCSVLine(str) {
             const arr = [];
@@ -818,7 +1002,12 @@
             return arr;
         }
 
-        function play() {
+        async function play() {
+            if (typeof Tone !== 'undefined') {
+                await Tone.start();
+                initPostPunkSynth();
+                Tone.Transport.start();
+            }
             if (elapSec >= durSec) return nextSong();
             isPlaying = true; 
             if (record) record.classList.add('playing');
@@ -826,12 +1015,15 @@
             if (timer) clearInterval(timer);
             timer = setInterval(() => {
                 elapSec++;
-                if (elapSec >= durSec) { pause(); setTimeout(nextSong, 1000); }
+                if (elapSec >= durSec) { pause(); setTimeout(() => nextSong(), 1000); }
             }, 1000);
         }
 
         function pause() {
             isPlaying = false; 
+            if (typeof Tone !== 'undefined' && synthInitialized) {
+                Tone.Transport.pause();
+            }
             if (record) record.classList.remove('playing');
             if (btnPlay) btnPlay.textContent = "▶"; 
             if (timer) clearInterval(timer);
@@ -842,8 +1034,8 @@
             currentSongIndex = index !== undefined ? (index + songs.length) % songs.length : 0;
 
             const s = songs[currentSongIndex];
-            const songTitle = s[0] ? s[0].replace(/^"|"$/g, '').trim() : "Unknown Track";
-            const songArtist = s[1] ? s[1].replace(/^"|"$/g, '').trim() : "Unknown Artist";
+            const songTitle = s[0] ? s[0].replace(/^"|"$/g, '').trim() : "Cornfield Chase -> Kino -> TRON -> Floyd -> Oppenheimer";
+            const songArtist = s[1] ? s[1].replace(/^"|"$/g, '').trim() : "Cinematic Soundscape";
             const songUrl = (s[3] && s[3].trim() !== '' && s[3].trim() !== '#') ? s[3].replace(/^"|"$/g, '').trim() : null;
 
             if (matrixNP) {
@@ -862,8 +1054,8 @@
 
             if (matrixArtist) matrixArtist.textContent = songArtist;
 
-            let t = (s[2] || "3:00").replace(/^"|"$/g, '').trim().split(':'); 
-            durSec = (parseInt(t[0]) || 3) * 60 + (parseInt(t[1]) || 0);
+            let t = (s[2] || "4:30").replace(/^"|"$/g, '').trim().split(':'); 
+            durSec = (parseInt(t[0]) || 4) * 60 + (parseInt(t[1]) || 30);
             elapSec = 0; 
             play();
         }
@@ -894,21 +1086,18 @@
 
                 if (songs.length) {
                     loadSong(0);
+                    pause(); // Start paused for browser audio policy compliance
                 } else {
-                    if (matrixNP) matrixNP.textContent = "No Songs Available";
+                    if (matrixNP) matrixNP.textContent = "Cinematic Soundscape";
+                    if (matrixArtist) matrixArtist.textContent = "Hans Zimmer x Kino x Daft Punk x Floyd x Oppenheimer";
                 }
             })
             .catch(() => {
-                if (matrixNP) matrixNP.textContent = "songs.csv Not Loaded";
-                if (matrixArtist) matrixArtist.textContent = "Check Root Path";
+                if (matrixNP) matrixNP.textContent = "Cinematic Soundscape";
+                if (matrixArtist) matrixArtist.textContent = "Hans Zimmer x Kino x Daft Punk x Floyd x Oppenheimer";
             });
 
-        // Initialize Windows & Dynamic Fetch On Load
-        document.addEventListener('DOMContentLoaded', () => {
-            openWindow('terminal-window');
-            openWindow('netmap-window');
-            loadNetmapBlogs();
-        });
-    </script>
+</script>
+
 </body>
 </html>
