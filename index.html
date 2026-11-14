@@ -267,6 +267,11 @@
             <div class="icon-graphic">🌐</div>
             <div class="icon-name">NetMap</div>
         </div>
+
+        <div class="desktop-icon" onclick="openWindow('projects-window')">
+            <div class="icon-graphic">🚀</div>
+            <div class="icon-name">Projects</div>
+        </div>
         
         <!-- CLICKABLE MUSIC FOLDER -->
         <div class="desktop-icon" onclick="openFolder('Music')">
@@ -502,6 +507,7 @@
         </div>
     </div>
 
+
     <!-- FILE VIEWER WINDOW -->
     <div id="file-viewer" class="window file-viewer-window hidden" style="z-index: 13;">
         <div class="dashboard-header" id="file-viewer-header">
@@ -529,6 +535,12 @@
     <script src="./gh-graph.js" data-username="tnm-yes-anyidea"></script>
 
     <script>
+        function getAppTitle(id) {
+            if(id === 'terminal-window') return 'System_Core';
+            if(id === 'netmap-window') return 'NetMap';
+            if(id === 'projects-window') return 'Projects';
+            return 'File Explorer';
+        }
         // Dynamic NetMap GitHub Pages Blog Loader
         const BLOG_API = 'https://tnm-yes-anyidea.github.io/blogs/blogs.json';
         const BLOG_BASE_URL = 'https://tnm-yes-anyidea.github.io/blogs/';
@@ -693,6 +705,7 @@
         }
         makeDraggable('terminal-window', 'terminal-window-header');
         makeDraggable('netmap-window', 'netmap-header');
+        makeDraggable('projects-window', 'projects-header');
         makeDraggable('file-viewer', 'file-viewer-header');
 
         // Image Viewer & Gallery State
