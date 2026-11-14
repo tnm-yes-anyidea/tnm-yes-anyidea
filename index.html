@@ -507,6 +507,71 @@
         </div>
     </div>
 
+<!-- FEATURED PROJECTS WINDOW -->
+    <div id="projects-window" class="window netmap-container hidden" style="z-index: 12; top: 10%; left: 15%;">
+        <div class="dashboard-header" id="projects-header">
+            <div class="window-controls">
+                <div class="win-dot r" onclick="closeWindow('projects-window')"></div>
+                <div class="win-dot y" onclick="minimizeWindow('projects-window')"></div>
+                <div class="win-dot g" onclick="maximizeWindow('projects-window')"></div>
+            </div>
+            <div class="header-title">Featured_Projects // v1.0</div>
+            <div class="environment-badge" style="color: var(--yellow); border-color: rgba(245,196,81,0.3);">deployments: live</div>
+        </div>
+        <div class="netmap-body">
+            <div class="netmap-header-bar">Active production deployments &amp; source repositories...</div>
+
+            <div class="section-header" style="font-size: 0.65rem; color: var(--yellow);">LIVE DEPLOYMENTS // GITHUB-PAGES</div>
+            <div class="nodes-grid" id="featured-projects-grid">
+                
+                <!-- 1. UNCOMMON-TINKERING -->
+                <div class="node-card" onclick="window.open('https://tnm-yes-anyidea.github.io/uncommon-tinkering/', '_blank')" style="cursor: pointer;">
+                    <div class="node-meta">
+                        <span class="node-label" style="color: var(--cyan);">deployment / live</span>
+                        <span>uncommon-tinkering</span>
+                        <span style="font-size: 0.68rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">
+                            tnm-yes-anyidea.github.io/uncommon-tinkering
+                        </span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <a href="https://github.com/tnm-yes-anyidea/uncommon-tinkering" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="font-size: 0.65rem; color: var(--yellow); border: 1px solid rgba(245,196,81,0.35); padding: 3px 7px; border-radius: 4px; text-decoration: none;" title="View Source on GitHub">[repo]</a>
+                        <span class="node-icon">↗</span>
+                    </div>
+                </div>
+
+                <!-- 2. TIMELINE -->
+                <div class="node-card" onclick="window.open('https://tnm-yes-anyidea.github.io/timeline/', '_blank')" style="cursor: pointer;">
+                    <div class="node-meta">
+                        <span class="node-label" style="color: var(--green);">deployment / live</span>
+                        <span>timeline</span>
+                        <span style="font-size: 0.68rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">
+                            tnm-yes-anyidea.github.io/timeline
+                        </span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <a href="https://github.com/tnm-yes-anyidea/timeline" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="font-size: 0.65rem; color: var(--yellow); border: 1px solid rgba(245,196,81,0.35); padding: 3px 7px; border-radius: 4px; text-decoration: none;" title="View Source on GitHub">[repo]</a>
+                        <span class="node-icon">↗</span>
+                    </div>
+                </div>
+
+                <!-- 3. META-HATA -->
+                <div class="node-card" onclick="window.open('https://tnm-yes-anyidea.github.io/meta-hata/', '_blank')" style="cursor: pointer;">
+                    <div class="node-meta">
+                        <span class="node-label" style="color: var(--magenta);">deployment / live</span>
+                        <span>meta-hata</span>
+                        <span style="font-size: 0.68rem; color: var(--text-muted); font-weight: normal; margin-top: 2px;">
+                            tnm-yes-anyidea.github.io/meta-hata
+                        </span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <a href="https://github.com/tnm-yes-anyidea/meta-hata" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="font-size: 0.65rem; color: var(--yellow); border: 1px solid rgba(245,196,81,0.35); padding: 3px 7px; border-radius: 4px; text-decoration: none;" title="View Source on GitHub">[repo]</a>
+                        <span class="node-icon">↗</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <!-- FILE VIEWER WINDOW -->
     <div id="file-viewer" class="window file-viewer-window hidden" style="z-index: 13;">
